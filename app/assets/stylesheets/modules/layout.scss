@@ -1,0 +1,513 @@
+html{
+  width: 100%;
+  height: 100%;
+  @include box-sizing(border-box);
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body{
+  font: 13px/1.6 Arial, Verdana, sans-serif !important;
+  overflow-x: auto;
+  height: 100%;
+  background: #FFF;
+  &.dev{
+    background: asset-data-url("img/dev.png") repeat !important;
+  }
+}
+h1{font-size: 1.6em;font-weight: bold;}
+h2{font-size: 1.3em;font-weight: bold;}
+sup{
+  position: relative;
+  bottom: 5px;
+  font-size: 85% !important;
+  font-weight: normal !important;
+  a{
+    border: 1px dotted $base;
+    margin: 0px;
+    padding: 0px 3px;
+  }
+}
+em{
+  font-style: italic;
+}
+strong{
+  font-weight: bold;
+}
+*[disabled], *[readonly]{
+  opacity: 0.6;
+}
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+.wrapper{
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+.head{
+  background: #252525;
+  position: relative;
+  padding: 3px 0px;
+  a{
+    text-decoration: none;
+  }
+}
+
+.ui-container{
+  background: #999;
+  height: 100%;
+  margin: 0 auto;
+  width: 100%;
+}
+
+#header .infos{
+  #switch_user_identifier{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 250px;
+    opacity: 0.2;
+    &:hover{
+      opacity: 0.8;
+    }
+  }
+  background: asset-data-url("img/head.png") repeat-x;
+  position: relative;
+  .logo{
+    height: 80px;
+    background-repeat: no-repeat;
+    img{
+      height: 80px;
+    }
+  }
+  .company-name{
+    position: absolute;
+    color: $white;
+    font-size: 2em;
+    font-weight: bold;
+    left: 180px;
+    top: 20px;
+  }
+  .top-right{
+    position: absolute;
+    right: 5px;
+    top: 0px;
+    z-index: 100;
+    .icons-widget{
+      float: left;
+      .icon{
+        height: 24px;
+        line-height: 24px;
+        background: #FF0;
+        margin-left: 1px;
+        a{
+          color: red;
+        }
+      }
+    }
+    .hub-switcher{
+      float: left;
+      background: #000;
+      color: #FFF;
+      padding: 0 5px;
+      select{
+        background: #000;
+        color: #FFF;
+        border: none;
+        font-weight: bold;
+        &:focus{
+          outline: 0;
+        }
+      }
+    }
+    .profile{
+      float: left;
+      padding: 0px;
+      border: 1px solid #333;
+      color: white;
+      background: #444;
+      &:hover{
+        cursor: pointer;
+        ul{
+          display: block;
+        }
+      }
+      .user{
+        padding: 1px 5px 0px 5px;
+        margin-bottom: 1px;
+      }
+    }
+  }
+
+  #quick-search{
+    background: $gray-10;
+    position: absolute;
+    right: 5px;
+    display: table-cell;
+    top: 40px;
+    padding: 0px 3px;
+    ul.horiz{
+      & > li{
+        float: left;
+        padding: 4px 2px;
+        input[type='text']{
+          padding: 3px;
+          &:focus, &:hover{
+            cursor: text;
+          }
+        }
+      }
+    }
+  }
+}
+
+label.star:before {
+  content: "* ";
+  color: red;
+  font-size: 15px;
+}
+
+#main{
+  border-width: 0px 2px 2px 2px;
+  border-color: $dark;
+  border-style: solid;
+  min-height: 400px;
+  &.gray{
+    background: $gray10;
+  }
+}
+#header{
+  z-index: 9999;
+  top:0px;
+  border-width: 2px 2px 0px 2px;
+  border-color: #3d4657;
+  border-style: solid;
+}
+#footer{
+  color: #FFF;
+  text-align: center;
+  background: #666;
+  border-width: 0px 4px 0px 4px;
+  border-color: #636363;
+  border-style: solid;
+  .copyright{
+    border-top: 1px solid $dark;
+  }
+}
+#siteseal{
+  margin: 20px auto;
+  width: 120px;
+  height: 63px;
+  display: block;
+  background: asset-data-url('img/godaddy_seal.png') no-repeat;
+  @include border-radius(12px);
+  @include box-shadow;
+  img{
+    cursor:pointer;
+    cursor:hand;
+  }
+}
+#flash-notice{
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  display: inline-block;
+  background: $yellow;
+  opacity: 0.85;
+  color: red;
+  font-weight: bold;
+  line-height: 2em;
+  padding: 0 5px;
+  @include box-sizing(border-box);
+}
+#access-denied{
+  background-color: $white;
+  width: 450px;
+  margin: auto;
+  position: relative;
+  top: 100px;
+  padding: 20px 10px;
+  @include border-radius(5px);
+  @include box-shadow;
+}
+.full-page{
+  margin: 5px;
+  @include box-sizing(border-box);
+}
+.content{
+  width: 1100px;
+  margin: 0px auto;
+  padding: 10px 0px;
+  max-width: 100%;
+}
+.innerpages {
+  padding: 20px;
+  width: 100%;
+}
+.scrollx{
+  width: 100%;
+  overflow-x: auto;
+}
+.title-bar{
+  background: #F9F9F9;
+  border-bottom: 1px solid #E9E9E9;
+  @include box-shadow;
+  h1{
+    color: $dark;
+    font-size: 1.6em;
+    font-weight: bold;
+    padding: 8px;
+    border-bottom: 1px solid #E8E8E8;
+    a{
+      color: $red;
+      font-size: 65%;
+      font-weight: normal;
+    }
+  }
+}
+#loading{
+  z-index: 99999;
+  background: #FF3;
+  padding: 2px 10px;
+  color: red;
+  font-weight: bold;
+  position: fixed;
+  top: 0px;
+  border: 1px solid darken(#FF0, 10%);
+  @include border-radius(0px 0px 5px 5px);
+}
+.show-hide{
+  cursor: pointer;
+}
+.search-box{
+  padding: 10px;
+  background: #F7F7F7;
+  position: relative;
+  margin-bottom: 10px;
+  border: 2px solid $gray-10;
+  @include box-shadow;
+  .close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  .search-inner{
+    padding: 8px;
+    border: 1px solid $gray-10;
+  }
+  input{
+    &[type=button], &[type=submit]{
+      margin: 10px 2px 0px 2px;
+    }
+  }
+  .title{
+    color: darken($gray, 40%);
+    font-size: 15px;
+    font-weight: bold;
+    border-bottom: 1px solid $gray;
+    margin-bottom: 8px;
+  }
+}
+
+//Guide
+.guides{
+  h2{
+    font-size: 1.5em;
+    color: $gray50;
+    margin: 8px 0px;
+    font-weight: bold;
+  }
+  h3{
+    font-size: 1.3em;
+    color: $gray45;
+    margin: 8px 5px;
+    font-style: italic;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
+
+//Modes
+.driver-mode{
+  position: absolute;
+  right: 10px;
+  line-height: 28px;
+  a{
+    @include border-radius(15px);
+    border: 1px solid #000;
+    padding: 5px 10px;
+    background: #000;
+    color: #14FF00;
+    &:hover{
+      background: #333;
+    }
+  }
+  &.off{
+    a{
+      color: #777;
+      &:hover{
+        color: #CCC;
+      }
+
+    }
+  }
+}
+
+
+//Calendar
+input.hasDatepicker{
+  height: 24px;
+}
+.hasDatepicker, .cal-icon{
+  width: 100px;
+  background: white asset-data-url('img/calendar.png') right no-repeat;
+  padding-right: 17px;
+  height: 16px;
+  &:hover{
+    cursor: pointer;
+  }
+}
+.datetime_picker{
+  width: 150px;
+}
+.only-icon{
+  line-height:0;
+  color: transparent;
+  width: 0px;
+  border: none;
+  outline: none;
+  padding: 0px !important;
+  padding-right: 16px !important;
+  &:hover{
+    cursor: pointer;
+  }
+}
+
+//border
+.border-info{
+  background: #F9F9F9;
+  border: 1px solid $gray;
+  padding: 1px 10px;
+  font-style: italic;
+  font-size: 120%;
+  color: $base;
+  margin: 10px 0px;
+}
+.border-title{
+  background: #F9F9F9;
+  border: 1px solid $gray;
+  margin: 10px 0px;
+  padding: 0px 10px;
+  font-size: 13px;
+  font-weight: bold;
+}
+//override
+// jQuery-Ui
+.ui-widget {font: 13px/1.6 Arial, Verdana, sans-serif !important;}
+.ui-widget .ui-widget { font-size: 12px !important;}
+.ui-tabs .ui-tabs-panel { padding: 1em 0.2em !important;}
+.ui-autocomplete { max-height: 400px; overflow-y: auto; overflow-x: hidden;}
+.ui-multiselect { padding:2px 0 1px 5px; }
+//chosen
+.chosen-container{ margin-bottom: 3px; }
+.chosen-container-single .chosen-single{height: 24px;line-height: 24px;}
+//calendar-tabs
+#calendar-tabs{
+  margin-top: 40px;
+  .ui-widget-header{
+    background: none;
+    position: absolute;
+    top: -32px;
+    border: none;
+    li{
+      a{
+        padding: 5px 10px;
+        font-size: 100%;
+        color: $gray40 !important;
+      }
+    }
+  }
+}
+
+//logo
+#logo-thumb{
+  display: inline-block;
+  margin: 5px 0px 5px 156px;
+  border: 1px solid $gray10;
+  background: $base;
+}
+
+// quote engines
+body.engine{
+  background: white;
+  .header{
+    background: asset-data-url('img/dark.jpg') repeat;
+    border-bottom: 1px solid #0088ce;
+  }
+  .head{
+    position: relative;
+    h1{
+      font-size: 20px;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      color: #00a3f7;
+      padding: 0px 10px;
+    }
+  }
+}
+.quote_engine_logo {
+  background: url(/assets/img/qe_generic_logo.png) no-repeat 0 0;
+  border: none;
+  outline: none;
+  height: 60px;
+  width: 308px;
+  z-index: 999;
+}
+//performance dashboard
+.subtotal{display: none;}
+.unconfirmed{
+  color: darken($red, 5%);
+  padding: 1px 5px;
+}
+//trucks
+.registered_in .checkbox{
+  width: 38px;
+}
+
+//images
+.imgContent{
+  padding: 10px 0;
+  img{
+    width: 100%;
+  }
+}
+img{
+  &.full{
+    @include box-shadow;
+    border: 2px solid $gray;
+  }
+}
+
+@media print{
+  body{
+    font: 11px Arial, Verdana, sans-serif !important;
+  }
+  #header, #footer, #siteseal{
+    display: none !important;
+  }
+  #main{
+    height: 100% !important;
+  }
+  .full-page{
+    margin: 0px !important;
+  }
+  .title-bar{
+    border: 1px solid #E9E9E9 !important;
+  }
+}

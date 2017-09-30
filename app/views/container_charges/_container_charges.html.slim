@@ -1,0 +1,34 @@
+- type||=nil
+- tr_class = Proc.new{|obj| classes = [obj.uid]; classes << "readonly" if obj.mark_as_readonly?; classes.join(' ')}
+table.gray.normal.mform.pw100 class=type
+  thead
+    tr
+      th.pw15 Amount
+      th.pw30 Type
+      th.pw35 Company
+      th.pw20 Invoice
+  tbody
+    - container_charges.each do |c|
+      tr class=tr_class.call(c)
+        td = number_to_currency c.amount
+        td
+          = c.name
+          - if !c.details.blank?
+            span.f80.italic
+              | &nbsp;(#{c.details})
+        td
+          = c.company.name
+          = inactive_tip(c.company)
+        td
+          - if c.line_item
+            = link_to c.line_item.invoice.number, c.line_item.invoice
+          - else
+            | N/A
+  - unless container_charges.empty?
+    tfoot
+      tr
+        th colspan=4
+          - container = container_charges.first.container
+          - ChargeSegment.new(container, container_charges).each do |segment|
+            span.mr5 = segment.company.try(:name)
+            span.fee.mr20 = number_to_currency(segment.total)

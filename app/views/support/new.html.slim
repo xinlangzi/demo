@@ -1,0 +1,22 @@
+.title-bar
+	h1 Support Center
+
+.content
+	.rows
+		fieldset
+			legend Software Contact Information
+			.line
+				.label Phone
+				.value 773-203-8800
+			.line
+				.label Email
+				.value = mail_to 'support@truckerzoom.com'
+
+	= form_tag '/support', :method => :post do
+		.vertical
+			= label_tag :sender, "Name"			
+			= text_field_tag :sender, params[:sender]
+		.vertical
+			= label_tag :message, "Message"	
+			= text_area_tag :message, params[:message], size: '40x5'
+		= submit_tag 'Send', :disable_with => PLEASE_WAIT

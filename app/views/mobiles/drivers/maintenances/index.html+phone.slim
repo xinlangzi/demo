@@ -1,0 +1,30 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+          
+- if current_user.is_trucker?
+  .content-block.top-block
+    a.button.button-big.button-fill.color-green href=new_mobiles_drivers_maintenance_path New Maintenance Record
+.toolbar
+  .toolbar-inner
+    - if params[:q].blank?
+      = link_to_previous_page @maintenances, content_tag(:i, nil, class: 'icon ion-arrow-left-a') + content_tag(:i, 'Prev'), class: 'link'
+      a.link href="#"
+      = link_to_next_page @maintenances, content_tag(:i, 'Next') + content_tag(:i, nil, class: 'icon ion-arrow-right-a'), class: 'link'
+.list-block.narrow-block
+  ul
+    - @maintenances.each do |m|
+      li
+        = link_to mobiles_drivers_maintenance_path(m), class: 'item-link' do
+          .item-content
+            .item-inner
+              .item-title.color-blue = m.issue_date.try(:us_date)
+              .item-after = m.trucker if current_user.is_admin?
+              

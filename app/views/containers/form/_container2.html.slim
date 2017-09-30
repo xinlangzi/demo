@@ -1,0 +1,21 @@
+tr
+  td.bold Container No.
+  td
+    = c.text_field :container_no, data: { url: Attr.check_dups_url(container, :container_no) }, class: 'check-dups nospace'
+    .red.bold
+  td.bold Chassis No.
+  td = c.text_field :chassis_no, class: 'nospace'
+tr.size-type
+  td.bold Container Size/Type
+  td
+    .lfloat
+      = c.select :container_size_id, objects_for_select(ContainerSize.all), { include_blank: true }, { id: 'container_size', class: 'container-size' }
+    .lfloat
+      = c.select :container_type_id, objects_for_select(ContainerType.all), { include_blank: true }, { class: 'container-type'}
+    .lfloat
+      = c.check_box :triaxle
+      = c.label :triaxle, 'Require Triaxle', class: 'inline'
+  td.bold Seal No.
+  td
+    = c.text_field :seal_no, data: {url: Attr.check_dups_url(container, :seal_no)}, class: 'check-dups nospace'
+    .red.bold

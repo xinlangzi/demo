@@ -1,0 +1,17 @@
+.title-bar
+  h1
+    span Payments:&nbsp;
+    - if current_user.is_admin?
+      span Accounts #{@accounts_type}
+    - elsif @accounts_type == 'Receivable'
+      span Accounts Payable
+    - else
+      span Accounts Receivable
+  - if current_user.is_admin?
+    ul
+      li = link_to "New #{@accounts_type.capitalize} Payment", new_polymorphic_path("#{@accounts_type}Payment".constantize.new)
+.content
+  = render 'payments/form/search'
+  - if @payments
+    .bold Payments #{@accounts_type == 'Receivable' ? " made by " : " owed to "} #{current_user.kind_of?(CustomersEmployee) ? current_user.employer.name : current_user.name}
+    = render 'payments/payments', payemnts: @payments

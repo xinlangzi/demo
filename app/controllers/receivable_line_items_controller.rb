@@ -1,0 +1,2 @@
+class ReceivableLineItemsController < LineItemsController
+end

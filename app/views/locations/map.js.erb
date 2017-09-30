@@ -1,0 +1,5 @@
+<%if @location%>
+  $('#view-gps').html('<%=j render("map")%>')
+<%else%>
+  $('#view-gps').html('')
+<%end%>

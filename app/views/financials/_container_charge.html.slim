@@ -1,0 +1,18 @@
+tr.record
+  td = link_to container_charge.container_id, container_path(container_charge.container_id), :target=>"_blank"
+  td[ref="company#{container_charge.company_id}"]
+    = container_charge.company_name rescue 'N/A'
+  td[ref="charge#{container_charge.chargable_id}"]
+    = container_charge.chargable_type.constantize.find(container_charge.chargable_id).name rescue 'N/A'
+  td.number[rel="#{container_charge.amount}"]
+    = number_to_currency(container_charge.amount)
+  - subtotal = by_companies.delete(container_charge.company_id)
+  - if subtotal
+    td.subtotal.number.by_company = number_to_currency(subtotal)
+  - else
+    td.subtotal
+  - subtotal = by_types.delete(container_charge.chargable)
+  - if subtotal
+    td.subtotal.number.by_type = number_to_currency(subtotal)
+  - else
+    td.subtotal

@@ -1,0 +1,12 @@
+.title-bar
+  h1 Daily Mileages
+  ul
+    li = link_to "Record Today's Mileage", new_daily_mileage_path
+    li = link_to "Record Fuel Purchase", new_fuel_purchase_path
+    li = link_to "List Fuel Purchases", fuel_purchases_path
+    li = link_to "Generate Quarterly Report", report_daily_mileages_path
+.content
+  = render 'filter' if current_user.is_admin?
+  - unless @daily_mileages.blank?
+    = render 'daily_mileages/daily_mileages'
+    = paginate @daily_mileages

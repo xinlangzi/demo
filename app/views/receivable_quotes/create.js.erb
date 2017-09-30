@@ -1,0 +1,6 @@
+<%if @rq.save_mode%>
+window.location.reload()
+<%else%>
+$('#container-form').replaceWith('<%=j render(partial: "containers/form/container", object: @container)%>')
+App.closeDialog()
+<%end%>

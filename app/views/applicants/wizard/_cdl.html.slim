@@ -1,0 +1,28 @@
+= render 'applicants/wizard/steps', step: 2 
+= simple_form_for @applicant, url: wizard_applicants_path, method: :post do |f|
+  .tableless
+    .table-cell
+      = f.input :date_of_birth, as: :datepicker, label: 'Date of Birth', wrapper: :vertical, input_html: { class: 'itext', data: { year_range: '-60:-15' } }, required: true
+    .table-cell &nbsp;&nbsp;
+    .table-cell
+      = f.input :year_of_experience, as: :string, label: 'Year of Experience', wrapper: :vertical, input_html: { class: 'itext' }, required: true
+  .tableless
+    .table-cell
+      = f.input :cdl_no, label: 'CDL No.', wrapper: :vertical, input_html: { class: 'itext' }, required: true
+    .table-cell &nbsp;&nbsp;
+    .table-cell
+      = f.input :cdl_state_id, label: 'CDL State', collection: State.all, wrapper: :vertical, input_html: { class: 'itext' }, required: true
+  fieldset
+    center.bold Upload Copy of Your Commerical Driver's License
+    center.f90 We will review your driving records according to your CDL.
+    .dropzone#cdl-uploader
+    table.docs
+      - @applicant.cdl_docs.each do |doc|
+        tr id=dom_id(doc)
+          td = link_to doc.filename, doc.file.url, target: '_blank'
+          td width=80 = doc.status.titleize
+          td width=50 = link_to 'Delete', [:delete, doc], method: :delete, data: { confirm: 'Are you sure to delete?'}, remote: true, class: 'red' if doc.pending?
+    center.red = @applicant.errors[:cdl].join(";")
+  = f.submit 'Previous', formnovalidate: true, class: 'w100 red-btn'
+  .pull-right
+    = f.submit 'Next', class: 'w100 green-btn'

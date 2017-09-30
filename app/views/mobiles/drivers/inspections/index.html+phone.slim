@@ -1,0 +1,63 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+center.content-block-title Roadside Inspections
+.toolbar
+  .toolbar-inner
+    = link_to_previous_page @inspections, content_tag(:i, nil, class: 'icon ion-arrow-left-a') + content_tag(:i, 'Prev'), class: 'link'
+    a.link href="#"
+    = link_to_next_page @inspections, content_tag(:i, 'Next') + content_tag(:i, nil, class: 'icon ion-arrow-right-a'), class: 'link'
+- @inspections.each do |inspection|
+  .data-table.card
+    .card-header 
+      .data-table-title.full-width
+        .pull-left = inspection.issue_date
+        .pull-right = inspection.trucker.name
+        .clear
+        .chip
+          .chip-label Point: #{inspection.point} 
+        | &nbsp;
+        .chip
+          .chip-label Adjustment: #{number_to_currency(inspection.amount)} 
+        | &nbsp;
+        .chip
+          .chip-label Level: #{inspection.level}
+    .card-content
+      table
+        thead
+          tr 
+            th.label-cell Code 
+            th.label-cell Unit 
+            th.label-cell OOS
+            th.label-cell Description
+            th.label-cell Included In SMS
+            th.label-cell Basic
+            th.label-cell Reason Not Included In SMS
+        tbody
+          - inspection.violations.each do |vo|
+            tr 
+              td = vo.code
+              td = vo.unit
+              td = vo.oos ? 'Yes' : 'No'
+              td = simple_format(vo.description)
+              td = vo.included_in_sms ? 'Yes' : 'No'
+              td = vo.basic
+              td = simple_format(vo.reason_not_included_in_sms)
+      .content-block
+        p.buttons-row
+          a.button.active href="#" Docs:&nbsp;
+          - inspection.images.each_with_index do |image, index|
+            = link_to "#{index + 1}", image_path(image), class: 'external link button', target: '_blank'
+        .list-block
+          ul
+            li 
+              a.button.active href="#" Invoices:&nbsp;
+            - inspection.adjustments.map(&:invoice).uniq.each do |invoice|
+              li = link_to invoice.number, invoice, class: 'item-link list-button'

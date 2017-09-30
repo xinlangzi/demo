@@ -1,0 +1,9 @@
+- if current_user.is_admin?
+  #notification
+    .title 
+      span Notifications
+      .max-min
+        = link_to toggle_notifications_path, remote: true do 
+          = fa_icon(session[:notification_minimize] ? 'window-restore' : 'window-minimize')
+    ul.content style="#{session[:notification_minimize] ? 'display:none' : ''}"
+      = render partial: 'notifications/message', collection: Notification.all

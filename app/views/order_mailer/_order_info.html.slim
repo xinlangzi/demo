@@ -1,0 +1,92 @@
+= render 'order_mailer/containers/progress', container: container
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      = yield :comment
+hr
+table width="100%" cellpadding="20" style="border-bottom: 1px solid #DDD"
+  tr style=outlook_font
+    td
+      .section
+        .block
+          .label Order ID
+          .h1 = container.id
+        .block
+          .label Container No.
+          .h1 = container.container_no
+        .block
+          .label Container Size/Type
+          .h1 = container.size
+        .block
+          .label Reference No.
+          .h1 = container.reference_no
+    td
+      .section
+        .block
+          .label Commodity
+          .h3 = container.commodity
+        .block
+          .label Weight
+          .h3 #{container.weight_decimal_humanized} LBS
+        - if container.is_a?(ImportContainer)
+          .block
+            table cellpadding=0 cellspacing=0
+              tr style=outlook_font
+                td
+                  .label Rail Last Free Day
+                  .h3 = container.rail_lfd
+                td &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                td
+                  .label Terminal/Rail ETA
+                  .h3 = container.terminal_eta
+          .block
+            .label SS Line B/L No.*
+            .h3 = container.ssline_bl_no
+          .block
+            .label Pickup No.
+            .h3 = container.pickup_no
+        - else
+          .block
+            table cellpadding=0 cellspacing=0
+              tr style=outlook_font
+                td
+                  .label Early Receiving Date
+                  .h3 = container.early_receiving_date
+                td &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                td
+                  .label Rail Cutoff Date
+                  .h3 = container.rail_cutoff_date
+          .block
+            .label SS Line Booking No.*
+            .h3 = container.ssline_booking_no
+          .block
+            .label Empty Release No.
+            .h3 = container.empty_release_no
+    - container_charges = container.receivable_container_charges.charges(container.customer)
+    - if container_charges.present?
+      td.text-right width=200
+        .section
+          - container_charges.each do |cc|
+            .block
+              .label = cc.chargable.name
+              .h3.green = number_to_currency(cc.amount)
+        .section
+          .block
+            .h2.pull-left Total: &nbsp;
+            .h2.green = number_to_currency(container_charges.sum(:amount))
+        hr
+        - if container.done_tasks?(:receivable)
+          .green These charges are final
+        - else
+          small.red Additional charges might accrue based on factors affecting completion of the order
+table cellpadding="10"
+  tr
+    td
+      table cellpadding="10" cellspacing=0
+        tr style=outlook_font
+          td.btn align="center" valign="middle"
+            = link_to "Get Updated Status", web_shipments_url(id: container.uuid)
+          td
+          - unless container.done_tasks?(:receivable)
+            td.btn align="center" valign="middle"
+              = link_to "Get Updated Charges", charges_web_container_url(id: container.uuid)

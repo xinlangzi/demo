@@ -1,0 +1,4 @@
+<%id = "##{params[:page_type]}_containers"%>
+DataTable.destroy('<%=id%>')
+$('<%=id%>').html('<%=j render(partial: "containers/wild_search_parts", locals: { part: params[:page_type] } ) %>');
+DataTable.draw('<%=id%>')

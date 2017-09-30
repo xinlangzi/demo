@@ -1,0 +1,34 @@
+- tid = random_id("line-items")
+table.gray id=tid
+  thead
+    tr.tosubtotal
+      th Invoice#
+      th Company
+      th Type
+      th Amount
+  tfoot
+    tr
+      th colspan=3 Total
+      th.number = number_to_currency tp_line_items.map(&:amount).compact.sum
+  tbody
+    - tp_line_items.each do |line_item|
+      tr.record
+        td = link_to line_item.number, accounting_invoice_path(line_item.invoice_id), target: "_blank"
+        td = line_item.company_name rescue 'N/A'
+        td = line_item.category_name rescue 'N/A'
+        td.number rel="#{line_item.amount}"
+          = number_to_currency(line_item.amount)
+
+.hidden.datatable-config
+  |  {
+      "bPaginate": false,
+      "aaSorting": [[ 0, "asc" ]],
+      "aoColumns": [
+        null,
+        null,
+        null,
+        {"sSortDataType": "cell", "sType": "numric"}
+      ]
+    }
+javascript:
+  DataTable.draw("##{tid}")

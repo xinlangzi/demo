@@ -1,0 +1,16 @@
+- container = c.object
+- options = ContainerChassis.build_options(container)
+- klass = current_user.is_customer? ? 'hidden' : ''
+ul.chassis-panel class=klass
+  li.operation-detail
+    - trigger_id = random_id('trigger')
+    .rfloat
+      = c.input :chassis_return_with_container, as: :boolean, label: 'Return with Container', input_html: { class: '  combine-with-container' }, disabled: container.try(:street_turn).present?
+    = c.label :chassis_return_company_id, 'Chassis Return'
+    = c.select :chassis_return_company_id, grouped_options_for_select(options, container.chassis_return_company_id), { include_blank: true }, { class: 'chassis-options chosen-select company-chooser', id: trigger_id, disabled: container.chassis_return_with_container }
+    .company-info
+      = render 'shared/print_brief_company_without_name', company: container.chassis_return_company
+    .mt2 &nbsp;
+    .add-company
+      - new_company_link = new_polymorphic_path(Depot.new, ssline_id: container.ssline_id, customer_id: container.customer_id)
+      = link_to "Add Depot", new_company_link, remote: true, class: 'dialog f80' if accessible_url?(new_company_link)

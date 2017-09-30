@@ -1,0 +1,48 @@
+.box
+  .box-title Driver Basic Information
+  .box-content
+    table.gray.rl
+      tr
+        th width=180 Display Name
+        td = trucker.name
+      tr
+        th Email
+        td = trucker.email
+      tr
+        th Phone Mobile
+        td = trucker.phone_mobile
+      tr
+        th Address
+        td = trucker.address
+      tr
+        th Years of Residence
+        td = trucker.residence_years
+      tr
+        th Extra Contact Info.
+        td = trucker.extra_contact_info
+      tr
+        th Driver License No.
+        td = trucker.dl_no
+      tr
+        th DL Issued In
+        td = trucker.dl_state
+      tr
+        th CDL Haz Endorsement
+        td = checkmark(trucker.dl_haz_endorsement)
+      tr
+        th PSP Docusign
+        td = attachments_for(trucker, Trucker::PSP_TAG)
+      tr
+        th MVR Documents
+        td = attachments_for(trucker, Trucker::MVR_TAG)
+      - if @applicant.hub.send(:driver_license_expiration)
+        tr
+          th Driver License Expiration
+          td = attachments_for(trucker, :driver_license_expiration)
+      - if @applicant.hub.send(:medical_card_expiration)
+        tr
+          th Medical Card Expiration
+          td = attachments_for(trucker, :medical_card_expiration)
+      tr
+        th VOID Check
+        td = attachments_for(trucker, Trucker::VOID_CHECK_TAG)

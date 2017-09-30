@@ -1,0 +1,5 @@
+.title-bar
+  h1 Chassis Charges
+.full-page
+  = render 'chassises/forms/filter'
+  = render 'chassises/containers', containers: @containers unless @containers.empty?

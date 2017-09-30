@@ -1,0 +1,6 @@
+- street_turn = f.object
+- trigger_id = random_id('trigger')
+.row.grouped_select.optional
+  = f.input :yard_id, collection: current_hub.yards, label: 'Yard Location', input_html: { class: 'chosen-select company-chooser unobservable', id: trigger_id }, disabled: street_turn.only_chassis?, wrapper: :concise
+  .company-info.ml160
+    = render 'shared/print_brief_company_without_name', company: street_turn.yard

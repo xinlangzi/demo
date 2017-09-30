@@ -1,0 +1,13 @@
+.arrow-steps.clearfix
+  - container.progress_statuses.each_with_index do |status, index|
+    - done = status[:done]
+    .step class="#{done ? 'done' : 'pending'}"
+      span.before
+      - if done
+        em.fa.fa-check
+          span &#10004;
+      - else
+        em.fa class="fa-num-#{index + 1}"
+          span = index + 1
+      span.txt = status[:name].to_s.titleize.downcase
+      span.after

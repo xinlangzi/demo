@@ -1,0 +1,8 @@
+.title-bar
+  h1 Edit #{@accounts_type} Invoice
+  ul
+    li
+      = link_to 'Back to search invoices', polymorphic_path([:filter, :accounting, "#{@accounts_type}Invoice".constantize.new], :search=>params[:search]) unless @invoice.new_record?
+.content
+  #edit_tp_invoice
+   = render 'accounting/invoices/form', invoice: @invoice

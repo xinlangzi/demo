@@ -1,0 +1,29 @@
+- if containers.empty?
+  .border-info.red There are no orders.
+- else
+  table.gray.order-stack
+    - if defined?(table_title)
+      caption
+        ul
+          li.title = table_title
+    = render 'containers/order_stack/header'
+    tbody id=random_id('order-stack')
+      = render partial: "containers/order_stack/row", collection: containers, as: :container, cache: current_user.is_admin?&&!driver_mode?
+  - if current_user.is_admin?
+    - header = OrderStackHeader.for_user(current_user)
+    .hidden.datatable-config
+      | {
+          "bStateSave": false,
+          "bInfo": false,
+          "paging": false,
+          "aaSorting": [[ 0, "desc" ]],
+          "hiddenColumns": #{header.hidden_columns}
+        }
+  - else
+    .hidden.datatable-config
+      | {
+          "bStateSave": false,
+          "bInfo": false,
+          "bPaginate": false,
+          "aaSorting": [[ 0, "desc" ]]
+        }

@@ -1,0 +1,27 @@
+.title-bar
+  h1 Send email to drivers
+
+.content
+  = form_tag '/messaging/send_driver_email', method: :post, id: "send_form", :multipart => true do
+    fieldset.form.pb10
+      = label_tag :subject, "Subject"
+      = text_field_tag "subject", params[:subject]
+      = label_tag :message, "Message"
+      = text_area_tag "message", params[:message], :size=>"50x3", class: 'w400'
+      = label_tag :attachment, "Attachment"
+      = file_field_tag 'attachment', :multiple => true
+      .clear
+      br
+      = submit_tag "Send", :id=>"send", disable_with: PLEASE_WAIT
+      a.btn onclick="App.checkAll('trucker', true)" Check All
+      a.btn onclick="App.checkAll('trucker', false)" Uncheck All
+
+    table.w600.gray
+      tr
+        th Select
+        th Driver Name
+      - current_hub.truckers.active.each do |trucker|
+        tr
+          td.w30.center = check_box_tag "truckers[]", trucker.id, (params[:truckers]||[]).include?(trucker.id.to_s), :id=>"trucker_#{trucker.id}_selected", class: 'trucker'
+          td.text-left
+            label[for="trucker_#{trucker.id}_selected"] = link_to trucker.name, trucker, target: '_blank'

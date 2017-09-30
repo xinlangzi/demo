@@ -1,0 +1,12 @@
+tr.readonly{
+  td{
+    background: #C7FBFF !important;
+  }
+  &:hover{
+    td{
+      background: #92f5ff !important;
+    }
+  }
+  input{
+  }
+}

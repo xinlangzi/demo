@@ -1,0 +1,6 @@
+<%if @success%>
+App.closeDialog()
+App.showNotice('<%=EquipmentRelease::EQUIPMENT_RELEASE_SENT%>')
+<%else%>
+$("#dialog").html('<%=j render("equipment_releases/new")%>')
+<%end%>

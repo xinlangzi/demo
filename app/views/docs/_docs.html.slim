@@ -1,0 +1,24 @@
+fieldset.border
+  ul#docs
+    - if @images.empty?
+      .red No pending docs to review.
+    - @images.each do |image|
+      li data-id=image.uuid class=image.status  
+        = link_to review_doc_path(image, trucker_id: @trucker.id), remote: true, class: 'dialog view-j1s' do
+          - if image.file_exists?
+            - image.recreate_versions! unless image.thumb_exists?
+            = image_tag(image.file.url(:thumb)) 
+          - else 
+            img
+        .info
+          span.date = image.operation_time
+        .footer
+          - if imagable = image.imagable
+            - case imagable
+            - when Operation
+              .rfloat = imagable.container.container_no
+              = link_to "#{imagable.container_id}: #{imagable.name}", [:preview, image.imagable.container], remote: true, class: 'dialog'
+            - when Container
+              .rfloat = imagable.container_no
+              = link_to "#{imagable.id}: #{image.column_name.titleize}", [:preview, image.imagable], remote: true, class: 'dialog'
+= paginate @images, remote: true

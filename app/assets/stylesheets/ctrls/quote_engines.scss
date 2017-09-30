@@ -1,0 +1,26 @@
+ul.address-label{
+  text-align: left;
+  label{
+    display: inline;
+    width: auto;
+    color: #000;
+    font-weight: bold;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: left;
+    &.gray-label{
+      font-weight: normal;
+      font-style: italic;
+      text-align: center;
+      display: block;
+      padding: 0px 2px;
+      float: left;
+      width: 25px;
+      margin-right: 2px;
+      line-height: 13px;
+      @include border-radius(3px);
+      background: $gray10;
+      color: $white;
+    }
+  }
+}

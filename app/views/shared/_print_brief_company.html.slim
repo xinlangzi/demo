@@ -1,0 +1,19 @@
+- show_ophours = true
+- show_ophours = false if local_assigns.has_key?(:hide_ophours)
+- company = print_brief_company
+.companyShortDetails
+  - if company
+    .icon-text
+      i.fa.fa-building-o
+      = company.name
+    .icon-text
+      i.fa.fa-at
+      = company.address_street
+      .ml15 = "#{company.address_city}, #{company.state} #{company.zip_code}"
+    .icon-text
+      i.fa.fa-phone
+      = "#{company.phone } - #{company.phone_extension}"
+      .italic = simple_format(company.extra_contact_info)
+    - if show_ophours&&company.ophours?
+      .depot_ophours#depot_ophours
+        = render partial: 'companies/ophours', object: company

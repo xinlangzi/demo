@@ -1,0 +1,43 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding Health Indicator
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.content-block-title Outstanding Container Invoices
+.list-block.narrow-block
+  ul
+    = f7_label_text("Receivables", nil) do
+      .color-green.text-right = number_to_currency(@total_outstanding_receivables)
+    = f7_label_text("Payables", nil) do
+      .color-red.text-right = number_to_currency(@total_outstanding_payables)
+
+    = f7_label_text(" ", nil) do
+      .color-black.text-right.bold = number_to_currency(@outstanding_difference)
+
+.content-block-title Outstanding Third Party Invoices
+.list-block.narrow-block
+  ul
+    = f7_label_text("Receivables", nil) do
+      .color-green.text-right = number_to_currency(@total_tp_outstanding_receivables)
+    = f7_label_text("Payables", nil) do
+      .color-red.text-right = number_to_currency(@total_tp_outstanding_payables)
+
+    = f7_label_text(" ", nil) do
+      .color-black.text-right.bold = number_to_currency(@tp_outstanding_difference)
+
+.content-block-title Delivered Containers Yet to Be Invoiced
+.list-block.narrow-block
+  ul
+    = f7_label_text("Receivables", nil) do
+      .color-green.text-right = number_to_currency(@total_uninvoiced_receivables)
+    = f7_label_text("Payables", nil) do
+      .color-red.text-right = number_to_currency(@total_uninvoiced_payables)
+
+    = f7_label_text(" ", nil) do
+      .color-black.text-right.bold = number_to_currency(@uninvoiced_difference)

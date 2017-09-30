@@ -1,0 +1,55 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+          
+.list-block.narrow-block
+  = simple_form_for [:mobiles, :drivers, @maintenance], html: { multipart: true, id: 'maintenance-form' } do |s|
+    ul
+      li
+        .item-content
+          .item-inner
+            .full-width
+              a.item-link.list-button Step 1: Fill Form
+      li
+        .item-content.small
+          .item-inner
+            .item-title.label Issue Date
+            .item-input
+              = s.input_field :issue_date, as: :string, required: true, placeholder: 'Issue Date', class: 'date_picker text-right'
+      li
+        .item-content.small
+          .item-inner
+            .item-title.label Service Performed
+      li
+        .item-content.small
+          .item-input
+            = s.input_field :services, as: :text, required: true, placeholder: 'Service Performed'
+      li.item-divider
+      li
+        .item-content
+          .item-inner
+            .full-width
+              a.item-link.list-button
+                |  Step 2:&nbsp;
+                i.icon.icon32.ion-ios-camera-outline
+                |  Capture Receipt
+      li
+        .item-content
+          .item-inner
+            .full-width
+              .row#captured
+                .col-33.add-image
+                  .icon.ion-ios-plus-outline
+                  input.camera-input type="file" accept="image/*" capture="camera"
+      li
+        .item-content.small
+          .item-inner
+            = s.submit 'Upload', class: 'button button-big active'
+    

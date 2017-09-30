@@ -1,0 +1,10 @@
+<%@options.each do |sub_mark, values|%>
+$(".<%=sub_mark%>").html("<%=j options_from_collection_for_select(values[:options].insert(0, Company.new(name: values[:warning])), :id, :name)%>")
+$(".<%=sub_mark%>").parent().find(".company-info").html('')
+App.refreshChosenSelect()
+<%if values[:warning].nil?%>
+$(".<%=sub_mark%>").removeClass('red')
+<%else%>
+$(".<%=sub_mark%>").addClass('red')
+<%end%>
+<%end%>

@@ -1,0 +1,19 @@
+.box
+  .box-title 
+    span Daily Log: #{@date}
+    .pull-right
+      = link_to review_doc_path(0, trucker_id: @trucker.id, date: @date - 1.day, nav: 'day_log'), remote: true do 
+        = fa_icon('arrow-left')
+      | &nbsp;
+      = link_to review_doc_path(0, trucker_id: @trucker.id, date: @date + 1.day, nav: 'day_log'), remote: true do 
+        = fa_icon('arrow-right')
+      | &nbsp;
+  .box-content
+    .tabs
+      ul
+        - @day_logs.each_with_index do |day_log, index|
+          li
+            a href="#day-log-#{index}" = index + 1
+      - @day_logs.each_with_index do |day_log, index|
+        div id="day-log-#{index}"
+          = render day_log

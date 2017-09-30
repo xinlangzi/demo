@@ -1,0 +1,14 @@
+- opposite = @accounts_type == 'Receivable' ? 'Payable' : 'Receivable'
+.title-bar
+  h1 Search Invoices #{@accounts_type == 'Receivable' ? "that you haven't yet received a full payment for" : "whose balances you still need to pay"}
+  ul
+    li = link_to "List #{@accounts_type} Payments", polymorphic_url("#{@accounts_type}Payment".underscore.pluralize)
+    li = link_to "List #{opposite} Payments", polymorphic_url("#{opposite}Payment".underscore.pluralize)
+
+.content
+  = render 'payments/form/invoice_filter'
+  - if @payment
+    - if @payment.try(:third_party?)
+      = render "accounting/payments/form/new"
+    - else
+      = render "payments/form/new"

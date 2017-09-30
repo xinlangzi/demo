@@ -1,0 +1,17 @@
+- case part.to_s
+- when 'import'
+  = render partial: 'containers/containers', object: @import_containers, locals: { no_csv: true, table_title: 'Import Confirmed' }
+  = paginate @import_containers, remote: true, method: :get, params: { page_type: :import }
+- when 'export'
+  = render partial: 'containers/containers', object: @export_containers, locals: { no_csv: true, table_title: 'Export Confirmed'}
+  = paginate @export_containers, remote: true, params: {page_type: :export}
+- when 'unconfirmed_import'
+  = content_for :import_unconfirmed do
+    li.title Import Unconfirmed
+  = render partial: 'containers/containers_brief', object: @unconfirmed_import_containers, locals: { caption: :import_unconfirmed }
+  = paginate @unconfirmed_import_containers, remote: true, params: { page_type: :unconfirmed_import}
+- when 'unconfirmed_export'
+  = content_for :export_unconfirmed do
+    li.title Export Unconfirmed
+  = render partial: 'containers/containers_brief', object: @unconfirmed_export_containers, locals: { caption: :export_unconfirmed }
+  = paginate @unconfirmed_export_containers, remote: true, params: { page_type: :unconfirmed_export }

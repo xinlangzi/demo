@@ -1,0 +1,7 @@
+#search-box.search-box
+  .search-inner
+    = simple_form_for @search, url: request.fullpath, html: { method: :get, id: "form_search", class: 'horiz'} do |s|
+      = s.input :issue_date_gteq, as: :datepicker, label: 'From', input_html: { class: 'clearable'}, wrapper: 'vertical', required: false
+      = s.input :issue_date_lteq, as: :datepicker, label: 'To', input_html: { class: 'clearable'}, wrapper: 'vertical', required: false
+      = s.submit "Search"
+      a.clear_button.btn Clear

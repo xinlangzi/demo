@@ -1,0 +1,2 @@
+class ImportContainerTask < ContainerTask
+end

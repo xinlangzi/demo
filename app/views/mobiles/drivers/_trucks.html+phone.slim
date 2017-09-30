@@ -1,0 +1,39 @@
+- truck = Truck.default(current_user)
+.card.no-box
+  .card-header Truck #{truck.number}
+  .card-content
+    .list-block
+      ul.expiration-dates
+        = f7_label_text("VIN", truck.vin)
+        = f7_label_text("GVWR", truck.gvwr)
+        = f7_label_text("Vehicle", nil) do
+          div = truck.make
+          i = [truck.model, truck.year].join(', ')
+        = f7_label_text("Tire Size", truck.tire_size)
+        = f7_label_text("License Plate No.", truck.license_plate_no)
+        -  if current_hub.license_plate_expiration
+          = f7_label_text("License Plate Expires", nil)
+            a.ajax-popup href="#" data-url=attach_url_for_expiration_date(truck, :license_plate_expiration)
+              i.upload-icon.ion-images
+            .item-value = display_date_with_status(truck.license_plate_expiration)
+        - if current_hub.annual_inspection_expiration
+          = f7_label_text("Annual Inspection Expires", nil)
+            a.ajax-popup href="#" data-url=attach_url_for_expiration_date(truck, :annual_inspection_expiration)
+              i.upload-icon.ion-images
+            .item-value = display_date_with_status(truck.tai_expiration)
+        - if current_hub.bobtail_insurance_expiration
+          = f7_label_text("Bobtail Insurance Expires", nil)
+            a.ajax-popup href="#" data-url=attach_url_for_expiration_date(truck, :bobtail_insurance_expiration)
+              i.upload-icon.ion-images
+            .item-value = display_date_with_status(truck.bobtail_insurance_expiration)
+        - if current_hub.ifta_expiration && truck.ifta_applicable
+          = f7_label_text("IFTA Expires", nil)
+            a.ajax-popup href="#" data-url=attach_url_for_expiration_date(truck, :ifta_expiration)
+              i.upload-icon.ion-images
+            .item-value = display_date_with_status(truck.ifta_expiration)
+        - if current_hub.last_quarterly_maintenance_expiration
+          = f7_label_text("Last Quarterly Maint. Report", nil)
+            a.ajax-popup href="#" data-url=attach_url_for_expiration_date(truck, :last_quarterly_maintenance_expiration)
+              i.upload-icon.ion-images
+            .item-value = display_date_with_status(truck.last_quarterly_maintenance_report)
+        = f7_label_text("Registered In", truck.states.flat_map(&:abbrev).join(', '))

@@ -1,0 +1,65 @@
+body.mail{
+  font: normal 15px/1.4 Helvetica, Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+  background: #FFF;
+}
+h1 {
+  font-size: 24px;
+  line-height: 30px;
+}
+
+h2 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+h3 {
+  font-size: 18px;
+  line-height: 20px;
+}
+
+h4 {
+  font-size: 16px;
+  line-height: 18px;
+}
+
+img{
+  display: block;
+}
+hr{
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 5px 0;
+  padding: 0;
+}
+// a{
+//   text-decoration: none !important;
+// }
+a.lsogo{
+  display: block;
+  margin: auto;
+  img{
+    width: 150px;
+    padding: 5px;
+  }
+}
+.small{font-size: 11px;}
+.text-left{ text-align: left; }
+.text-right{ text-align: right; }
+.text-center{ text-align: center; }
+.pull-left{float: left;}
+.pull-right{ float: right; }
+.red{ color: red; }
+.green{ color: green;}
+.bold{ font-weight: bold; }
+.btn{
+  background: #FAC000;
+  a{
+    font-size: 16px;
+    color: #333;
+    text-decoration: none;
+  }
+}

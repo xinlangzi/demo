@@ -1,0 +1,8 @@
+tr[id="#{dom_id(all)}"]
+  th.green[colspan=2] Set Discount For All
+  td = all.amount
+  td = all.updated_at.to_s(:db) rescue ''
+  td
+    = simple_form_for all, remote: true, html: {class: 'horiz discount'} do |d|
+      = d.input :amount, as: :string, wrapper: 'vertical', label: false, hint: "#{all.errors[:amount].join('')}", hint_html: {class: 'red'}, error: false, input_html: {class: 'w90 center'}
+      = d.submit "Save"

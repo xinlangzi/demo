@@ -1,0 +1,27 @@
+- @roles.each do |role|
+  ul.caption
+    li.title = role.name.humanize.titleize
+    li.actions
+      = link_to "Delete", role, :confirm => 'Are you sure you want to delete this role?', :method => :delete unless role.default?
+      = link_to "Manage", edit_role_path(role), title: "Add / Remove Users and Rights"
+      a.show-hide rel="describeUsers_#{role.id}" Users
+      a.show-hide rel="describeRights_#{role.id}" Rights
+  table.gray
+    tr
+      th.pw50 Users
+      th.pw50 Actions
+    tbody
+      tr
+        td
+          ul.hidden id="describeUsers_#{role.id}"
+            - role.users.each do |user|
+              li.text-left = link_to user.name, user
+
+        td
+          ul.hidden id="describeRights_#{role.id}"
+            - role.rights_tree.each do |controller, rights|
+              li.text-left
+                 .bold = controller.humanize.titleize
+                 ul
+                  - rights.each do |right|
+                    li = link_to right.action, right

@@ -1,0 +1,6 @@
+.w300
+  div
+    span.fa.fa-comment-o &nbsp;
+    span.bold.gray30 #{@task_comment.container_task.to_s} Cont ID #{@task_comment.container_id}
+  p = @task_comment.content
+  .mt5.gray20.f75 Created: #{@task_comment.created_at.us_datetime}&nbsp;&nbsp;&nbsp;Updated: #{@task_comment.updated_at.us_datetime}

@@ -1,0 +1,65 @@
+.default-ui-layout{
+  height: 750px;
+  .pane{
+    .title{
+      margin: -10px -10px 10px -10px;
+      padding: 5px 10px;
+      background: #F6F6F6;
+      font-size: 14px;
+      color: #666;
+      border-bottom: 1px solid #DDD;
+    }
+    ul.infos{
+      li{
+        border-bottom: 1px solid #EEE;
+        padding: 2px 0px;
+      }
+    }
+  }
+  .ui-layout-pane-west{
+    & > a{
+      text-decoration: none;
+      display: block;
+      font-size: 11px;
+      color: #4D4D4D;
+      background: #F9F9F9;
+      border: 1px solid #EEE;
+      margin: 2px 0px;
+      padding: 1px 1px 1px 5px;
+      @include border-radius(3px);
+      &.active{
+        background: #ABE2FF;
+        color: #000;
+      }
+      .num{
+        padding: 0 2px;
+        float: right;
+      }
+    }
+  }
+}
+
+#vacation-calendar-layout{
+  height: 750px;
+}
+
+.full-calendar{
+  background: #fff;
+  padding: 5px;
+}
+
+.fc-header-title{
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.draggable-trucker{
+  font-size: 11px;
+  font-weight: bold;
+  color: #FFF;
+  background: #3A87AD;
+  margin: 2px 0px;
+  padding: 1px 1px 1px 5px;
+  border: 1px solid darken(#3A87AD, 5%);
+  @include border-radius(3px);
+}

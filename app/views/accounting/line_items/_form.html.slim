@@ -1,0 +1,3 @@
+- i = ActionView::Helpers::FormBuilder.new(:invoice, @invoice, self, {})
+= i.fields_for :line_items, child_index: -rand(10**5) do |li|
+  = render 'accounting/line_items/fields', li: li

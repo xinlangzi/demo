@@ -1,0 +1,35 @@
+- container_charges = container.send(type.tableize).to_a
+- container_charges.reject!{|cc| cc.persisted?} if defined?(preview)
+- tid = random_id('charges')
+div
+  .charge_title
+    - if /receivable/i.match(type)
+      = link_to new_receivable_container_charge_path(company_id: container.customer_id, chargable_type: "ReceivableCharge", tbody_id: tid), remote: true, class: 'fa fa-plus-circle' do
+        span &nbsp;Accts. Receivable
+      = link_to new_receivable_container_charge_path(chargable_type: "Accounting::Category", tbody_id: tid), remote: true, class: 'fa fa-plus-circle' do
+        span &nbsp;TP Accts. Receivable
+    - else
+      - if container.new_record? || container.truckers_active
+        = link_to new_payable_container_charge_path(chargable_type: "PayableCharge", tbody_id: tid), remote: true, class: 'fa fa-plus-circle' do
+          span &nbsp;Accts. Payable
+      - else
+        span Accts. Payable
+      = link_to new_payable_container_charge_path(chargable_type: "Accounting::Category", tbody_id: tid), remote: true, class: 'fa fa-plus-circle' do
+        span &nbsp;TP Accts. Payable
+  .clear
+  table.vmiddle.normal.full-width class="#{type.tableize.dasherize}"
+    thead
+      tr
+        th.pw10 Amount
+        th.pw25 Type
+        th.pw25 Company
+        th.pw25 Details
+        th.pw10 Invoice
+        th
+    tbody id=tid
+      = render partial: 'container_charges/form/container_charge', collection: container_charges
+    tfoot
+      tr
+        th colspan=6
+          span Total:&nbsp;
+          span.cc_total = number_to_currency(container_charges.map(&:amount).compact.sum)

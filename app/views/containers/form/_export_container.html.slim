@@ -1,0 +1,41 @@
+tr
+  td.bold Vessel Name
+  td = c.text_field :vessel_name
+  td.bold Voyage Number
+  td = c.text_field :voyage_number
+
+tr
+  td.bold SS Line Booking No.*
+  td
+    = c.text_field :ssline_booking_no, data: {url: Attr.check_dups_url(container, :ssline_booking_no)}, class: 'check-dups'
+    .red.bold
+  td.bold House booking No.
+  td = c.text_field :house_booking_no
+
+= render 'containers/form/container2', c: c, container: container
+
+tr
+  td.bold Appointment
+  td
+    = c.input_field :appt_date, as: :datepicker, class: "check-warning #{current_user.is_customer? ? 'check-appt' : ''}"
+    | &nbsp;&nbsp;
+    label class='inline'
+      = radio_button "container", "appt_is_range", "false", :onclick=>"$('#appt_termination').hide(); return true;"
+      | at&nbsp;&nbsp;
+    label class='inline'
+      = radio_button "container", "appt_is_range", "true", :onclick=>"$('#appt_termination').show(); return true;"
+      | between
+    hr
+    = c.time_select :appt_start, minute_step: 15, include_blank: true
+    span#appt_termination[style="#{container.appt_is_range == 'true' ? '' : 'display: none'}"]
+      span and
+      = c.time_select :appt_end, minute_step: 15, include_blank: true
+
+  td.bold Early Receiving Date
+  td = c.input_field :early_receiving_date, as: :datepicker, minDate: Time.now.prev_year.beginning_of_year.ymd, maxDate: Time.now.next_year.end_of_year.ymd, class: 'check-warning'
+
+tr
+  td.bold Empty Release No.
+  td = c.text_field :empty_release_no
+  td.bold Rail Cutoff Date
+  td = c.input_field :rail_cutoff_date, as: :datepicker, minDate: Time.now.prev_year.beginning_of_year.ymd, maxDate: Time.now.next_year.end_of_year.ymd, class: 'check-warning'

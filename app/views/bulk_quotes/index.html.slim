@@ -1,0 +1,23 @@
+.title-bar
+  h1
+    b Bulk Quotes
+    ul.rfloat
+      li
+        a.show-hide rel='help' Help
+
+.full-page
+  - if current_user&&current_user.is_admin?
+    fieldset.border.hidden#help
+      legend.title.f100 How to Bulk Quotes
+      = render 'help'
+    = render 'form'
+    #link-codes
+    table.gray
+      tr
+        th CSV File
+        th Base Ratio
+        th Mapping
+        th Delete
+        th.w120 Run
+        th Status
+      = render current_user.bulk_quotes

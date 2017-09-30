@@ -1,0 +1,13 @@
+- if @task_comment.is_checked?
+  .red This task is already checked! Please refresh current page.
+- else
+  = simple_form_for @task_comment, remote: true do |f|
+    = f.input :container_id, as: :hidden
+    = f.input :container_task_id, as: :hidden
+    div
+      span.bold Comment:&nbsp;
+      span.f90 #{@task_comment.container_task.to_s}
+    = f.input :content, label: false, input_html: { class: 'full-width', rows: 6}, required: false
+    = f.submit 'Check', class: 'f90'
+    span.red or&nbsp;
+    = f.submit 'Keep Uncheck', class: 'f90'

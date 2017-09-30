@@ -1,0 +1,28 @@
+tr id=dom_id(credit, 'form')
+  td
+    = form_for credit, as: :credit, html: { class: 'observe-form' } do |f|
+      .red.bold = credit.errors.full_messages.join("; ")
+      table.borderless
+        tr
+          td.text-left.w400
+            - unless print_status?
+              = f.select :catalogable_type_with_id, grouped_options_for_select(credit.class.catalog_options(current_user), credit.catalogable_type_with_id), { include_blank: true }, { data: { width: 400 }, class: 'chosen-select', required: true }
+            - else 
+              = credit.catalogable.try(:name)
+          td.w120 
+            - unless print_status?
+              = f.text_field :issue_date, class: 'date_picker', id: random_id('issue-date')
+            - else 
+              = credit.issue_date
+          td.w100 
+            - unless print_status?
+              = f.text_field :amount, class: 'number'
+            - else
+              .text-right = number_to_currency(credit.amount)
+          td.w100 = link_to credit.payment.number, credit.payment if credit.payment
+          - unless print_status?
+            td.w100 = attachments_for(credit) 
+            td.w30 
+              - if credit.can_destroy?
+                = link_to credit, method: :delete, remote: true, data: { confirm: "Are you sure to delete this credit?" } do 
+                  i.fa.fa-times-circle-o.f120.red  

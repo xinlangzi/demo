@@ -1,0 +1,5 @@
+.title-bar
+  h1 Invoices - #{current_user.is_admin? ? "Accounts #{@accounts_type}" : "Accounts #{@opposite_accounts_type}"}
+  = render 'invoices/invoice_ctrls', invoice: @invoice, show: 'single'
+.content
+  = render 'invoices/invoice_info', invoice: @invoice

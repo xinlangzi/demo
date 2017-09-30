@@ -1,0 +1,231 @@
+/* Breadcrups CSS */
+$greenStep: #54a263;
+#track-shipments{
+  width: 90%;
+  max-width: 1000px;
+  margin: auto;
+  form{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    textarea{
+      font-size: 18px;
+    }
+  }
+}
+#shipments{
+  font-family: "Helvetica Neue", Helvetica, Arial;
+  margin-top: 20px;
+  background: #FFF;
+  border: 1px solid #DDD;
+  a{
+    font-weight: normal !important;
+  }
+  label{
+    display: inline-block;
+  }
+  .shipmentgrid-header {
+    background: #F0F0F0;
+    font-size: 18px;
+    padding: 10px;
+    color: #0097D0;
+    &:not(:first-child){
+      border-top: 3px solid #999;
+    }
+    a.copy-url{
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+      color: #69B8D6 !important;
+    }
+    .container-title a{
+      display: block;
+      color: #333;
+      margin-bottom: 5px;
+      text-decoration: none;
+      font-size: 25px;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+    label{
+      font-weight: normal;
+      color: #333;
+    }
+  }
+
+  ul.shipment-grid {
+    list-style: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0px;
+    li{
+      border-bottom: 1px solid #EEE;
+      display: table;
+      width: 100%;
+      &:last-child{
+        border: none;
+      }
+      .labels {
+        display: table-cell;
+        vertical-align: top;
+        padding: 20px 10px;
+        list-style: none;
+        list-style-type: none;
+        font-size: 12px;
+        width: 750px;
+        max-width: 750px;
+        label {
+          font-size: 14px;
+          vertical-align: top;
+          display: inline-block;
+          float: left;
+          color: #000;
+          font-weight: normal;
+          &.name{
+            width: 150px;
+          }
+          &.dest{
+            width: 300px;
+          }
+          &.dt{
+            width: 200px;
+            padding-left: 10px;
+          }
+        }
+        .date{
+          font-size: 15px;
+          color: green;
+        }
+      }
+      .icon-status {
+        display: table-cell;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+.arrow-steps{
+  clear: both;
+  .step{
+    margin: 10px 0;
+    font-size: 14px;
+    text-align: center;
+    color: #555;
+    cursor: default;
+    margin-right: 2px;
+    padding: 10px;
+    float: left;
+    position: relative;
+    background: #CCC;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: background-color 0.2s ease;
+    border-top: 2px solid #FFF;
+    border-bottom: 2px solid #FFF;
+    em{
+      @include border-radius(15px);
+      border: 2px solid #FFF;
+      font-size: 12px;
+      padding: 4px;
+      width: 24px;
+      height: 24px;
+      text-align: center;
+      margin-right: 3px;
+      background: #666;
+      color: #FFF;
+      span{
+        display: none;
+      }
+    }
+    span.after, span.before {
+      content: " ";
+      position: absolute;
+      top: 0;
+      right: -8px;
+      width: 0;
+      height: 0;
+      border-top: 22px solid transparent;
+      border-bottom: 22px solid transparent;
+      border-left: 8px solid #CCCCCC;
+      z-index: 2;
+      transition: border-color 0.2s ease;
+    }
+    span.before {
+      right: auto;
+      left: 0;
+      border-left: 8px solid #fff;
+      z-index: 0;
+    }
+    &:hover{
+      em{
+        background: red !important;
+      }
+    }
+    &.done{
+      background: $greenStep;
+      color: #FFF;
+      em{
+        background: darken($greenStep, 10%);
+      }
+      span.after {
+        border-left: 8px solid $greenStep;
+      }
+    }
+    &:first-child {
+      border-top-left-radius: 25px;
+      border-bottom-left-radius: 25px;
+      border-left: 2px solid #FFF;
+      span.before {
+        border: none !important;
+      }
+    }
+    &:last-child{
+      border-top-right-radius: 25px;
+      border-bottom-right-radius: 25px;
+      border-right: 2px solid #FFF;
+      span.after{
+        border: none !important;
+      }
+    }
+
+  }
+}
+.fa-num-1:before {
+  content: "1";
+  font-weight: bold;
+}
+.fa-num-2:before {
+  content: "2";
+  font-weight: bold;
+}
+.fa-num-3:before {
+  content: "3";
+  font-weight: bold;
+}
+.fa-num-4:before {
+  content: "4";
+  font-weight: bold;
+}
+.fa-num-5:before {
+  content: "5";
+  font-weight: bold;
+}
+.order-status{
+  font-size: 28px;
+  color: #333;
+  clear: both;
+}
+@media screen and (max-width: 500px) {
+  .arrow-steps{
+    .step{
+      width: 100%;
+      text-align: left;
+      .txt{
+        font-size: 18px;
+      }
+    }
+  }
+}

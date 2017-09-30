@@ -1,0 +1,136 @@
+table.docs{
+  width: 100%;
+  font-size: 12px;
+  td{
+    border-bottom: 1px solid #DDD;
+    padding: 0 2px;
+    a{
+      color: $blue;
+      font-weight: normal !important;
+    }
+  }
+}
+ul#pending-docs, ul#docs{
+  li{
+    float: left;
+    margin: 5px 2px;
+    border: 3px solid orange;
+    background: #666;
+    width: 225px;
+    @include box-sizing(border-box);
+    &.approved{
+      border-color: $green;
+    }
+    &.rejected{
+      border-color: #000;
+    }
+    &.active{
+      border-style: outset;
+      border-color: #30A2FF !important;
+    }
+    img{
+      display: block;
+      height: 120px;
+      margin: auto;
+      max-width: 100%;
+    }
+    .footer{
+      background: #DDD;
+      font-size: 10px;
+      color: red;
+      padding: 0 2px;
+      border-top: 1px solid #999;
+    }
+    .info{
+      background: #EEE;
+      position: relative;
+      padding: 2px;
+      .date{
+        margin: 1px;
+        font-size: 11px;
+      }
+      .actions{
+        position: absolute;
+        right: 4px;
+        top: 1px;
+        font-size: 12px;
+      }
+      .tags{
+        height: 13px;
+        color: $base;
+        font-size: 11px;
+        font-style: italic;
+        div.vertical{
+          margin-bottom: 0px;
+        }
+      }
+    }
+  }
+}
+ul{
+  &.docs{
+    @include horizontal-list-container;
+    float: right;
+    li{
+      @include horizontal-list-item;
+      padding: 0px !important;
+      margin: 1px;
+      &.num{
+        background: $green;
+      }
+      &.pending{
+        background: orange !important;
+        color: #FFF;
+      }
+      &.approved{
+        background: $green !important;
+        color: #FFF;
+      }
+      &.rejected{
+        background: #000 !important;
+        color: #FFF;
+      }
+      &.active{
+        background: #30A2FF !important;
+        color: #FFF;
+      }
+      &.pod{
+        background: blue !important;
+      }
+      &.upload{
+        background: $dark !important;
+      }
+      a{
+        font-weight: bold;
+        font-size: 11px;
+        display: block;
+        width: 14px;
+        line-height: 14px;
+        color: $white !important;
+        text-align: center !important;
+        text-decoration: none !important;
+      }
+    }
+  }
+}
+.missing-num{
+  display: inline-block;
+  width: 10px;
+  text-align: right;
+  color: red;
+}
+.pending-num{
+  display: inline-block;
+  width: 10px;
+  text-align: right;
+  color: orange;
+}
+.mobile-mirror{
+  iframe{
+    margin: 0;
+    padding: 0;
+    border: 5px solid #000;
+    @include border-radius(5px);
+    @include box-sizing(border-box);
+  }
+}

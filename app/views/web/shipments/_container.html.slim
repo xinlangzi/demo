@@ -1,0 +1,46 @@
+.shipmentgrid-header
+  = render 'containers/progress', container: container
+  .container-title.clearfix
+    - url = web_shipments_url(id: container.uuid)
+    a.fa.fa-copy.c2c.copy-url data-clipboard-text=url title="Copy Track Shipment URL"
+    - if container.is_a?(ImportContainer)
+      a href=container_url(container)
+        span IMPORT #{container.container_no.to_s.upcase}&nbsp;&nbsp;
+        b.bold #{container.size.to_s.upcase} ID #{container.id}
+    - else
+      - booking = container.ssline_booking_no
+      a href=container_url(container)
+        span EXPORT #{booking.to_s.blank? ? '' : 'BK#' + booking.upcase} #{container.container_no.to_s.upcase}&nbsp;&nbsp;
+        b #{container.size.to_s.upcase} ID #{container.id}
+    label Appointment Date:&nbsp;
+    span #{appt_range(container, true).gsub('<br/>','')}&nbsp;
+    | &nbsp;&nbsp;&nbsp;&nbsp;
+    label Confirmed By:&nbsp;
+    span #{container.confirmed_by}
+
+ul.shipment-grid
+  - container.operations.traceable_by_customer.each do |operation|
+    li
+      .labels
+        label.name
+          strong = operation.operation_type.name
+        label.dest
+          - if operation.company
+            div #{operation.company.name}
+            .italic style="color:#555" #{operation.company.address_street}
+            .italic style="color:#555" #{operation.company.address_city}, #{operation.company.state} #{operation.company.zip_code}
+        label.dt
+          strong
+            - if operation.public_view_operated_at
+              span.date = operation.public_view_operated_at
+          - if operation.is_drop?
+            div
+              - if container.is_export?
+                .italic Estimated Load Pickup:&nbsp;
+              - else
+                .italic Estimated Empty Pickup:&nbsp;
+            - if operation.view_appt_at
+              span.red = operation.view_appt_at
+      .icon-status
+        - if operation.operated_at?
+          img src="#{root_url}/assets/icons/yes.png"

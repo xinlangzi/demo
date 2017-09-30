@@ -1,0 +1,15 @@
+center.green = @info
+= simple_form_for @equipment_release, remote: true, html: {class: 'pw100'} do |s|
+  = s.input :email, label: 'Ssline EQ Team Email', wrapper: 'vertical', input_html: {class: 'pw100', multiple: 'multiple'}
+  = s.input :subject, wrapper: 'vertical', input_html: {class: 'pw100'}
+  = s.input :content, as: :text, wrapper: 'vertical', input_html: {class: 'pw100', rows: 3, id: 'erfreetext'}
+  .bold Email Preview
+  fieldset.border.f85
+    = render(template: 'order_mailer/equipment_release')
+  br
+  = s.input :container_id, as: :hidden
+  = s.submit 'Send Email', disable_with: PLEASE_WAIT
+  = link_to 'Cancel', '#', onclick: 'App.closeDialog()', class: 'cancel'
+
+javascript:
+  EquipmentRelease.init()

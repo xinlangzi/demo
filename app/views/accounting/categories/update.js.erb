@@ -1,0 +1,5 @@
+<%if @success %>
+window.location.reload()
+<%else%>
+$('#category_form').html('<%=j render("form")%>')
+<%end%>

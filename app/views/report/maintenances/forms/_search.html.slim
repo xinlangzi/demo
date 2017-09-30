@@ -1,0 +1,9 @@
+.search-box
+  .search-inner
+    - truckers = Trucker.where(id: Maintenance.select(:trucker_id)).uniq
+    = simple_form_for @search, url: report_maintenances_path, html: { method: :get, class: 'horiz'} do|f|
+      = f.input :issue_date_gteq, as: :datepicker, label: 'Issue Date from', wrapper: 'vertical', required: false, input_html: { class: 'clearable'}
+      = f.input :issue_date_lteq, as: :datepicker, label: 'to', wrapper: 'vertical', required: false, input_html: { class: 'clearable'}
+      = f.input :trucker_id_eq, as: :select, collection: truckers, label: 'Trucker', wrapper: 'vertical', required: false, input_html: { class: 'chosen-select clearable'}
+      = f.submit 'Search'
+      a.clear_button.btn Clear

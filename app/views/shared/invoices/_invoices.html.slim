@@ -1,0 +1,68 @@
+- id = "emailInv#{rand(10**5)}"
+- empty = @invoices[@time][:invoices].to_a.empty?
+- invoice = @invoices[@time][:invoices].first
+- emailx_form_need = @search&&@search.company_id_eq&&in_receivable? ? true: false
+- show_email_status = current_user.is_admin?&&in_receivable? ? true : false
+- unless empty
+  td.padding5.expand_invoices colspan=7
+    - remote_url =  emailx_form_need ? emailx_receivable_invoices_path : '#'
+    = simple_form_for invoice, as: :invoice, url: remote_url, remote: true, html: { method: :post, class: 'observe-form', data: { method: :put } }do |s|
+      ul.caption.removeWhenCopy
+        - if emailx_form_need
+          li
+            a.show-hide[rel="#{id}"] Send Email
+        li
+          a onclick="App.copyTableContent($(this).closest('.period_summary'), 'w700 mt10')" Copy Table Content
+
+        - if show_email_status
+          li.helper
+            a
+              i.icons-mail-no
+              span &nbsp;not yet sent
+            a
+              i.icons-mail-sent
+              span &nbsp;sent
+            a
+              i.icons-mail-resend
+              span&nbsp;need to resend
+      - if emailx_form_need
+        fieldset.removeWhenCopy.form.mb0.text-left.hidden[id="#{id}"]
+          .emailx_status.green.bold
+          = s.input :email_to, required: true, wrapper: 'vertical', hint: EMAIL_FORMAT_TIP, input_html: {class: 'w550', multiple: 'multiple'}
+          = s.input :email_subject, required: true, as: :string, label: 'Subject', wrapper: 'vertical', input_html: {class: 'w550 subject', value: ''}, wrapper_html: {class: 'mb5'}
+          .blue_box._subject[style="display:none"]
+            .desc Click to use as subject
+            a[onclick="$(this).closest('form').find('.subject').val($(this).text())"]
+
+          .w350.f90
+            span.bold Select:
+            a.ml10[onclick="App.checkAll('#{@time}', true);"] All
+            a.ml10[onclick="App.checkAll('#{@time}', false);"] None
+            a.ml10[onclick="App.checkAll('#{@time}', false);App.checkAll('#{@time}-no', true);"] Not Yet Sent
+            a.ml10[onclick="App.checkAll('#{@time}', false);App.checkAll('#{@time}-resend', true);"] To Resend
+            a.ml10[onclick="App.checkAll('#{@time}', false);App.checkAll('#{@time}-sent', true);"] Sent
+            = s.submit "Send", disable_with: PLEASE_WAIT, class: 'ml40'
+            = hidden_field_tag :emailx_form_id, id
+            = hidden_field_tag :period, @time
+      .invoices
+        table.gray.shadow
+          thead
+            tr
+              - if emailx_form_need
+                th.removeWhenCopy Select
+              - if show_email_status
+                th.removeWhenCopy Mail
+              th Number
+              - if show_reference_no(@invoices[@time][:invoices])
+                th Reference No.
+              th Company
+              th Invoice Date
+              th Amount
+              th Credit
+              th Adjustment
+              th Paid
+              th Balance
+              th.removeWhenCopy colspan=3
+
+          tbody id=@time
+            = render partial: 'shared/invoices/invoice', collection: @invoices[@time][:invoices], locals: { emailx_form_need: emailx_form_need, show_email_status: show_email_status }

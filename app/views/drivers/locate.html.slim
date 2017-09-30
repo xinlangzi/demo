@@ -1,0 +1,6 @@
+#map style="width:720px;min-height:450px;"
+javascript:
+  function callback(){
+    new TrackTruck().locate("#{@trucker.id}");
+  }
+  GoogleMap.loadScript('#{GoogleMap.api_key(:frontend)}', 'callback')

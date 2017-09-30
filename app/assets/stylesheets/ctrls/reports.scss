@@ -1,0 +1,58 @@
+ul.tiles{
+  @include inline-block-list;
+  margin: 20px auto 10px auto;;
+  width: 720px;
+  li{
+    margin: 2px 0.333%;
+    width: 32.33%;
+    &.offset{
+      margin-left: 16.659%;
+    }
+    a{
+      display: block;
+      height: 60px;
+      color: #FFF;
+      opacity: 1;
+      font-size: 14px;
+      text-decoration: none;
+      text-align: center;
+      line-height: 60px;
+    }
+    &:hover{
+      a{
+        font-size: 16px !important;
+      }
+      @include box-shadow;
+    }
+    &.tile1{
+      background: #56D9C9;
+    }
+    &.tile2{
+      background: #FCC120;
+    }
+    &.tile3{
+      background: #F0514A;
+    }
+    &.tile4{
+      background: #455962;
+    }
+    &.tile5{
+      background: #61BA4D;
+    }
+    &.tile6{
+      background: #9100c9;
+    }
+    &.tile7{
+      background: #0089E4;
+    }
+    &.tile8{
+      background: #88746B;
+    }
+    &.tile9{
+      background: #6F899B;
+    }
+    &.tile10{
+      background: #C7B016;
+    }
+  }
+}

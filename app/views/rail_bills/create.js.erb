@@ -1,0 +1,6 @@
+<%if @log == RailBill::RAIL_BILL_SENT %>
+App.closeDialog()
+App.showNotice('<%=@log%>')
+<%else%>
+$("#dialog").html('<%=j render("rail_bills/new")%>')
+<%end%>

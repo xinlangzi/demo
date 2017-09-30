@@ -1,0 +1,2 @@
+class ImportContainersController < ContainersController
+end

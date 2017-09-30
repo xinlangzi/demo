@@ -1,0 +1,74 @@
+h1 Check Application Status
+- if params[:applicant].present? && !@applicant.persisted?
+  center.notice.red Oops! Can't find the matched application.
+= simple_form_for @applicant, url: status_applicants_path, method: :get do |f|
+  = f.input :email, wrapper: :vertical, input_html: { autocomplete: 'off', type: 'email', class: 'itext' }
+  = f.input :cdl_no, label: 'CDL No.', wrapper: :vertical, input_html: { autocomplete: 'off', class: 'itext' }
+  = f.submit 'Check Status', class: 'w150 green-btn'
+  .hint Enter your application's email and CDL No. to check status
+  .clear
+  - if @applicant.persisted?
+    br
+    table.gray.rl
+      tr
+        th.pw50 Applicant
+        td = @applicant.name
+      tr
+        th Applied On
+        td = @applicant.created_at.us_datetime
+      tr
+        th Invitation Sent
+        td = @applicant.invited_at ? @applicant.invited_at : 'Pending'
+      - hub = @applicant.hub
+      - trucker = @applicant.trucker
+      - if trucker
+        - truck = Truck.default(trucker)
+        tr
+          th Trucker Info. Completed?
+          td = trucker.valid? ? 'Yes' : 'No'
+        tr
+          th Truck Info. Completed?
+          td = truck.valid? ? 'Yes' : 'No'
+        - [:driver_license_expiration, :medical_card_expiration].each do |name|
+          - if hub.send(name)
+            tr
+              th = Trucker::DOC_NAME_MAPS[name]
+              td
+                ul.f85
+                  - if truck.images.empty?
+                    em.red Missing
+                  - else
+                    - trucker.images.where(column_name: name).each do |doc|
+                      li
+                        = link_to doc.filename, doc.file.url, target: '_blank'
+                        .rfloat = doc.status.titleize
+        - [:annual_inspection_expiration, :license_plate_expiration, :ifta_expiration, :bobtail_insurance_expiration, :last_quarterly_maintenance_expiration].each do |name|
+          - if hub.send(name)
+            tr
+              th = Trucker::DOC_NAME_MAPS[name]
+              td
+                ul.f85
+                  - if truck.images.empty?
+                    em.red Missing
+                  - else
+                    - truck.images.where(column_name: name).each do |doc|
+                      li
+                        = link_to doc.filename, doc.file.url, target: '_blank'
+                        .rfloat = doc.status.titleize
+        tr
+          th Hired Date
+          td = trucker.hire_date ? trucker.hire_date : 'No'
+        - unless trucker.uncertain?
+          tr
+            th Password Inited?
+            td
+              - if trucker.pwd_inited?
+                span Yes
+                .f90.rfloat = link_to 'Back to Login', '/login'
+              - else
+                span No
+                .f90.rfloat = link_to 'Init Password', set_password_path(trucker.uuid)
+        - if @applicant.token
+          tr
+            th colspan=2
+              h2.text-center = link_to 'Continue My Application', edit_applicant_path(@applicant.token), class: 'red'

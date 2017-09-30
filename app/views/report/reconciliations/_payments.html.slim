@@ -1,0 +1,4 @@
+fieldset.border
+  legend.title Report by Company
+  - [:receivable, :payable].each do |type|
+    = render 'report/reconciliations/table', type: type

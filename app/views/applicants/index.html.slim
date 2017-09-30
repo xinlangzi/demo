@@ -1,0 +1,37 @@
+.title-bar
+  h1 Online Driver Application
+  ul
+    li = link_to "Back to Owner Operators", truckers_path
+    li = link_to "Deleted Applicants", deleted_applicants_path
+
+.full-page
+  table.gray
+    thead
+      tr
+        th Hub
+        th Name
+        th Email
+        th Phone
+        th Applied On
+        th Invited On
+        th Contract Type
+        th 1099 Driver
+        th Hired On
+        th PWD Inited On
+        th
+
+    tbody
+      - @applicants.each do |applicant|
+        tr
+          td = applicant.hub.try(:name)
+          td = link_to applicant.name, applicant
+          td = applicant.email
+          td = applicant.phone
+          td = applicant.created_at.ymd
+          td = applicant.invited_at.try(:ymd)
+          td = applicant.trucker.try(:driver_type).try(:titleize)
+          td = checkmark(applicant.trucker.try(:onfile1099))
+          td = applicant.trucker.try(:hire_date)
+          td = applicant.trucker.try(:pwd_inited_date)
+          td = link_to '', applicant, data: { confirm: 'Are you sure to softly delete?' }, method: :delete, class: 'fa fa-trash'
+  center = paginate @applicants

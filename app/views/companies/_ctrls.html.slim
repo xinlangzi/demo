@@ -1,0 +1,13 @@
+- class_new = crud_class.new
+ul
+  - no_action?('index') do
+    li = link_to "Back to List", polymorphic_path(class_new)
+  li = link_to "New #{class_new.class.to_s.underscore.humanize}", new_polymorphic_path([@for_customer, class_new].compact)
+  - no_action?('deleted') do
+    li = link_to "Deleted #{class_new.class.to_s.underscore.pluralize.humanize}", polymorphic_path(class_new, :action => 'deleted')
+  - if class_new.is_a?(Trucker)
+    - no_action?('inactive') do
+      li = link_to "Inactive #{class_new.class.to_s.underscore.pluralize.humanize}", polymorphic_path(class_new, :action => 'inactive')
+    li = link_to 'Check Expiration Dates', expiration_dates_truckers_path
+    li = link_to 'Vacation Calendar', vacations_path
+    li.rfloat = link_to 'Driver Applications', applicants_path, class: 'red'

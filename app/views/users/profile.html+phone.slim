@@ -1,0 +1,46 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding My Account
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.content-block.narrow-block
+  .content-block-inner
+    .buttons-row
+      a.tab-link.active.button href="#profile-tab1" Basic Info
+      - if current_user.is_trucker?
+        a.tab-link.button href="#profile-tab2" Drug Test
+        a.tab-link.button href="#profile-tab3" Truck
+    .tabs
+      #profile-tab1.tab.active
+        .list-block
+          ul.expiration-dates
+            - profile_column_list.each do |name, proc|
+              - case name
+              - when /Display Name/i
+                = f7_label_text(name, nil) do
+                  a.ajax-popup href="#" data-url=attach_url_for_expiration_date(current_user, :avatar)
+                    i.upload-icon.ion-images
+                  .item-value = proc.call(current_user)
+              - when /DL Expires/i
+                = f7_label_text(name, nil) do
+                  a.ajax-popup href="#" data-url=attach_url_for_expiration_date(current_user, :driver_license_expiration)
+                    i.upload-icon.ion-images
+                  .item-value = proc.call(current_user)
+              - when /Medical Card Expires/i
+                = f7_label_text(name, nil) do
+                  a.ajax-popup href="#" data-url=attach_url_for_expiration_date(current_user, :medical_card_expiration)
+                    i.upload-icon.ion-images
+                  .item-value = proc.call(current_user)
+              - else
+                = f7_label_text(name, proc.call(current_user))
+      - if current_user.is_trucker?
+        #profile-tab2.tab
+          = render 'mobiles/drivers/drug_tests'
+        #profile-tab3.tab
+          = render 'mobiles/drivers/trucks'

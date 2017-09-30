@@ -1,0 +1,21 @@
+table.gray
+  thead
+    tr
+      th ID
+      th Date
+      th Customer
+  tbody
+    - creations.each do |container|
+      tr
+        td 
+          = link_to container.id, container
+          = link_to '', polymorphic_path([:preview, container]), remote: true, class: "fa fa-eye invisible"
+        td = container.created_at.us_date
+        td = container.customer.name
+.hidden.datatable-config
+  | {
+      "bPaginate": false,
+      "aaSorting": [[2, "asc" ]]
+    }
+
+= paginate creations, remote: true, params: { label: label}

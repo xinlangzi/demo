@@ -1,0 +1,4 @@
+ContainerTask.closeFacebox(<%=@task_comment.is_checked?%>)
+<%if @task_comment.persisted?%>
+$('#<%= dom_id(@task_comment.container_task, @task_comment.container_id)%>').html('<%=j render("task_comments/link", task_comment: @task_comment)%>')
+<%end%>

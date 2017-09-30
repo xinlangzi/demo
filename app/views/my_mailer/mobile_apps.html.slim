@@ -1,0 +1,12 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div Dear #{@trucker.name},
+      p Thank you for working with #{@owner.name}. Please download/install mobile app to help our trucking work.
+      br
+      center
+        a href=ANDROID_APP_URL
+          img height=50 style="display:inline" src="#{root_url}/assets/icons/google-play.png"
+        | &nbsp;&nbsp;
+        a href=IOS_APP_URL 
+          img height=50 style="display:inline" src="#{root_url}/assets/icons/app-store.svg"

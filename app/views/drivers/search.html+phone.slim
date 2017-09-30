@@ -1,0 +1,27 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+.list-block.narrow-block
+  - @truckers.group_by(&:hub).each do |hub, truckers|
+    ul
+      li.accordion-item class="#{truckers.size > 0 ? 'accordion-item-expanded' : ''}"
+        a.item-content.item-link href="#"
+          .item-inner
+            .item-title = hub.name
+            .item-after
+              span.badge = truckers.size
+        .accordion-item-content
+          ul
+            - truckers.each do |trucker|
+              li
+                a.item-link.track-driver href="#" data-id=trucker.id data-name=trucker.name
+                  .item-content
+                    .item-inner
+                      .item-title.color-blue = trucker.name

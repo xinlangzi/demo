@@ -1,0 +1,12 @@
+.title-bar
+  h1 Editing #{@payment.class.to_s.gsub('Payment', '')} Payment No. #{link_to @payment.number.to_s, @payment}
+  ul
+    li = link_to 'Cancel', @payment
+.content
+  = form_for @payment, as: :payment, url: polymorphic_url(@payment), html: {method: :put, id: 'payment_form', class: 'observe-form'} do |p|
+    = render partial: 'payments/form/payment', object: @payment
+    = render partial: 'payments/message_box', object: @payment
+    table.gray
+      = render partial: 'payments/table_header', object: @payment
+      tbody
+        = render partial: 'payments/form/line_item_payments', collection: @payment.line_item_payments, as: :line_item_payment

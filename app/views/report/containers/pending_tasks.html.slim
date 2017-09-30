@@ -1,0 +1,39 @@
+.title-bar
+  h1 Pending Tasks
+  ul
+    li = link_to 'Back to Reports', '/reports'
+.full-page
+  #search-box.search-box
+    .search-inner
+      = simple_form_for @search, as: :search, url: [:pending_tasks, :report, :containers], html: { method: :get, class: 'horiz' }  do |s|
+        .vertical
+          label Pending Task
+          = select_tag :pending_task_ids, grouped_options_for_select(ContainerTask.accounting.grouped_select, params[:pending_task_ids]), id: "multi-select-pending-tasks", multiple: true
+        = s.submit "Search"
+  table.gray.vmiddle
+    thead
+      tr
+        th Order Type
+        th ID
+        th Delivery Date
+        th Return Date
+        th Container No
+        th Chassis No
+        th.w150 Receivable Tasks
+        th.w150 Payable Tasks
+
+    tbody
+      - @containers.each do |container|
+        tr
+          td = container._type.upcase[0, 3]
+          td
+            = link_to container.id, container
+            = link_to '', polymorphic_path([:preview, container]), remote: true, class: "dialog fa fa-eye invisible"
+          td = container.delivered_date.to_date rescue 'N/A'
+          td = container.returned_date.try(:ymd)
+          td = container.container_no
+          td = container.chassis_no
+          td = render "container_tasks/task_with_comment", type: container._type, account: 'receivable', container: container
+          td = render "container_tasks/task_with_comment", type: container._type, account: 'payable', container: container
+
+  = paginate @containers

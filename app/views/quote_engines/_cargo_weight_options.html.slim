@@ -1,0 +1,2 @@
+- options = array_options(QuoteEngine.cargo_weight_options(params[:ctype], params[:csize])) rescue []
+= select :quote_engine, :cargo_weight, options, {selected: params[:cargo_weight]}, { required: true, multiple: true, id: 'cweight', class: "multiselect w150"}  unless options.empty?

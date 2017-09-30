@@ -1,0 +1,40 @@
+- accounts = @accounts_type
+#search-box.search-box
+  .search-inner
+    = simple_form_for @filter, as: :filter, url: new_polymorphic_path(crud_class.new), html: { method: :get, class: 'horiz' } do |f|
+      - grouped_collection = []
+      - if in_payable?
+        - grouped_collection << ["Trucker", Trucker.uninvoiced(accounts).get_all_names_and_ids] if Trucker.uninvoiced(accounts).count > 0
+        - grouped_collection << ["TP Vendor", Company.third_party.uninvoiced(accounts).get_all_names_and_ids] if Company.third_party.uninvoiced(accounts).count > 0
+      - else
+        - grouped_collection << ["Customer", Customer.uninvoiced(accounts).get_all_names_and_ids] if Customer.uninvoiced(accounts).count > 0
+        - grouped_collection << ["TP Customer", Company.third_party.uninvoiced(accounts).get_all_names_and_ids] if Company.third_party.uninvoiced(accounts).count > 0
+      - grouped_collection << ["Others", Company.other.uninvoiced(accounts).get_all_names_and_ids] if Company.other.uninvoiced(accounts).count > 0
+      = f.input :company_id, as: :grouped_select, collection: grouped_collection, group_method: :last, input_html: { class: 'chosen-select' }, wrapper: :vertical
+
+      - klass = in_payable? ? Accounting::TpVendor : Accounting::TpCustomer
+      - companies = klass.for_user(current_user).get_all_names_and_ids
+      - add_link = accessible_url?(new_polymorphic_path(klass.new)) ? link_to('+ Add', new_polymorphic_path(klass.new), remote: true, class: 'dialog rfloat') : ''
+      = f.input :tp_company_id, collection: companies, label: "#{klass.titleize} #{add_link}".html_safe, include_blank: true, input_html: { class: "chosen-select #{klass.mark}" }, wrapper: :vertical
+
+      = f.input :from, as: :datepicker, label: "Date From", wrapper: :vertical
+      = f.input :to, as: :datepicker, label: "To", wrapper: :vertical
+      = f.input :container_no, label: "Container No.", wrapper: :vertical, input_html: { class: 'nospace' }
+      = f.submit "Search"
+      .clear
+      - if in_payable?
+        .f90
+          span Batch Invoices for:&nbsp;
+          = link_to "Truckers", polymorphic_path([:batch, crud_class.new], target: 'Truckers')
+          | ,&nbsp;
+          = link_to "TP Vendors", polymorphic_path([:batch, crud_class.new], target: 'TP Vendors')
+          | ,&nbsp;
+          = link_to "Others", polymorphic_path([:batch, crud_class.new], target: 'Others')
+      - else
+        .f90
+          span Batch Invoices for:&nbsp;
+          = link_to "Customers", polymorphic_path([:batch, crud_class.new], target: 'Customers')
+          | ,&nbsp;
+          = link_to "TP Customers", polymorphic_path([:batch, crud_class.new], target: 'TP Customers')
+          | ,&nbsp;
+          = link_to "Others", polymorphic_path([:batch, crud_class.new], target: 'Others')

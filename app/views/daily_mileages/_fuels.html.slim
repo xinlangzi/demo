@@ -1,0 +1,22 @@
+table.gray
+  thead
+    tr
+      th ID
+      th Date
+      th Trucker
+      th Truck No.
+      th Gallons
+      th Price per gallon
+      th Amount
+      th State
+  tbody
+    - for fp in @fuel_purchases
+      tr
+        td = fp.id
+        td = fp.day
+        td = fp.truck.trucker.name
+        td = fp.truck.number
+        td = fp.gallons
+        td = number_to_currency fp.price
+        td = number_to_currency fp.amount
+        td = fp.purchase_state.abbrev

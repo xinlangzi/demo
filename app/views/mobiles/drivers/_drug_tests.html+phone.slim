@@ -1,0 +1,16 @@
+.extend-inner.swiper-container
+  .swiper-wrapper
+    - current_user.drug_tests.each do |drug_test|
+      .swiper-slide
+        .card.no-box
+          .card-header = drug_test.test_type.tableize.singularize.humanize.titleize
+          .card-content
+            .list-block
+              ul
+                = f7_label_text("Date", drug_test.date.to_s)
+                = f7_label_text("Status", nil) do
+                  = drug_test.passed.nil? ? 'N/A' : (drug_test.passed? ? 'Passed' : 'Failed')
+                = f7_label_text("Comment", drug_test.comments)
+  br
+  br
+  .swiper-pagination

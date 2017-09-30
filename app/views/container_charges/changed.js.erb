@@ -1,0 +1,4 @@
+<%prefix = "#{params[:type]}_#{params[:key]}"%>
+$('#<%=prefix%>_amount').val('<%=@container_charge.amount || 0%>').trigger('change')
+$('#<%=prefix%>_company_id').val('<%=@container_charge.company_id%>')
+$('#<%=prefix%>_details').val('<%=@container_charge.details%>')

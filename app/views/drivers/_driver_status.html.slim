@@ -1,0 +1,21 @@
+// Be careful the class and id, rich ajax here; 
+// See calendar.coffee and driver_pane.coffee
+- driver = driver_status.driver
+.driver-to-assign
+  - moves_id = "moves#{driver_status.id}"
+  .draggable data-li="#{driver_status.id}" data-name="#{driver_status.name}" ref="#{driver_status.id}" class="#{driver_status.status}"
+    = link_to '', vacation_driver_path(driver_status.id, date: params[:date]), remote: true, class: "status icon10 #{driver_status.status_icon}"
+    a.score = (@driver_scores[driver_status.id]*100).to_i rescue 0
+    a.name href="javascript:App.newPopup('/truckers/#{driver_status.id}', 'ViewDocument', 800, 1000, 0, 0)" title=number_to_phone("#{driver_status.phone}") = truncate(driver_status.name, length: 20, omission: '...')
+  .right
+    a.miles = driver_status.miles.to_i
+    a.j1s
+      .missing-num = @missing_j1s[driver_status.id].to_i
+      .pending-num = @pending_j1s[driver_status.id].to_i
+    a.fa.fa-location-arrow rel='facebox' href="/drivers/#{driver_status.id}/locate"
+    a.fa.fa-arrow-circle-o-down.show-hide rel=moves_id
+    a.fa.fa-id-card-o class="#{driver.has_expiration_date? ? 'red' : 'green'}" rel='facebox' href="/drivers/#{driver_status.id}/info"
+    a.fa
+  .moves.hidden.clear id=moves_id
+    - (@containers_by_trucker[driver_status.id]||[]).each do |cid|
+      a.dialog href="/containers/#{cid}/preview" data-remote=true = cid

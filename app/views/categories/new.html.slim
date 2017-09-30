@@ -1,0 +1,6 @@
+.title-bar
+  h1 New #{crud_class.to_s.titleize}
+  ul
+    li = link_to 'Cancel', crud_class.new
+.content
+  = render 'form'

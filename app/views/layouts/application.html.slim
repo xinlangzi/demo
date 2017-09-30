@@ -1,0 +1,50 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    meta http-equiv="X-UA-Compatible" content="IE=Edge"
+    meta name="turbolinks-cache-control" content="no-cache"
+    link rel="shortcut icon" href="/favicon.ico"
+    = stylesheet_link_tag "application", :media => "all", 'data-turbolinks-track' => true
+    /// My temporary solution to this problem is to just use an empty script tag before all the other scripts get included. This way the empty script tag gets duplicated and everything works:
+    script 
+    = javascript_include_tag "application", 'data-turbolinks-track' => true
+    = javascript_include_tag "graphic", 'data-turbolinks-track' => true
+    script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&region=US&key=#{GoogleMap.api_key(:frontend)}" type="text/javascript" data-turbolinks-track="true"
+    title #{title} - #{@owner.name}
+    = csrf_meta_tags
+    = action_cable_meta_tag
+  body class="#{Settings.version}"
+    .wrapper
+      #header
+        .infos
+          = render 'shared/logo'
+          .company-name
+            span #{@owner.name}
+          = switch_user_select
+          .top-right
+            = render 'shared/icons'
+            = render 'shared/hub'
+            = render 'shared/config'
+          = render 'shared/quick_search'
+        .head
+          = render 'shared/navigation_tabs'
+        .tiny-avail-stats
+          = render_async avail_stats_path
+      #main class=@bg
+        #flash-notice = flash[:notice]
+        = render 'shared/warning_emails'
+        = yield
+        .clear
+      #footer
+        = render 'shared/navigation_tabs'
+        = render 'shared/copyright'
+      = render 'shared/siteseal'
+      #dialog
+      #attachment
+      #right-tabs
+      #loading.hidden
+        span Loading...
+        span.small_loading
+      = render 'notifications/panel'
+      = content_for :render_async

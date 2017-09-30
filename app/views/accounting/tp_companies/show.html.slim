@@ -1,0 +1,19 @@
+.title-bar
+  h1 TP #{@tp_type}: #{@company.name}
+  ul
+    li= link_to 'Back to list', :action => 'index'
+    li= link_to 'Edit', edit_polymorphic_path(@company)
+    - if @company.deleted?
+      li= link_to('Undelete', polymorphic_path(@company, :action => :undelete), :confirm => "Are you sure you want to undelete #{h @company.name}?", :method => :get)
+    - elsif @company.inactived?
+      li= link_to('Activate', polymorphic_path(@company, :action => :activate), :confirm => "Are you sure you want to activate #{h @company.name}?", :method => :get)
+      li= link_to('Delete', polymorphic_path(@company, action: "delete"), :confirm => "Are you sure you want to delete #{h @company.name}?", :method => :get, remote: true)
+    - else
+      li= link_to('Inactivate', polymorphic_path(@company, :action => :inactivate), :confirm => "Are you sure you want to inactivate #{h @company.name}?", :method => :get)
+
+.content
+  table.gray
+    - detailed_column_list.each do |column_name, column_lambda|
+      tr
+        th.w200.text-right.pr5 = column_name
+        td.text-left.pl5 = column_lambda.call(@company)

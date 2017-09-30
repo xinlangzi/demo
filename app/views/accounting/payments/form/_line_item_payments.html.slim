@@ -1,0 +1,42 @@
+table.gray.vmiddle
+  thead
+    tr
+      th.w40 Select
+      th Invoice No.
+      th Invoice Date
+      th Category
+      th Amount
+      th Balance
+  tfoot
+    tr
+      th colspan=4
+        span Total Credits
+        table.pw100.vmiddle
+          - @payment.credit_selectors.each do |credit|
+            = render 'credits/payments/credit', credit: credit
+      th.number#payment_total_credits = number_to_currency(@payment.total_credits)
+      th
+    tr
+      th colspan=4 Payment Total Amount
+      th.number#payment_total_amount = number_to_currency(@payment.amount)
+      th
+    tr
+      - name = @payment.new_record? ? 'Create' : 'Update'
+      th.text-right[colspan=6]
+        = submit_tag name, disable_with: PLEASE_WAIT
+  tbody
+    = p.fields_for :line_item_payments do |l|
+      - lip = l.object
+      tr
+        td
+          = l.check_box :selected_for_payment, onclick: "App.markSelection($(this))", class: "line_item_check_box line_item #{lip.line_item.invoice.number}", :title=>lip.line_item.invoice_id, data: { id: lip.line_item.invoice_id }
+          = l.hidden_field :line_item_id
+          = l.hidden_field :amount, value: lip.line_item.amount
+        td = link_to lip.line_item.invoice.number, lip.line_item.invoice
+        td = lip.line_item.invoice.issue_date.ymd
+        td = lip.line_item.category.me_with_ancestors.map(&:name).reverse.join(' -> ')
+        td.number = number_to_currency lip.line_item.amount
+        td.number = number_to_currency lip.line_item.balance
+      - unless lip.errors.empty?
+        tr
+          td[colspan=6] = simple_errors_for(lip)

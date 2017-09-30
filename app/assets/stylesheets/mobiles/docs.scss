@@ -1,0 +1,56 @@
+#captured{
+  border-top: 1px solid #CCC;
+  background: #FFF;
+  padding: 5px 15px;
+  .col-33{
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  .image{
+    position: relative;
+    img{
+      border: 1px solid #CCC;
+      height: 100px;
+      width: 100%;
+    }
+    .icon{
+
+    }
+    .icon::before{
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      font-size: 20px;
+      color: red;
+      z-index: 99999;
+    }
+  }
+  .add-image{
+    border: 2px dotted #CCC;
+    height: 100px;
+    text-align: center;
+    .icon{
+      height: 100px;
+      font-size: 32px;
+      color: #999;
+    }
+    .icon::before{
+      position: relative;
+      top: 25px;
+    }
+    .camera-input{
+      position: relative;
+      top: -100px;
+      left: 0px;
+      width: 100%;
+      height: 100px;
+      z-index: 99999;
+      opacity: 0.0;
+    }
+  }
+}
+.photo-browser-zoom-container{
+  img{
+    width: 100%;
+  }
+}

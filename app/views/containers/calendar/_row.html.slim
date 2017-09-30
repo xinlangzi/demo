@@ -1,0 +1,68 @@
+- classes = ["container#{container.id}"]
+- classes << 'overdue' if container.appt_too_late?
+- classes << 'connected' if container.connected?
+tr class=classes
+  - classes = container.assignable? ? 'droppable-driver' : nil
+  td class=classes data-id=container.id data-target='container'
+    .w60
+      a href="/containers/#{container.id}" = container.id
+      - if container.connected?
+        sup
+          i.fa.fa-link
+    = render 'containers/icon_links', container: container
+    - if container.require_prepull_trucker?
+      .prepull-alert Prepull w/o Driver
+  - if current_user.is_admin?
+    - unless driver_mode?
+      - rc = container.receivable_amount rescue container.receivable_container_charges.total_amount
+      - pc = container.payable_amount rescue container.payable_container_charges.total_amount
+      - profit = rc - pc
+      td = container.customer.name
+      td.customer data-order=rc
+        = number_to_currency(rc)
+        - if (count = container.receivable_count rescue container.receivable_container_charges.count) > 0
+          sup
+            a rel='facebox' ref='eventY' href="/#{container.type.tableize}/#{container.id}/receivable_container_charges" = count
+        = render "container_tasks/check_list", type: container._type, account: 'receivable', container: container
+      td.trucker data-order=pc
+        = number_to_currency(pc)
+        - if (count = container.payable_count rescue container.payable_container_charges.count) > 0
+          sup
+            a rel='facebox' ref='eventY' href="/#{container.type.tableize}/#{container.id}/payable_container_charges" = count
+        = render "container_tasks/check_list", type: container._type, account: 'payable', container: container
+      td class="#{(profit <= 0 || rc == 0 || pc == 0) ? 'red' : 'green'}" data-order=profit
+        = number_to_currency(profit)
+  - customers = container.consignees_or_shippers_info
+  - unless driver_mode?
+    td = sanitize customers.map(&:name).join('<hr>')
+  td = sanitize customers.map(&:address_city).join('<hr>')
+  td = sanitize customers.map(&:abbrev).join('<hr>')
+  td = container.appointment(false)
+  td = container.ssline.name rescue ""
+  td = sanitize container.terminals_info.map(&:name).join('<hr>')
+  td = sanitize container.depots_info.map(&:name).join('<hr>')
+  td = container.size
+  td data-order=container.triaxle.to_i
+    = checkmark(container.triaxle?)
+  td
+    span = container.container_no
+    = approve_alter_request_link(container, :container_no)
+  td = container.ssline_booking_no || container.ssline_bl_no
+  td
+    span = container.chassis_no
+    = approve_alter_request_link(container, :chassis_no)
+  - if container.is_import?
+    td data-order=container.terminal_eta.to_i
+      = container.terminal_eta.try(:us_abd)
+    td data-order=container.rail_lfd.to_i
+      .bold = container.rail_lfd.try(:us_abd)
+  - else
+    td data-order=container.rail_cutoff_date.to_i
+      = container.rail_cutoff_date.try(:us_abd)
+  - rel = (current_user.is_admin? ? "#{container.dispatched_count}-#{container.trucker_names.join('-')}" : 0) rescue 0
+  td data-order=rel
+    table.operations
+      - operations = current_user.is_trucker? ? container.viewable_operations(current_user) : container.operations
+      = render 'containers/chassis/pickup_row', container: container if operations.first.first?
+      = render operations
+      = render 'containers/chassis/return_row', container: container if operations.last.final?

@@ -1,0 +1,6 @@
+= simple_form_for image, url: upload_applicant_path(applicant.token), method: :post, html: { multipart: true, class: "dropzone #{tag}" }  do |f|
+  = f.input :imagable_type, as: :hidden
+  = f.input :imagable_id, as: :hidden
+  = f.input :column_name, as: :hidden
+  .hidden
+    = f.input :file, as: :file, label: false

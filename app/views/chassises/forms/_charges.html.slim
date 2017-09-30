@@ -1,0 +1,5 @@
+= simple_form_for [:save_charges, container], method: :put, remote: true do |f|
+  = hidden_field_tag :from, :chassises
+  = render 'container_charges/form/container_charges', type: 'PayableContainerCharges', container: container
+  .lfloat id=dom_id(container, 'info') = @info
+  = f.submit "Save Charges", class: 'rfloat'

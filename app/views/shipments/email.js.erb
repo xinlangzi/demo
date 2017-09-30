@@ -1,0 +1,10 @@
+<%case params[:changed]%>
+<%when /request_pickup_no|request_last_free_day/%>
+  $('#shipment_comment').val(App.decodeHtmlEntity('<%=j @shipment.auto_comment %>'))
+<%else%>
+  <%if @error%>
+    $('#<%= dom_id(@container, "shipment")%> .info').html('<%=h @error%>').addClass('red')
+  <%else%>
+    window.location.reload()
+  <%end%>
+<%end%>

@@ -1,0 +1,25 @@
+- if @image
+  - file_exists = @image.file_exists?
+  - imagable = @image.imagable
+  - column_name = @image.column_name.split('_').map(&:capitalize).join(' ') rescue ''
+  - if flash[:notice] =~/saved/
+    - close_window = link_to "Close", "#", onClick: 'window.opener.location.reload();window.close();return false;'
+  - else
+    - close_window = link_to "Close", "#", onClick: 'window.close();return false;'
+  .title-bar
+    - if @image.temp?
+      h1 Temporary File
+    - else
+      h1 #{imagable.class.to_s}: #{imagable.try(:name)} #{column_name}
+    ul
+      - if file_exists
+        li = link_to 'Open to View', @image.file.url
+        li = link_to 'Download PDF', image_path(@image, format: :pdf)
+        - if @image.can_write?(current_user)
+          li = link_to 'Delete', @image, method: :delete, data: { confirm: "Are you sure you want to delete?"}
+      li = close_window
+      = render "images/#{@image.imagable.class.to_s.tableize.singularize}", image: @image rescue nil
+  .full-page
+    = render 'docs/audit', image: @image if current_user.is_admin? && @image.auditable?
+    .imgContent
+      = render 'images/display', imagable: @image

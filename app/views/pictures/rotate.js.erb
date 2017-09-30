@@ -1,0 +1,7 @@
+<%if params[:zoom]%>
+  App.removeZoom()
+  $('#<%=dom_id(@picture.object, "zoom")%>').replaceWith('<%=j render("images/zoom", imagable: @picture.object)%>')
+<%else%>
+  $('#<%= dom_id(@picture.object, "thumb")%>').attr('src', '<%=@picture.url(:thumb).html_safe %>')
+  $('#<%= dom_id(@picture.object)%>').attr('src', '<%=@picture.url.html_safe %>')
+<%end%>

@@ -1,0 +1,22 @@
+.card.day-log-card
+  .card-header
+    b = @day_log.issue_date
+    small = @day_log.status.titleize
+  .card-content
+    .card-content-inner
+      - if @day_log.file_exists?
+        - if @day_log.file.content_type =~/pdf/
+          center = link_to "This is a PDF document. Click to open.", @day_log.file.url, class: 'external link', target: '_blank' 
+        - elsif @day_log.file.content_type =~/(tif)|(tiff)/i
+          div This image was sent as a #{File.extname(@day_log.file.path)}. Click button 'Open to View'.
+        - else
+          = image_tag(@day_log.file.url, width: '100%', height: '100%')
+      - else
+        center.red Document resource is not found.  
+      = simple_format(@day_log.comment) if @day_log.rejected?
+    .card-footer
+      a.link href='#' = @day_log.updated_at.us_datetime
+      a.link href='#' = "Uploaded By #{@day_log.user}"
+      - if @day_log.pending?
+        a.link.delete data-id=@day_log.id Delete
+           

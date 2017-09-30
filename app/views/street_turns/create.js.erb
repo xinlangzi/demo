@@ -1,0 +1,5 @@
+<%if @saved%>
+window.location.reload()
+<%else%>
+$('#dialog').html('<%=j render("new")%>')
+<%end%>

@@ -1,0 +1,64 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div Dear #{@driver[:name]},
+      p Thank you for you interest in #{@owner.name}! Below are your requested rates. Please feel free to contact me with any questions, or if you are interested in working with #{@owner.name}.
+
+      table.gray cellpadding=2 cellspacing=0 style="font-size: 13px;"
+        tr style=outlook_font
+          th Rail Yard
+          th Delivery Location
+          th Miles(RT)
+          th Base Rate
+          th Fuel Surcharge
+          th Toll Surcharge 1
+          th Toll Surcharge 2
+          th Total
+        - @driver_quotes.each do |quote|
+          tr style=outlook_font
+            td = quote.rail_road.name
+            td = quote.destination
+            td #{quote.miles} mi
+            td = number_to_currency(quote.summary[:base_rate])
+            td = number_to_currency(quote.summary[:fuel_surcharge])
+            td = number_to_currency(quote.summary[:toll_surcharge_1])
+            td = number_to_currency(quote.summary[:toll_surcharge_2])
+            td.bold = number_to_currency(quote.total)
+        tr style=outlook_font
+          td colspan=7
+          td.bold
+            = number_to_currency(@driver_quotes.sum(&:total))
+
+
+      .bold Some of the many benefits of working with #{@owner.name}!
+      ul.dots style=outlook_font
+        li No forced dispatch
+        li All bobtails and chassis splits are paid to drivers
+        li Zero paycheck adjustments
+        li Insurance provided by #{Rails.application.secrets.app} at no cost to drivers
+        li No escrow or holding money
+        li Bonuses for clean inspections
+        li Up to $500 bonus for tire repairs
+        li All rates viewable in advance
+        li All dispatches/rates/paychecks available on phone or computer instantly
+
+      table.gray cellpadding=5 cellspacing=0
+        tr style=outlook_font
+          th colspan=2 Driver Information
+        tr style=outlook_font
+          td Name
+          td = @driver[:name]
+        tr style=outlook_font
+          td Email
+          td = @driver[:email]
+        tr style=outlook_font
+          td Phone
+          td = @driver[:phone]
+
+      br
+      div Thank you,
+      br
+      div = SystemSetting.default.driver_hr_manager
+      div Hiring Manager, #{@owner.name}
+      div Cell: #{SystemSetting.default.driver_hr_phone}
+      div Email: #{mail_to(SystemSetting.default.driver_hr_email)}

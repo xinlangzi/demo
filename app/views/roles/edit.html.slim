@@ -1,0 +1,28 @@
+.title-bar
+  h1 Roles and Rights Editor
+  ul
+    li = link_to "Back", role_path(@role)
+    li = link_to "Modify Description of Rights", edit_action_names_roles_path, method: :get
+.content
+  = form_for @role, :url => update_all_roles_path, :html => {:method => :put} do |f|
+    ul.caption
+      li.title = @role.name.titleize.upcase
+    table.gray
+      tr
+        th.w350 Rights
+        th.w150 Users
+        th
+      tbody
+        tr
+          td.text-left
+            = render partial: "roles/rights", object: @rights
+          td.text-left
+            = render partial: "roles/users", object: @users
+          td
+            = f.submit "Update"
+            = hidden_field :role, :id
+      tfoot
+        tr
+          th
+          th
+          th= f.submit "Update"

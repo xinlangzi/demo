@@ -1,0 +1,27 @@
+.title-bar
+  h1 Downloading and Printing Check
+  ul
+    li = link_to 'Back', @payment
+
+.content
+  fieldset.form
+    - if @payment.cleared_date
+      .red You need to set the cleared date to blank before you can change the check number.
+    - else
+      = simple_form_for @payment, url: print_payable_payment_path(@payment, format: :pdf), method: :get, html: { class: 'rows'} do |f|
+        = f.fields_for :owner, @payment.company do |company_fields|
+          = company_fields.input :address_street, label: 'Street Address', required: false, input_html: {class: 'w300'}
+          = company_fields.input :address_street_2, label: 'Street Address Line 2', required: false, input_html: {class: 'w300'}
+          = company_fields.input :address_city,  label: 'City', required: false
+          = company_fields.input :address_state_id, as: :select, collection: State.get_states_and_ids, include_blank: false, label: 'State', required: false
+          = company_fields.input :zip_code, as: :string, label: 'Zip Code', required: false, input_html: {class: 'w60'}, wrapper_html: {class: 'nofirst'}
+        = f.submit "Download Check"
+        .inline
+          span.red When you are finished printing, please introduce the check number in the field below.
+      hr
+      = simple_form_for @payment, url: [:update_number, @payment], method: :patch, html: { class: 'rows' } do |f|
+        = f.input :number
+        = f.submit "- OK -"
+        .inline
+          = f.check_box :edit_number
+          = f.label :edit_number, "Click on the check box if you have printed the check, you're satisfied with it, and you've entered a number; then hit OK", class: 'inline green'

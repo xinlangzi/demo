@@ -1,0 +1,79 @@
+.title-bar
+  h1 Listing #{controller.crud_class.to_s.pluralize.titleize}
+  ul
+    li #{ link_to 'New Charge', new_polymorphic_path(crud_class.new) }
+    - if controller.crud_class == ReceivableCharge
+      li #{link_to 'List Payable Charges', payable_charges_path}
+    - elsif controller.crud_class == PayableCharge
+      li #{link_to 'List Receivable Charges', receivable_charges_path}
+    li
+      a.show-hide rel='help' Help
+      .plate.w600.hidden#help
+        = render 'help'
+
+.full-page
+  table.gray.vmiddle
+    thead
+      tr
+        th Name
+        th Order
+        th.text-right $
+        th.text-right %
+        th Comments
+        th # Times Used
+        - if controller.crud_class == PayableCharge
+          th Preset Charge
+        th Accounting Group
+        th Mandatory Sign
+        th.w300 Overrides
+        th colspan=3
+    tbody
+      - @charges.each do |charge|
+        tr
+          td.text-left = charge.name
+          td
+            - if current_user.is_superadmin?
+              = fields_for :charge, charge do |f|
+                = f.text_field :seq_num, class: "auto-save w50 text-center", id: dom_id(charge, 'seq_num'), ref: "Charge:#{charge.id}:seq_num" 
+            - else
+              = charge.seq_num
+          td.number = number_to_currency(charge.amount)
+          td.number = charge.percentage
+          td = charge.comments
+          td = charge.container_charges.count
+          - if charge.payable?
+            td = checkmark(charge.preset)
+          td
+            - if current_user.is_superadmin?
+              = fields_for :charge, charge do |f|
+                = f.select :accounting_group_id, objects_for_select(Accounting::Group.all), { include_blank: true }, { class: "auto-save center", id: dom_id(charge, 'accounting_group_id'), ref: "Charge:#{charge.id}:accounting_group_id" }
+            - else
+              = charge.accounting_group.try(:name)
+          td
+            - if current_user.is_superadmin?
+              = fields_for :mandatory_sign, charge do |f|
+                = f.select :mandatory_sign, (1..10), { include_blank: true }, { class: "auto-save w100", id: dom_id(charge, 'mandatory_sign'), ref: "Charge:#{charge.id}:mandatory_sign" }
+            - else
+              = charge.mandatory_sign
+          td
+            - unless charge.overrides.empty?
+              table.full-width
+                thead
+                  tr.italic
+                    th Hub
+                    th.text-right $
+                    th.text-right %
+                    th Comments
+                    th colspan=2
+                - charge.overrides.each do |override|
+                  - if override.hub
+                    tr.italic
+                      td = override.hub.name
+                      td.number = number_to_currency(override.amount)
+                      td.number = override.percentage
+                      td = override.comments
+                      td = link_to '', edit_polymorphic_path([charge, override]), class: 'fa fa-edit'
+                      td = link_to '', override, method: :delete, data: { confirm: 'Are you sure you want to delete this custom charge?' }, class: 'fa fa-trash' if override.can_destroy?
+          td = link_to 'Add Override', new_polymorphic_path([charge, charge.class.new.overrides.new])
+          td = link_to '', edit_polymorphic_path(charge), class: 'fa fa-edit'
+          td = link_to '', charge, method: :delete, data: { confirm: 'Are you sure you want to delete the charge?' }, class: 'fa fa-trash' if charge.can_destroy?

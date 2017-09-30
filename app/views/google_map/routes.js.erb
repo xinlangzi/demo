@@ -1,0 +1,5 @@
+$('#rail_routes').val('<%=@rail_roads.size%>')
+<%=raw GoogleMap.clear_directions%>
+<%@rail_roads.each_with_index do |rr, index|%>
+<%=raw GoogleMap.request_directions("#{rr.lan},#{rr.lon}", params[:dest], "rr#{rr.id}")%>
+<%end%>

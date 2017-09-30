@@ -1,0 +1,37 @@
+- @containers.each do |container|
+  - if @me.container_id == container.id
+    fieldset.border You can not link to the same #{container.class.to_s.titleize.downcase} with ID #{link_to(container.id, container)}.
+  - else
+    center.bold.f120 #{container.class.to_s.titleize} with ID #{link_to(container.id, container)}
+    table.gray.order
+      - container.operations.each do |operation|
+        tr.operation-detail
+          td.operation-info
+            .containerOperationDiv
+              .operationDetail
+                .bold = operation.operation_type.name
+                = render :partial => 'shared/print_brief_company', :object => operation.company
+                .operationDate
+                  = calendar_for_operation(operation)
+                .operationMile
+                  = operation.distance.miles.to_s + " miles↓" if !operation.final?&&operation.distance
+              .operationDrop
+                - if operation.is_drop?
+                  .bold Home Yard:
+                  = render :partial => 'shared/print_brief_company', :object => operation.yard
+                  .operationDate
+                    = calendar_for(operation, :appt, { time: operation.time_required?})
+                  .operationMile
+                    = '↔' + operation.yard_distance.miles.to_s + " miles" if operation.yard
+              .operationDriver
+                - unless operation.final?
+                  - if current_user.is_admin?
+                    span.icon-text
+                      i.fa.fa-user
+                      = operation.trucker.name rescue 'N/A'
+                  .clear
+                  span.bold Instruction:&nbsp;
+                  = operation.instructions
+                  - if current_user.is_admin?&&@me.linkable_to?(operation)
+                    div = link_to "Link me", link_me_operation_path(operation, me: @me.id), remote: true, class: 'btn'
+= paginate @containers, remote: true

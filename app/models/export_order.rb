@@ -1,0 +1,2 @@
+class ExportOrder < Order
+end

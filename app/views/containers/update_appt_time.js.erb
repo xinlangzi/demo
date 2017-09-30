@@ -1,0 +1,6 @@
+<%if @container.valid?%>
+$('#<%=dom_id(@container, "appt_date-data-picker")%>').replaceWith('<%=j calendar_for(@container, :appt_date, { 'embed-ajax-url' => embed_appt_time_container_path(@container) })%>')
+$('#appt_time_range_<%=@container.id%>').html('')
+<%else%>
+$('#appt_time_range_<%=@container.id%>').html('<%=j simple_errors_for(@container)%>')
+<%end%>

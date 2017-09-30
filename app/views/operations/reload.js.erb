@@ -1,0 +1,6 @@
+<%if @operation%>
+$(".<%=dom_id(@operation, 'operate')%>").replaceWith('<%=calendar_for_operation(@operation)%>')
+$(".<%=dom_id(@operation, 'docs')%>").replaceWith('<%=attachments_for(@operation)%>')
+$(".<%=dom_id(@operation, 'driver')%>").html('<%=driver_status(@operation)%>')
+$(".<%=dom_id(@operation, 'email')%>").html('<%=email_status(@operation)%>')
+<%end%>

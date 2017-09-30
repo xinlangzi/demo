@@ -1,0 +1,19 @@
+table.gray
+  caption
+    ul
+      li.title = title
+  thead
+    tr
+      th.w100 Cont ID
+      th.w120 Container No.
+      th.w120 Reference No.
+      th.w120 Container Size
+      th Admin Comment
+  tbody
+    - containers.each do |container|
+      tr
+        td =link_to container.id, [:edit, container]
+        td =container.container_no
+        td =container.reference_no
+        td =container.size
+        td =container.admin_comment

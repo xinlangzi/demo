@@ -1,0 +1,29 @@
+tr
+  td.bold House bl No.
+  td = container.house_bl_no
+  td.bold SS Line B/L No.*
+  td = container.ssline_bl_no
+= render 'containers/container2', container: container
+tr
+  td.bold Appointment
+  td = appt_range(container, true)
+  td
+  td
+tr
+  td.bold Pickup No.
+  td
+    - if container.pickup_no.present?
+      = container.pickup_no
+    - else
+      span.red pending
+  td.bold Rail Last Free Day
+  td
+    - if container.rail_lfd.present?
+      = container.rail_lfd
+    - else
+      span.red pending
+tr
+  td.bold Per Diem Last Free Day
+  td = container.per_diem_lfd
+  td.bold Terminal/Rail ETA
+  td = container.terminal_eta

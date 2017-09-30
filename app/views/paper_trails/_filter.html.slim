@@ -1,0 +1,7 @@
+#search-box.search-box
+  .search-inner
+    = simple_form_for @search, url: paper_trails_path, html: { method: :get, class: 'horiz'} do|f|
+      = f.input :item_type_eq, label: 'Type', collection: @item_types, required: false, wrapper: 'vertical'
+      = f.input :event_eq, label: 'Event', collection: PaperTrail::Version.pluck(:event).uniq.sort, required: false, wrapper: 'vertical'
+      = f.input :keyword, required: false, wrapper: 'vertical'
+      = f.submit "Search"

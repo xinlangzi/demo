@@ -1,0 +1,48 @@
+.box
+  .box-title Invitation
+  .box-content
+    = link_to "- Send Invitation -", [:invite, @applicant], class: 'green-btn' unless @applicant.hired?
+    span &nbsp;Invitation Last Sent: #{@applicant.invited_at || 'N/A'}
+    .rfloat
+      - if @applicant.invited_at && @applicant.token
+        = link_to "Open Application Form", edit_applicant_path(@applicant.token), target: '_blank'
+- trucker = @applicant.company
+- if trucker
+  - truck = Truck.default(trucker)
+  .row
+    .col-md-6
+      = render 'applicants/infos/basic', trucker: trucker
+      = render 'applicants/infos/truck', truck: truck
+      = render 'applicants/infos/payable', trucker: trucker
+    .col-md-6
+      = render 'applicants/infos/others', applicant: @applicant
+  .box
+    .box-title Docusign Status
+    .box-content
+      - if trucker.docusign_file
+        = link_to "View Final Docusign(#{trucker.driver_type.try(:titleize)})", 'javascript: void(0)', onClick: "javascript:App.newPopup('#{image_path(trucker.docusign_file)}', 'ViewDocument', 800, 650, 0, 0)", class: 'btn'
+      - else 
+        = link_to 'Sign as Applicant', sign_applicant_path(@applicant, role: Docusign::Base::APPLICANT), class: 'red-btn', target: '_blank'
+        = link_to 'Sign as Admin', sign_applicant_path(@applicant, role: Docusign::Base::ADMIN), class: 'green-btn', target: '_blank'
+        = fields_for :trucker, trucker do |f|
+          label.inline
+            .lblue-btn 
+              span Publish to Applicant to Sign
+              = f.check_box :driver_docusign_published, class: "auto-save center", id: dom_id(trucker, 'driver_docusign_published'), ref: "Company:#{trucker.id}:driver_docusign_published"
+  .box
+    .box-title Employment
+    .box-content
+      - if trucker.uncertain?
+        - if trucker.valid?
+          = link_to "- Ready to Hire -", [:hire, @applicant], class: 'green-btn'
+          .hint This applicant will receive Email/SMS with instructions to initialize password and download mobile app. Also the application form is not accessible any more.
+        - else
+          a.red-btn href="javscript:void(0)" - Not Ready to Hire -
+          .hint = trucker.errors.full_messages.join('; ')
+      - else
+        p Already converted this applicant to a driver #{link_to trucker, trucker}. The application form is not accessible any more.
+        h2.red Account Status:
+        - if trucker.pwd_inited?
+          p This account is already activated with initialized password provided by this applicant.
+        - else
+          p You can click #{link_to 'here', [:hire, @applicant]} to resend Email/SMS to remind this driver to initialize password and download mobile app.

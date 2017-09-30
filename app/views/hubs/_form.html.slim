@@ -1,0 +1,8 @@
+= simple_nested_form_for @hub, html: { class: 'rows'} do |s|
+  fieldset
+    legend Basic Information
+    = s.input :name, input_html: { class: 'w300' }
+    = s.input :fuel_zone, collection: Fuel::FUEL_ZONES, include_blank: false, hint: "You can review the zones from #{link_to('here', Fuel::FUEL_URL, target: '_blank')}. (ex. `Midwest (PADD 2)' )".html_safe, input_html: { class: 'w300' }
+  = render 'driver_expirations', s: s
+  = render 'hub_interchanges', s: s
+  = s.submit

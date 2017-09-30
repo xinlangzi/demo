@@ -1,0 +1,37 @@
+ul.select-widget
+  li.title #{table_caption}
+  li Select:
+  li
+    a[onclick="App.checkAll('#{type}', true)" class='underline'] All
+  li
+    a[onclick="App.checkAll('#{type}', false)" class='underline'] None
+
+table.gray.mr10
+  thead
+    tr
+      th Type
+      th No
+      th Display Name
+      th Company Name
+      th Payment Date
+      th Amount
+      th Cleared Date
+      th
+  tbody
+    - payments.each do |payment|
+      tr class="#{'highlight reconciled' if payment.reconciled?}"
+        td = payment.payment_method.name
+        td = link_to "#{payment.number}", payment
+        td = payment.company.name
+        td = payment.company.print_name
+        td = payment.issue_date.blank? ? 'N/A' : payment.issue_date.to_date
+        td.number = number_to_currency payment.amount
+        td = payment.cleared_date.blank? ? 'N/A' : payment.cleared_date
+        td =check_box_tag "reconciliation[pids][]", payment.id, payment.reconciled?, :id => "reconciliation_pids_#{payment.id}", :class=>"#{type}", data: { behavior: 'toggle-highlight' }
+
+  tfoot
+    tr
+      th[colspan="5"] Total amount
+      th.number
+        span[id="#{type}_amount"] = number_to_currency(amount || 0)
+      th[colspan="2"]

@@ -1,0 +1,8 @@
+.title-bar
+  h1 Search Reconciliation
+  ul
+    li = link_to "Back to List", report_reconciliations_path
+.content
+  = render 'report/reconciliations/filter'
+  = render 'report/reconciliations/payments'
+  = render 'report/reconciliations/report_by_category'

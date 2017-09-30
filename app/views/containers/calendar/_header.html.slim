@@ -1,0 +1,29 @@
+thead
+  tr
+    th rowspan=2 ID
+    - if current_user.is_admin? && !driver_mode?
+      th rowspan=2 Customer
+      th rowspan=2 Accts Receivable
+      th rowspan=2 Accts Payable
+      th rowspan=2 Profit
+    th colspan="#{driver_mode? ? 3 : 4}" rowspan=1 Consignee/Shipper
+    th rowspan=2 SS Line
+    th rowspan=2 Terminal
+    th rowspan=2 Depot
+    th rowspan=2 Cont. Size
+    th rowspan=2 Triaxle
+    th rowspan=2 Cont. No.
+    th rowspan=2 SS Line B/L No.
+    th rowspan=2 Chassis No.
+    - if type == 'import'
+      th rowspan=2 Terminal/Rail ETA
+      th rowspan=2 Rail Last Free Day
+    - else
+      th rowspan=2 Rail Cut Off Date
+    th rowspan=2 Operations
+  tr
+    - unless driver_mode?
+      th Name
+    th City
+    th State
+    th Appt

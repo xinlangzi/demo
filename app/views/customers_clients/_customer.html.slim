@@ -1,0 +1,7 @@
+- if current_user.is_admin?
+  fieldset
+    legend Customer
+    - if @company.new_record?
+      = c.input :customer_id, as: :select, collection: Customer.get_names_and_ids, include_blank: true, label: 'Company', input_html: { class: 'chosen-select' }
+    - else
+      = c.input :customer_id, as: :select, collection: Customer.get_names_and_ids, include_blank: true, disabled: true, label: 'Company'

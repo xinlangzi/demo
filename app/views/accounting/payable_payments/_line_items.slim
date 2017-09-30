@@ -1,0 +1,18 @@
+tr
+  th INV
+  th CATEGORY
+  th AMNT
+  th INV
+  th CATEGORY
+  th AMNT
+- payment.line_item_payments.each_slice(2) do |lips|
+  tr
+    = render :partial => "line_item", :locals => {:lip => lips[0] }
+    - if lips[1]
+      = render :partial => "line_item", :locals => {:lip => lips[1] }
+    - else
+      td colspan="3" &nbsp;
+tr
+  td colspan="4" &nbsp;
+  td TOTAL
+  td class="money" = sprintf("$%.2f", payment.amount)

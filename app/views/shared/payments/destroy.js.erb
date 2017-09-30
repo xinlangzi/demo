@@ -1,0 +1,20 @@
+<%if params[:from]=="show"%>
+  <%if @errors.empty?%>
+    <%info = "Payment #{@payment.number} is deleted successfully!"%>
+    <%if params[:show]=='multiple'%>
+      $('#<%=dom_id(@payment)%>').html($('<div class="ok bold"><%=info%></div>'))
+    <%else%>
+      <%flash[:notice] = info%>
+      window.location = '<%=polymorphic_path(@payment.class.new)%>'
+    <%end%>
+  <%else%>
+    $('#payment_delete_<%=@payment.id%>').html('<%=j @errors.join("<br/>").html_safe%>')
+  <%end%>
+<%else%>
+  <%if @errors.empty?%>
+    $('#<%=dom_id(@payment)%>').addClass("strike")
+    $('#<%=dom_id(@payment)%>').find(".fa").remove()
+  <%else%>
+    $('#<%=dom_id(@payment)%>').after($('<tr><td class="red bold" colspan="10"><%=@errors.join("<br/>").html_safe%></td></tr>'))
+  <%end%>
+<%end%>

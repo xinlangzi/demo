@@ -1,0 +1,51 @@
+= render 'applicants/invitation/steps', step: 2
+- trucker = @applicant.company
+- truck = Truck.default(trucker)
+- hub = @applicant.hub
+.form
+  fieldset
+    .name VOID Check
+    = render 'upload', applicant: @applicant, image: Image.new(imagable: trucker, column_name: Trucker::VOID_CHECK_TAG), tag: 'expir-docs'
+    table.docs
+      - trucker.images.where(column_name: Trucker::VOID_CHECK_TAG).each do |doc|
+        tr data-id=doc.uuid
+          td = link_to doc.filename, doc.file.url, target: '_blank'
+          td width=80 = doc.status.titleize
+          td width=50 = link_to 'Delete', [:delete, doc], method: :delete, data: { confirm: 'Are you sure to delete?'}, remote: true, class: 'red' if doc.pending?
+  - [:driver_license_expiration, :medical_card_expiration].each do |name|
+    - if hub.send(name)
+      fieldset
+        .name = Trucker::DOC_NAME_MAPS[name]
+        = render 'upload', applicant: @applicant, image: Image.new(imagable: trucker, column_name: name), tag: 'expir-docs'
+        table.docs
+          - trucker.images.where(column_name: name).each do |doc|
+            tr data-id=doc.uuid
+              td = link_to doc.filename, doc.file.url, target: '_blank'
+              td width=80 = doc.status.titleize
+              td width=50 = link_to 'Delete', [:delete, doc], method: :delete, data: { confirm: 'Are you sure to delete?'}, remote: true, class: 'red' if doc.pending?
+  fieldset
+    .name Truck Title or Proof of Ownership
+    = render 'upload', applicant: @applicant, image: Image.new(imagable: truck, column_name: Truck::OWNERSHIP_TAG), tag: 'expir-docs'
+    table.docs
+      - truck.images.where(column_name: Truck::OWNERSHIP_TAG).each do |doc|
+        tr data-id=doc.uuid
+          td = link_to doc.filename, doc.file.url, target: '_blank'
+          td width=80 = doc.status.titleize
+          td width=50 = link_to 'Delete', [:delete, doc], method: :delete, data: { confirm: 'Are you sure to delete?'}, remote: true, class: 'red' if doc.pending?
+  - [:annual_inspection_expiration, :license_plate_expiration, :ifta_expiration, :bobtail_insurance_expiration, :last_quarterly_maintenance_expiration].each do |name|
+    - if hub.send(name)
+      fieldset
+        .name = Trucker::DOC_NAME_MAPS[name]
+        = render 'upload', applicant: @applicant, image: Image.new(imagable: truck, column_name: name), tag: 'expir-docs'
+        table.docs
+          - truck.images.where(column_name: name).each do |doc|
+            tr data-id=doc.uuid
+              td = link_to doc.filename, doc.file.url, target: '_blank'
+              td width=80 = doc.status.titleize
+              td width=50 = link_to 'Delete', [:delete, doc], method: :delete, data: { confirm: 'Are you sure to delete?'}, remote: true, class: 'red' if doc.pending?
+  
+    
+= simple_form_for @applicant, url: invitation_applicants_path, method: :put do |f|
+  = f.submit 'Previous', formnovalidate: true, class: 'w100 red-btn'
+  .pull-right
+    = f.submit 'Next', class: 'w100 green-btn'

@@ -1,0 +1,2 @@
+- options = (@port.rail_road_options rescue [])
+= select(:quote_engine, :rail_road_id, options , {selected: params[:rail_road_id]}, { required: true, multiple: true, id: "src"}) unless options.empty?

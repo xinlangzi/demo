@@ -1,0 +1,9 @@
+.title-bar
+  h1 Editing #{@accounts_type} Third Party Payment No. #{link_to @payment.number.to_s, @payment}
+
+.content
+  - observe_url = polymorphic_path([:update_total, @payment.class.new])
+  = form_for @payment, as: :payment, url: polymorphic_url(@payment), html: { id: 'payment_form', class: 'observe-form', data: { url: observe_url, method: :put}} do |p|
+    = p.error_messages
+    = render partial: 'accounting/payments/form/payment', object: @payment
+    = render partial: 'accounting/payments/form/line_item_payments', object: @payment.line_item_payments, locals: {:p => p}

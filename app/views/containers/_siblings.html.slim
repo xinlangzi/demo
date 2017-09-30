@@ -1,0 +1,4 @@
+-  if !siblings.blank? && !current_user.is_trucker?
+  fieldset.border
+    .bold.green Containers that belong to the same order:
+    div = siblings.map{|c| link_to "#{c.id}-#{h c.container_no}", c}.to_sentence.html_safe

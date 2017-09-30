@@ -1,0 +1,19 @@
+.swiper-container.swiper3
+  .swiper-wrapper
+    - @rejected_j1s.each do |image|
+      .swiper-slide
+        .card.doc-card.no-box
+          - if image.imagable
+            - container = image.imagable.container rescue image.imagable
+            .card-header = link_to container.to_s, container
+          - else
+            .card-header.color-red No Operation
+          .card-content
+            = image_tag(image.file.url(:thumb), width: '100%') if image.file_exists?
+            .card-content-inner = simple_format(image.comment)
+          .card-footer
+            a.link.delete data-id=image.uuid Delete
+            a.link = image.created_at.us_datetime
+  br
+  br
+  .swiper-pagination

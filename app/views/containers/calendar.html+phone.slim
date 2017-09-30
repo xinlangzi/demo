@@ -1,0 +1,83 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      - if @date!=Date.today
+        .left
+          a.link href=calendar_containers_path(date: Date.today) Today
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.toolbar
+  .toolbar-inner
+    a.link href=calendar_containers_path(date: @date.yesterday)
+      i.icon.ion-arrow-left-a
+      i Prev
+    a.link href="#"
+      b = @date
+    a.link href=calendar_containers_path(date: @date.tomorrow)
+      i Next
+      i.icon.ion-arrow-right-a
+
+.list-block.narrow-block
+  - @summary.each do |hub, mapped_containers|
+    - unless mapped_containers.values.flatten.empty?
+      .card
+        .card-header.button.button-fill.color-gray = hub.name
+        .card-content
+          - grouped_containers = (mapped_containers["with_appointment"]||[]).group_by(&:type)
+          - ['ImportContainer', 'ExportContainer'].each do |type|
+            - containers = grouped_containers[type]||[]
+            ul
+              li.accordion-item class="#{containers.size > 0 ? 'accordion-item-expanded' : ''}"
+                a.item-content.item-link href="#"
+                  .item-inner
+                    .item-title = type.tableize.titleize
+                    .item-after
+                      span.badge = containers.size
+                .accordion-item-content
+                  .list-block.media-list
+                    ul
+                      - containers.each do |container|
+                        li
+                          = link_to container, class: 'item-link item-content' do
+                            .item-inner
+                              .item-title-row
+                                .item-title.color-blue = container.id
+                                - if current_user.is_admin?
+                                  .item-after
+                                    - customers = container.consignees_or_shippers_info
+                                    - cities = customers.map(&:address_city).join(' ')
+                                    - states = customers.map(&:abbrev).join(' ')
+                                    = cities + ' ' + states
+                              - if current_user.is_admin?
+                                .item-text
+                                  = container.truckers.uniq.map(&:name).join(", ")
+          - estimateds = mapped_containers["estimated"] || []
+          ul
+            li.accordion-item class="#{estimateds.size > 0 ? 'accordion-item-expanded' : ''}"
+              a.item-content.item-link href="#"
+                .item-inner
+                  .item-title Estimated Pickups
+                  .item-after
+                    span.badge = estimateds.size
+              .accordion-item-content
+                .list-block.media-list
+                  ul
+                    - estimateds.each do |container|
+                      li
+                        = link_to container, class: 'item-link item-content' do
+                          .item-inner
+                            .item-title-row
+                              .item-title.color-blue = container.id
+                              - if current_user.is_admin?
+                                .item-after
+                                  - customers = container.consignees_or_shippers_info
+                                  - cities = customers.map(&:address_city).join(' ')
+                                  - states = customers.map(&:abbrev).join(' ')
+                                  = cities + ' ' + states
+                            - if current_user.is_admin?
+                              .item-text
+                                = container.truckers.uniq.map(&:name).join(", ")

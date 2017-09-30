@@ -1,0 +1,24 @@
+.title-bar
+  h1 Incomplete addresses
+
+
+.content
+  fieldset.form
+    = simple_form_for(@system_setting ||=SystemSetting.default, :url => system_setting_path, remote: true, :method => :put) do |f|
+      = f.input :incomplete_address_email_to, label: "Incomplete address bcc email address", wrapper: 'vertical', hint: EMAIL_FORMAT_TIP, input_html: { multiple: 'multiple', class: 'w400'}
+      = f.submit 'Update Email'
+      #status
+
+  #addresses-tabs
+    ul
+      - @companies.each do |companies|
+        - unless companies.empty?
+          li
+            a[href="#tab_#{companies.first.class.to_s}"] #{companies.first.class.to_s}
+    - @companies.each do |companies|
+      - unless companies.empty?
+        div[id="tab_#{companies.first.class.to_s}"]
+          = render :partial => "companies", :object => companies
+
+javascript:
+  $( "#addresses-tabs" ).tabs();

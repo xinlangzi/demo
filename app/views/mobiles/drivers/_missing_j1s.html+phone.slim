@@ -1,0 +1,37 @@
+.swiper-container
+  .swiper-wrapper
+    - @missing_j1s.group_by(&:container_id).each do |container_id, j1s|
+      - container = Container.find(container_id)
+      .swiper-slide
+        .card.container-card.no-box
+          .card-header
+            .bold = link_to container.id, container
+            - if container.lock?
+              i.ion-ios-locked.locked-status
+          .card-content
+            - if container.lock?
+              .card-content-inner Contact dispatcher since the container is locked.
+            - else
+              .list-block.media-list
+                ul
+                  - j1s.each do |j1|
+                    li.item-content
+                      .item-inner
+                        .item-title-row
+                          .item-title.operation-type = j1.action_name
+                        .item-subtitle
+                          - company = j1.company
+                          - if company
+                            .company = company.name
+                            .address = company.address_street
+                            .address = "#{company.address_city}, #{company.state} #{company.zip_code}"
+                            a.ajax-popup href="#" data-url=new_doc_path(image: { imagable_type: j1.object.class.table_name.classify, imagable_id: j1.object.id, column_name: j1.column_name }, layout: 'popup', target: 'j1s', name: j1.to_s)
+                              i.upload-icon.ion-images
+                        .item-text
+                          - if j1.object.try(&:appt_confirmed?)
+                            .appt-date
+                              i.ion-clock &nbsp;
+                              = appt_range(container, true)
+  br
+  br
+  .swiper-pagination

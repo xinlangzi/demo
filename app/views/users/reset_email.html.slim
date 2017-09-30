@@ -1,0 +1,13 @@
+h1 Reset Email
+
+- if flash[:notice]!=User::RESET_EMAIL_SUCCESS
+  center.notice.red Sorry! Our system has been upgraded and now requires that all email addresses be unique. Please update your email address to a different account. Thanks.
+  = simple_form_for reset_email_path, method: :post do |s|
+    .red.center = flash[:notice]
+    = s.input :name, wrapper: :vertical, input_html: { value: params[:username], autocomplete: 'off', name: 'name', class: 'itext' }
+    = s.input :email, label: 'Old Email', wrapper: :vertical, input_html: { value: params[:email], autocomplete: 'off', name: 'email', type: 'email', class: 'itext' }
+    = s.input :new_email, label: 'New Email', wrapper: :vertical, input_html: { value: params[:email], autocomplete: 'off', name: 'new_email', type: 'email', class: 'itext' }
+    = s.submit "Reset Email"
+    = link_to "Back to Login", login_path
+- else
+  center.bold You have successfully reset the password for your account. Please click <a href='/'>here</a> to login.

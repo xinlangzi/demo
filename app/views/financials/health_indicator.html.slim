@@ -1,0 +1,77 @@
+.title-bar
+  h1 Health Indicator
+
+.content
+  table.gray.vmiddle
+    tr
+      th.text-left colspan=3
+        h2 Outstanding Container Invoices
+    tr
+      th.text-left Receivables
+      td.text-right width=900 = number_to_currency @total_outstanding_receivables
+      td width=30
+        = link_to sql_path(@outstanding_receivables_sql.iid, tmpl: 'financials/show_all', partial: 'financials/health_indicator/invoices', target: 'outstanding-receivables'), remote: true, class: 'show-hide', rel: 'outstanding-receivables' do
+            i.green.fa.fa-list-ul
+    tr.hidden#outstanding-receivables
+      td
+      td colspan=2
+    tr
+      th.text-left Payables
+      td.number =  number_to_currency @total_outstanding_payables
+      td
+        = link_to sql_path(@outstanding_payables_sql.iid, tmpl: 'financials/show_all', partial: 'financials/health_indicator/invoices', target: 'outstanding-payables'), remote: true, class: 'show-hide', rel: 'outstanding-payables' do
+            i.red.fa.fa-list-ul
+    tr.hidden#outstanding-payables
+      td
+      td colspan=2
+    tr
+      td.number.bold colspan=2 = number_to_currency @outstanding_difference
+      td
+    tr
+      th.text-left colspan=3
+        h2 Outstanding Third Party Invoices
+    tr
+      th.text-left Receivables
+      td.number = number_to_currency @total_tp_outstanding_receivables
+      td
+        = link_to sql_path(@tp_outstanding_receivables_sql.iid, tmpl: 'financials/show_all', partial: 'financials/health_indicator/invoices', target: 'tp-outstanding-receivables'), remote: true, class: 'show-hide', rel: 'tp-outstanding-receivables' do
+            i.green.fa.fa-list-ul
+    tr.hidden#tp-outstanding-receivables
+      td
+      td colspan=2
+    tr
+      th.text-left Payables
+      td.number =  number_to_currency @total_tp_outstanding_payables
+      td
+        = link_to sql_path(@tp_outstanding_payables_sql.iid, tmpl: 'financials/show_all', partial: 'financials/health_indicator/invoices', target: 'tp-outstanding-payables'), remote: true, class: 'show-hide', rel: 'tp-outstanding-payables' do
+            i.red.fa.fa-list-ul
+    tr.hidden#tp-outstanding-payables
+      td
+      td colspan=2
+    tr
+      td.number.bold colspan=2 = number_to_currency @tp_outstanding_difference
+      td
+    tr
+      th.text-left colspan=3
+        h2 Delivered Containers Yet to Be Invoiced
+    tr
+      th.text-left Receivables
+      td.number =  number_to_currency @total_uninvoiced_receivables
+      td
+        = link_to sql_path(@uninvoiced_receivables_sql.iid, tmpl: 'financials/show_all', partial: 'financials/health_indicator/container_charges', target: 'uninvoiced-receivables'), remote: true, class: 'show-hide', rel: 'uninvoiced-receivables' do
+            i.green.fa.fa-list-ul
+    tr.hidden#uninvoiced-receivables
+      td
+      td colspan=2
+    tr
+      th.text-left Payables
+      td.number =  number_to_currency @total_uninvoiced_payables
+      td
+        = link_to sql_path(@uninvoiced_payables_sql.iid, tmpl: 'financials/show_all', partial: 'financials/health_indicator/container_charges', target: 'uninvoiced-payables'), remote: true, class: 'show-hide', rel: 'uninvoiced-payables' do
+            i.red.fa.fa-list-ul
+    tr.hidden#uninvoiced-payables
+      td
+      td colspan=2
+    tr
+      td.number.bold colspan=2 = number_to_currency @uninvoiced_difference
+      td

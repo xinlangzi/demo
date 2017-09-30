@@ -1,0 +1,22 @@
+.mile_rates
+  = form_for [hub, mile_rate], remote: true do |f|
+    table.gray.hcenter
+      caption
+        ul
+          li.title Base Configuration
+      thead
+        tr
+          th Regular(MPG)
+          th Triaxle(MPG)
+          th AVG(MPG)
+          th Key Fuel Price
+      tbody
+        tr
+          td = f.text_field :regular, class: 'w60 center', required: true
+          td = f.text_field :triaxle, class: 'w60 center', required: true
+          td = f.text_field :avg_mpg, class: 'w60 center', required: true
+          td = f.text_field :key_fuel_price, class: 'w60 center', required: true
+      tfoot
+        tr
+          th.text-right colspan=4
+            = f.submit 'Save'

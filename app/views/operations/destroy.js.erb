@@ -1,0 +1,9 @@
+<%if @deleted%>
+  $(".<%=params[:uid]%>").find('.remove-charge').trigger('click')
+  $("#<%=params[:uid]%>").remove()
+  <%if @version%>
+    $('#container_vid').val('<%=@version%>')
+  <%end%>
+<%else%>
+  alert('<%= @operation.errors.full_messages.join(' ')%>')
+<%end%>

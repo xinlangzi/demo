@@ -1,0 +1,34 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+- if current_user.is_trucker?
+  .content-block.top-block
+    a.button.button-big.button-fill.color-green#new-pod href=new_fuel_purchase_path New Fuel Purchase
+
+.toolbar
+  .toolbar-inner
+    - if params[:q].blank?
+      = link_to_previous_page @fuel_purchases, content_tag(:i, nil, class: 'icon ion-arrow-left-a') + content_tag(:i, 'Prev'), class: 'link'
+      a.link href="#"
+      = link_to_next_page @fuel_purchases, content_tag(:i, 'Next') + content_tag(:i, nil, class: 'icon ion-arrow-right-a'), class: 'link'
+.list-block.narrow-block
+  ul
+    - @fuel_purchases.each do |fp|
+      li
+        = link_to fuel_purchase_path(fp, at: params[:submitted_at]), class: 'item-link' do
+          .item-content
+            .item-inner
+              .item-title.color-blue = fp.day.try(:us_date)
+              .item-title = fp.purchase_state.abbrev
+              .item-after
+                - if fp.images.count > 0
+                  sup.icon24.ion-ios-paper-outline.green
+                span = number_to_currency(fp.amount)

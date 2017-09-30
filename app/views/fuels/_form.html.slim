@@ -1,0 +1,7 @@
+.search-box
+  .search-innner
+    = simple_form_for @fuel||=Fuel.new(:price=>''), url: fuels_path, method: :post, html: {class: 'horiz'} do |f|
+      .inline
+        = f.association :hub, include_blank: false, wrapper: 'vertical'
+        = f.input :price, label: "Price/Gallon", as: :string, required: true, wrapper: 'vertical'
+        = f.submit 'Create Latest Fuel Price'

@@ -1,0 +1,155 @@
+.title-bar
+  h1 System Settings
+  ul
+    li = link_to 'Edit', edit_system_setting_path
+.content
+  .rows
+    fieldset
+      legend Twilio
+      .line
+        .label Account SID
+        .value = @system_setting.account_sid
+      .line
+        .label Auth Token
+        .value = @system_setting.auth_token
+      .line
+        .label Caller ID Phone
+        .value = @system_setting.caller_id_phone
+    fieldset
+        legend Emails
+        .line
+          .label Dispatch Email
+          .value = @system_setting.dispatch_email
+        .line
+          .label Default Bcc Email
+          .value = @system_setting.default_bcc_email
+        .line
+          .label Quote engine from email address
+          .value = @system_setting.quote_email_from
+        .line
+          .label Customer quote bcc email address
+          .value = @system_setting.quote_bcc_to
+        .line
+          .label Driver quote bcc email address
+          .value = @system_setting.driver_quote_bcc_to
+        .line
+          .label Incomplete address bcc email address
+          .value = @system_setting.incomplete_address_email_to
+    fieldset
+      legend Quote engine disclaimer
+      .line
+        .label Default
+        .value.disclaimer = @system_setting.default_fine_print.html_safe
+      .line
+        .label 2 Day Accrual Drop
+        .value.disclaimer = @system_setting.two_day_accrual_drop_fine_print.html_safe
+      .line
+        .label 3 Day Accrual Drop
+        .value.disclaimer = @system_setting.three_day_accrual_drop_fine_print.html_safe
+      .line
+        .label Unsure of SSL
+        .value.disclaimer = @system_setting.unsure_of_ssl_chassis_fine_print.html_safe
+      .line
+        .label Additional Drayage
+        .value.disclaimer = @system_setting.additional_drayage.html_safe
+    fieldset
+        legend Receivable Invoice Statement
+        .line
+          .label Subject
+          .value = @system_setting.invoice_statement_subject
+        .line
+          .label Content
+          .value = @system_setting.invoice_statement_body
+        .line
+          .label Email From
+          .value = @system_setting.invoice_statement_from
+        .line
+          .label Email Bcc
+          .value = @system_setting.invoice_statement_bcc
+    fieldset
+        legend Driver HR
+        .line
+          .label Manager
+          .value = @system_setting.driver_hr_manager
+        .line
+          .label Phone
+          .value = @system_setting.driver_hr_phone
+        .line
+          .label Email
+          .value = @system_setting.driver_hr_email
+    fieldset
+        legend Tasks for Hired/Terminated Driver
+        .line
+          .label For Hired
+          .value = @system_setting.tasks_for_hired_driver
+        .line
+          .label For Terminated
+          .value = @system_setting.tasks_for_terminated_driver
+    fieldset
+        legend Driver Performance
+        .line
+          .label Inspection Reward
+          .value = number_to_currency(@system_setting.inspection_reward)
+    fieldset
+      legend Google Map
+      .line
+        .label API Key1 
+        .value = @system_setting.google_map_api_key_frontend
+        sup HTTP referrers (web sites)
+      .line
+        .label API Key2
+        .value = @system_setting.google_map_api_key_backend
+        sup IP addresses (web servers, cron jobs, etc.)
+    fieldset
+      legend Docusign Configuration
+      .line
+        .label Username
+        .value = @system_setting.ds_username
+      .line
+        .label Password
+        .value = @system_setting.ds_password
+      .line
+        .label Integrator Key
+        .value = @system_setting.ds_integrator_key
+      .line
+        .label Account ID
+        .value = @system_setting.ds_account_id
+      .line
+        .label End Point
+        .value = @system_setting.ds_endpoint
+      .line
+        .label API Version
+        .value = @system_setting.ds_api_version
+      .line
+        .label PSP Template ID
+        .value = @system_setting.ds_psp_template_id
+      .line
+        .label Contract Driver Template ID
+        .value = @system_setting.ds_contract_driver_template_id
+      .line
+        .label Owner Operator Template ID
+        .value = @system_setting.ds_owner_operator_template_id
+      .line
+        .label Admin Name
+        .value = @system_setting.ds_admin_name
+      .line
+        .label Admin Email
+        .value = @system_setting.ds_admin_email
+        
+    fieldset
+      legend Others
+      .line
+        .label Godaddy Seal Url
+        .value = link_to @system_setting.godaddy_seal_url, @system_setting.godaddy_seal_url
+      .line
+        .label Facebook Url
+        .value = link_to @system_setting.facebook_url, @system_setting.facebook_url
+      .line
+        .label Twitter Url
+        .value = link_to @system_setting.twitter_url, @system_setting.twitter_url
+      .line
+        .label Google+ Url
+        .value = link_to @system_setting.google_plus_url, @system_setting.google_plus_url
+      .line
+        .label Fuel Zone
+        .value = @system_setting.fuel_zone || "N/A"

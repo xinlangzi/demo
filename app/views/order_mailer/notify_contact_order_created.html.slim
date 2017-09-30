@@ -1,0 +1,6 @@
+= content_for :comment do 
+  div
+    span Your order has been received.&nbsp;
+    span.check-circle &#10004;
+  p The email is to confirm that we have received your order and recorded it under our internal ID #{link_to @container.id, @container}. Please find below a copy of the order for your review. Thank you for doing business with us.
+= render 'order_info', container: @container

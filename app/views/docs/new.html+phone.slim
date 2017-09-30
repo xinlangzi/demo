@@ -1,0 +1,82 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+- imagable = @image.imagable
+.card.container-card
+  .card-header
+    - case imagable
+    - when Operation
+      - container = imagable.container
+      .pull-right
+        .badge.bg-green = imagable.operation_type.name
+      .bold = link_to container.id, container
+      - company = imagable.company
+      .company = company.name
+      .address = company.address_street
+      .address = "#{company.address_city}, #{company.state} #{company.zip_code}"
+    - when Container
+      - container = imagable
+      - if @image.column_name.to_sym  == :chassis_pickup
+        - name = 'Chassis Pickup'
+        - company = container.chassis_pickup_company
+      - else
+        - name = 'Chassis Return'
+        - company = container.chassis_return_company
+      .pull-right
+        .badge.bg-green = name
+      .bold = link_to container.id, container
+      .company = company.name
+      .address = company.address_street
+      .address = "#{company.address_city}, #{company.state} #{company.zip_code}"
+    - else
+      .bold J1s
+  .card-content
+    .list-block.narrow-block
+      = simple_form_for @image, url: docs_path(@image), html: { multipart: true, id: 'image-form' } do |s|
+        = s.hidden_field :imagable_type
+        = s.hidden_field :imagable_id
+        = s.hidden_field :column_name
+        = hidden_field_tag :name, params[:name]
+        = hidden_field_tag :target, params[:target]
+        .row#captured
+          .col-33.add-image
+            .icon.ion-ios-plus-outline
+            input.camera-input type="file" accept="image/*" capture="camera"
+        ul
+          li
+            .item-content.small
+              .item-inner
+                = s.submit 'Upload', class: 'button button-big active'
+      .error-messages
+
+- if imagable
+  .content-block-title
+    center.bold.green.title Uploaded J1s
+  - imagable.images.order("id DESC").each do |image|
+    - if image.file_exists?
+      .card.doc-card
+        .card-content
+          - pdf = image.file.content_type =~/pdf/
+          - if pdf
+            h3.text-center This is a PDF document.
+          - else
+            = image_tag(image.file.url(:thumb), width: '100%', height: '100%')
+          - if image.rejected?
+            .card-content-inner = simple_format(image.comment)
+        .card-footer
+          a.link.delete data-id=image.uuid Delete
+          -  if pdf
+            = link_to "Open PDF", image.file.url, class: 'external link', target: '_blank'
+          - else
+            a.link
+          a.link = image.status.capitalize
+      br
+      br

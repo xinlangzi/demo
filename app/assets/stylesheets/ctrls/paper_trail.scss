@@ -1,0 +1,20 @@
+.paper-trails{
+  background: yellow;
+  overflow-y: auto;
+  max-height: 400px;
+  margin-bottom: 10px;
+  border: 1px solid $gray;
+  padding: 10px;
+  table{
+    .create{
+      color: green;
+    }
+    .destroy{
+      color: red;
+      text-decoration:line-through;
+    }
+    .update{
+      color: blue;
+    }
+  }
+}

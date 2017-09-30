@@ -1,0 +1,9 @@
+#search-box.search-box
+  .search-inner
+    = simple_form_for @search, url: adjustments_path, html: { method: :get, id: "form_search", class: 'horiz'} do |s|
+      = s.input :invoice_issue_date_gteq, as: :datepicker, label: 'From', input_html: { class: 'clearable'}, wrapper: 'vertical', required: false
+      = s.input :invoice_issue_date_lteq, as: :datepicker, label: 'To', input_html: { class: 'clearable'}, wrapper: 'vertical', required: false
+      = s.input :invoice_company_id_eq, as: :select, collection: Trucker.get_all_names_and_ids, include_blank: true, label: 'Trucker', input_html: {class: 'clearable chosen-select'}, wrapper: 'vertical', required: false
+      = s.input :category_id_eq, as: :select, collection: AdjustmentCategory.all, include_blank: true, label: 'Category', input_html: {class: 'clearable chosen-select'}, wrapper: 'vertical', required: false
+      = s.submit "Search"
+      a.clear_button.btn Clear

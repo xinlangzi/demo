@@ -1,0 +1,29 @@
+.title-bar
+  h1 Confirmed Without Appt Date
+  ul
+    li = link_to 'Back to Reports', '/reports'
+.full-page
+  - unless @containers.empty?
+    table.gray
+      thead
+        tr
+          th.pw5 rowspan=2 Cont ID
+          th.pw10 rowspan=2 Date
+          th.pw10 rowspan=2 Container No
+          th.pw20 rowspan=2 Customer
+          th.pw40[colspan="3"] Consignee/Shipper
+        tr
+          th Name
+          th.w150 City
+          th State
+      tbody
+        - @containers.each do |container|
+          tr
+            td = link_to container.id, container
+            td = container.created_at.us_date
+            td = container.container_no
+            td = container.customer.name rescue 'N/A'
+            - customers = container.consignees_or_shippers_info
+            td = customers.map(&:name).join('<hr>').html_safe rescue 'N/A'
+            td = customers.map(&:address_city).join('<hr>').html_safe rescue 'N/A'
+            td = customers.map(&:abbrev).join('<hr>').html_safe rescue 'N/A'

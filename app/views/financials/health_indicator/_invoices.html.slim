@@ -1,0 +1,22 @@
+table.gray.shadow
+  thead
+    tr
+      th Number
+      th Company
+      th Invoice Date
+      th Amount
+      th Balance
+      th Credits
+      th Adjustments
+      th Final Balance
+  tbody
+    - invoices.each do |invoice|
+      tr
+        td = link_to invoice.number, invoice.type.constantize.find(invoice.id), target: '_blank'
+        td = invoice.company_name
+        td = invoice.issue_date
+        td.number = number_to_currency(invoice.amount)
+        td.number = number_to_currency(invoice.balance)
+        td.number = number_to_currency(invoice.credits)
+        td.number = number_to_currency(invoice.adjustments)
+        td.number = number_to_currency(invoice.final_balance)

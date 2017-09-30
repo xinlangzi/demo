@@ -1,0 +1,8 @@
+doctype html
+html
+  head
+    link[rel="shortcut icon" href="/favicon.ico"]
+    title #{title} - #{@owner.name}
+    = stylesheet_link_tag "application", 'data-turbolinks-track' => true
+  body
+    = yield

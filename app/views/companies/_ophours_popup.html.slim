@@ -1,0 +1,7 @@
+.bold.f120 Operating hours for #{@company.name} #{@company.class.to_s.downcase}
+
+= simple_form_for @company, as: :company, html: {remote: true, class: 'rows'} do |f|
+  fieldset.border
+    = f.input :ophours, label: 'Operating Hours', input_html: {class: 'w400'}
+    = f.input :comments, as: :text, label: 'Comments', input_html: {rows: 5, class: 'w500'}
+    = f.submit 'Save'

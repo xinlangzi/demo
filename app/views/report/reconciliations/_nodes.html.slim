@@ -1,0 +1,12 @@
+- nodes.each do |node|
+  li.category
+    a
+      span = node.name
+      span.green.ml5.total
+    - children = node.filter_children(ids)
+    - unless children.empty?
+      ul
+        = render 'report/reconciliations/nodes', nodes: children, ids: ids, by_categories: by_categories
+    - companies_invoices = by_categories["#{node.name}-#{node.id}"]
+    - if companies_invoices
+      = render partial: 'report/reconciliations/companies_invoices', object: companies_invoices

@@ -1,0 +1,25 @@
+fieldset.form
+  = simple_nested_form_for @daily_mileage, html: {id: :daily, class: 'rows observe-form'} do |f|
+    = f.error_messages
+    .inline
+      = f.input :trucker_id, as: :select, collection: current_hub.truckers.get_names_and_ids, wrapper: 'vertical', required: true if current_user.is_admin?
+      = f.input :day, as: :datepicker, label: 'Date', wrapper: 'vertical', input_html: { class: 'unobservable' }
+      = f.input :truck_id, as: :select, collection: @daily_mileage.related_trucks.map{|t| [t.number, t.id]}, include_blank: false, input_html: { class: "w100" }, wrapper: 'vertical'
+      = f.input :start, as: :string, label: 'Start Mileage', input_html: { class: "w150" }, wrapper: 'vertical'
+      = f.input :end, as: :string, label: 'End Mileage', input_html: { class: "w150" }, wrapper: 'vertical'
+      .vertical.string
+        = label_tag "Difference"
+        #diff = @daily_mileage.mileage
+    .clear
+    br
+    table.gray.vmiddle.w400#mileages
+      tr
+        th State
+        th Miles
+        th ✖
+      = f.fields_for :state_mileages, wrapper: false
+    hr
+    = f.submit '- Save -', class: 'left'
+    = f.link_to_add "Add State and Miles", :state_mileages, :data => { :target => "#mileages" }, class: 'btn'
+    = link_to 'Add New Truck', new_truck_path, class: 'btn' if current_user.is_admin?
+    br

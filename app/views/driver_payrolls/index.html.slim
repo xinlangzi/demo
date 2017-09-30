@@ -1,0 +1,33 @@
+.title-bar
+  h1 Driver Payrolls
+  ul
+    li = link_to "Cancel", :back
+
+.full-page
+  table.gray.vmiddle.f90
+    thead
+      tr
+        th.w30
+        th Driver
+        th Invoice No.
+        th Issue Date
+        th Week Pay
+        th EXPN Dates
+        th J1s
+        th Daily Log
+        th.w80 Subtotal
+        th.w60 Adjustments
+        th.w60 Credits
+        th.w60 Total
+        th.w100 Posted Amount
+        th.w60 Balance
+        th.w400 Quick Payment
+        th.w60 Hub
+    tfoot
+      tr.f120
+        th.text-right colspan=12 Total Amount
+        th.text-right.batch-amount = number_to_currency(0)
+        th colspan=3
+    tbody
+      - @grouped_payments.each do |company, payments|
+        = render partial: 'payroll', collection: payments, as: :payment, locals: { company: company }

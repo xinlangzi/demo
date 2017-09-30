@@ -1,0 +1,25 @@
+- container = @shipment.container
+table width="100%" cellpadding="10" style="border-bottom: 1px solid #DDD"
+  tr style=outlook_font
+    td.text-left
+      = simple_format(@shipment.comment)
+      - infos = []
+      - infos << 'Pickup No.' if @shipment.request_pickup_no
+      - infos << 'Last Free Day' if @shipment.request_last_free_day
+      - if infos.present?
+        center
+          a.bold href=pickup_web_container_url(id: container.uuid) Enter #{infos.join(' & ')}
+= render 'shipment_mailer/charges', container: container
+= render 'shipment_mailer/location', shipment: @shipment
+= render 'order_mailer/containers/progress', container: container
+= render 'shipment_mailer/statuses', container: container
+table cellpadding="10"
+  tr
+    td
+      table cellpadding="10" cellspacing="0"
+        tr style=outlook_font
+          td.btn align="center" valign="middle"
+            = link_to "Get Updated Status", web_shipments_url(id: container.uuid)
+          td
+          td.btn align="center" valign="middle"
+            = link_to "Track New Shipment", web_shipments_url

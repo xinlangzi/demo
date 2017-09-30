@@ -1,0 +1,8 @@
+.title-bar
+  h1 Editing Mileage
+  ul
+    li
+      = link_to "Back to List", daily_mileages_path
+
+.content
+  = render :partial => 'daily_mileages/form', :object => @daily_mileage

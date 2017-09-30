@@ -1,0 +1,11 @@
+- klass = controller.kind_of?(ReceivableChargesController) ? Customer : Trucker
+= simple_form_for @charge, as: :charge, html: {class: 'rows'} do |f|
+  = f.input :charge_id, as: :hidden if @charge.parent
+  = f.input :hub_id, as: :select, collection: Hub.with_default, include_blank:'- Choose One Hub -' if @charge.parent
+  = f.input :name, disabled: @charge.builtin?, input_html: { class: 'w400' } unless @charge.parent
+  = f.input :amount, as: :string, hint: (@charge.parent&&@charge.amount ? "Original amount is $#{@charge.parent.amount}." : '')
+  = f.input :percentage, as: :string, hint: (@charge.parent&&@charge.percentage ? "Original percentage is #{@charge.parent.percentage}%." : '')
+  = f.input :comments, as: :text, input_html: {rows: 4, cols: 40, class: 'w400'}
+  = f.input :accounting_group_id, as: :select, collection: Accounting::Group.all, label: 'Accounting Group' unless @charge.parent
+  = f.input :preset, as: :boolean if controller.kind_of?(PayableChargesController)
+  = f.submit

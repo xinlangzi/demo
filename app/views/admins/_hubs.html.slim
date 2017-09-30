@@ -1,0 +1,13 @@
+fieldset
+  legend
+    span Accessible Hubs
+    label.inline.f80.green
+      | &nbsp;&nbsp;
+      | Select:
+      | &nbsp;&nbsp;
+      a onclick="App.checkAll('hub', true)" All
+      | &nbsp;&nbsp;
+      a onclick="App.checkAll('hub', false)" None
+  .group-checkboxs.auto-width
+    = c.association :hubs, collection: Hub.with_default, label: false, label_method: :name, as: :check_boxes, input_html: { class: 'hub' }
+  .clear

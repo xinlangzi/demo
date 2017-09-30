@@ -1,0 +1,27 @@
+.title-bar
+  - if controller.action_name == 'new'
+    - if in_payable?
+      h1  New Accounts Payable Invoice
+    - else
+      h1 New Accounts Receivable Invoice
+  ul
+    li = link_to "List Receivable Invoices", polymorphic_url(ReceivableInvoice.new)
+    li = link_to "List Payable Invoices", polymorphic_url(PayableInvoice.new)
+    - if in_payable?
+      li = link_to "New Receivable Invoice", new_polymorphic_path(ReceivableInvoice)
+    - else
+      li = link_to "New Payable Invoice", new_polymorphic_path(PayableInvoice)
+.content
+  = render 'invoices/form/charge_filter'
+  - if @invoice
+    fieldset.form
+      - if @invoice.try(:third_party?)
+        #new_tp_invoice
+          = render 'accounting/invoices/form', invoice: @invoice
+      - else
+        = render 'invoices/form/invoice', invoice: @invoice
+  - if @uncharged_containers.size > 0
+    .red.bold #{"There are delivered containers that don't have #{@accounts_type.downcase} charges!"}
+    = render partial: 'containers/containers_brief', object: @uncharged_containers
+  - else
+    = errors_for @invoice if @invoice

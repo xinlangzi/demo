@@ -1,0 +1,26 @@
+- if @container.chassis_pickup_required?
+  - company = @container.chassis_pickup_company
+  - if company
+    li
+      .item-content
+        .item-inner
+          .item-title-row
+            .item-title Chassis Pickup
+          .item-subtitle = company.name
+          .item-title-row
+            small
+              a.external target='_blank' href=google_map_url(company.address) = company.address
+            a.ajax-popup href="#" data-url=new_doc_path(image: { imagable_type: 'Container', imagable_id: @container.id, column_name: 'chassis_pickup' }, layout: 'popup')
+              i.upload-icon.ion-images
+          .item-title-row
+            small.icon.ion-ios-telephone.color-blue
+              a href="tel:#{company.phone}" = company.phone
+          .item-text
+            i Hrs. of Operation: #{company.ophours}
+          ul.inner-links
+            - ymd = @container.chassis_pickup_at.try(:ymd)
+            - klasses = %w{button button-big only_date auto-save}
+            li.relative
+              .item-link.list-button
+                = text_field_tag :chassis_pickup_at, ymd, class: klasses, placeholder: 'Chassis Pickup Date', ref: "#{@container.class.to_s}:#{@container.id}:chassis_pickup_at", disabled: !@container.chassis_pickup_at_updatable_by?(current_user)
+                i class=alter_status_icon(@container, :chassis_pickup_at)

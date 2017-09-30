@@ -1,0 +1,37 @@
+- tid = random_id("container-charges")
+table.gray.vmiddle id=tid
+  thead
+    tr.tosubtotal
+      th Container#
+      th Invoice#
+      th Company
+      th Type
+      th Amount
+  tfoot
+    tr
+      th colspan=4 Total
+      th.number = number_to_currency container_charges.map(&:amount).compact.sum
+  tbody
+    - container_charges.each do |container_charge|
+      tr.record
+        td = link_to container_charge.container_id, container_path(container_charge.container_id), target: "_blank"
+        td = link_to container_charge.number, invoice_path(container_charge.invoice_id), target: "_blank"
+        td = container_charge.company_name rescue 'N/A'
+        td = container_charge.chargable_type.constantize.find(container_charge.chargable_id).name rescue 'N/A'
+        td.number[rel="#{container_charge.amount}"]
+          = number_to_currency(container_charge.amount)
+
+.hidden.datatable-config
+  |  {
+      "bPaginate": false,
+      "aaSorting": [[ 0, "asc" ]],
+      "aoColumns": [
+        null,
+        null,
+        null,
+        null,
+        {"sSortDataType": "cell", "sType": "numric"}
+      ]
+    }
+javascript:
+  DataTable.draw("##{tid}")

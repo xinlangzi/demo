@@ -1,0 +1,17 @@
+ul
+  - companies_invoices.each do |company_info, invoices|
+    - company_info =~/^(.*)-(\d+)$/
+    li.company
+      a
+        span = $1
+        span.ml5.total
+      ul
+        - invoices.each do |invoice_id, invoice_info|
+          - number = invoice_info[:number]
+          - amount = invoice_info[:amount]
+          - type = invoice_info[:type]
+          li.invoice
+            = link_to "/#{type.tableize}/#{invoice_id}", target: '_blank' do
+              span
+                i = number
+                span.ml5.unit rel=amount = number_to_currency(amount)

@@ -1,0 +1,103 @@
+tr class="container#{container.id}"
+  td
+    = link_to container.id, container
+    br
+    = render 'icon_links', container: container
+    - if current_user.is_admin?
+      a.fa.fa-check-square-o.invisible href=new_container_selector_path(id: container.id) data-remote="true"
+  - if current_user.is_admin?
+    td data-order=container.lock.to_i
+      = lock_checkbox(container, ajax: true)
+  td data-order=container.created_at.to_i
+    = container.created_at.strftime('%m/%d/%y')
+  - customers = container.consignees_or_shippers_info
+  - if !driver_mode?
+    td = sanitize customers.map(&:name).join('<hr>')
+  td = sanitize customers.map(&:address_city).join('<hr>')
+  td = sanitize customers.map(&:abbrev).join('<hr>')
+  td
+    span = container.container_no
+    = approve_alter_request_link(container, :container_no)
+  td
+    span = container.chassis_no
+    = approve_alter_request_link(container, :chassis_no)
+  td = sanitize container.terminals_info.map(&:name).join('<hr>')
+  td data-order=container.triaxle.to_i = checkmark(container.triaxle?)
+  - rel = (current_user.is_admin? ? "#{container.dispatched_count}-#{container.trucker_names.join('-')}" : 0) rescue 0
+  td data-order=rel
+    table.operations
+      - operations = current_user.is_trucker? ? container.viewable_operations(current_user) : container.operations
+      = render 'containers/chassis/pickup_row', container: container if operations.first.first?
+      = render operations
+      = render 'containers/chassis/return_row', container: container if operations.last.final?
+  - if current_user.is_admin?
+    - if !driver_mode?
+      td.customer = container.customer.try(:name)
+      td.customer
+        - container.receivable_invoices.each do |invoice|
+          = link_to invoice.number, invoice
+          br
+      - amount = container.receivable_amount rescue container.receivable_container_charges.total_amount
+      td.customer data-order=amount
+        = number_to_currency(amount)
+        - if (count = container.receivable_count rescue container.receivable_container_charges.count) > 0
+          sup
+            a rel='facebox' ref='eventY' href="/#{container.type.tableize}/#{container.id}/receivable_container_charges" = count
+        = render "container_tasks/check_list", type: container._type, account: 'receivable', container: container
+      td.customer
+        - container.receivable_payments.each do |payment|
+          = link_to payment.number, payment
+          br
+    td.trucker
+      - container.payable_invoices.each do |invoice|
+        = link_to invoice.number, invoice
+        br
+    - amount = container.payable_amount rescue container.payable_container_charges.total_amount
+    td.trucker data-order=amount
+      = number_to_currency(amount)
+      - if (count = container.payable_count rescue container.payable_container_charges.size) > 0
+        sup
+          a rel='facebox' ref='eventY' href="/#{container.type.tableize}/#{container.id}/payable_container_charges" = count
+      = render "container_tasks/check_list", type: container._type, account: 'payable', container: container
+    td.trucker
+      - container.payable_payments.each do |payment|
+        = link_to payment.number, payment
+        br
+    - if !driver_mode?
+      td = container.admin_comment
+
+  - if current_user.is_trucker?
+    td.trucker
+      - container.payable_invoices.select{|i| i.company_id == current_user.id }.each do |invoice|
+        = link_to invoice.number, invoice
+        br
+    - amount = container.payable_container_charges.amount(current_user.id)
+    td.trucker data-order=amount
+      = number_to_currency(amount)
+      - count = container.payable_container_charges.charges(current_user.id).size
+      - if count > 0
+        sup
+          = link_to count, polymorphic_path([container, PayableContainerCharge.new]), { id: "payable_container_charges_#{container.id}", rel: 'facebox', ref: 'eventY' }
+    td.trucker
+      - container.payable_payments.select{|p| p.company_id == current_user.id }.each do |payment|
+        = link_to payment.number, payment
+        br
+
+  - if current_user.is_customer?
+    td.customer
+      - container.receivable_invoices.each do |invoice|
+        - if [current_user.customer_id, current_user.id].include?(invoice.company_id)
+          = link_to invoice.number, invoice
+          br
+    - amount = container.receivable_container_charges.amount(@customer.id)
+    td.customer data-order=amount
+      = number_to_currency(amount)
+      - count = container.receivable_container_charges.charges(@customer).count
+      - if count > 0
+        sup
+          = link_to count, polymorphic_path([container, ReceivableContainerCharge.new]), id: "receivable_container_charges_#{container.id}", rel: 'facebox', ref: 'eventY'
+    td.customer
+      - container.receivable_payments.each do |payment|
+        - if [current_user.customer_id, current_user.id].include?(payment.company_id)
+          = link_to payment.number, payment
+          br

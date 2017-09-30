@@ -1,0 +1,12 @@
+fieldset.form id=dom_id(day_log, 'audit')
+  legend.bold Current Status: #{day_log.status_name}
+  = simple_form_for day_log, url: [:reject, day_log.trucker, day_log], method: :patch, remote: true, html: { class: 'horiz' } do |s|
+    = s.input :comment, as: :string, label: false, placeholder: 'Reason', wrapper: 'vertical', wrapper_html: { class: 'full-width' }, input_html: { class: 'full-width' }, required: true
+    = s.submit 'Reject', class: 'red-btn'
+    - unless day_log.approved?
+      | &nbsp;or &nbsp;
+      = link_to 'Approve', [:approve, day_log.trucker, day_log], method: :put, remote: true, class: 'green-btn', data: { confirm: "Are you sure to approve?" }
+    - unless day_log.hosv?
+      | &nbsp;or &nbsp;
+      = link_to 'Mark as HOSV', [:hosv, day_log.trucker, day_log], method: :put, remote: true, class: 'dgreen-btn', data: { confirm: "Are you sure to mark it as HOS Violation?" }
+    

@@ -1,74 +1,88 @@
 class HubsController < ApplicationController
-  before_action :set_hub, only: [:show, :edit, :update, :destroy]
 
-  # GET /hubs
-  # GET /hubs.json
+  def switch
+    case params[:id]
+    when /all/i
+      session[:all_hubs] = params[:id]
+    else
+      session[:hub] = params[:id]
+      session[:all_hubs] = false
+    end
+  end
+
   def index
-    @hubs = Hub.all
+    @hubs = Hub.with_deleted.with_default
   end
 
-  # GET /hubs/1
-  # GET /hubs/1.json
-  def show
-  end
-
-  # GET /hubs/new
   def new
     @hub = Hub.new
   end
 
-  # GET /hubs/1/edit
-  def edit
-  end
-
-  # POST /hubs
-  # POST /hubs.json
   def create
     @hub = Hub.new(hub_params)
-
     respond_to do |format|
-      if @hub.save
-        format.html { redirect_to @hub, notice: 'Hub was successfully created.' }
-        format.json { render :show, status: :created, location: @hub }
-      else
-        format.html { render :new }
-        format.json { render json: @hub.errors, status: :unprocessable_entity }
-      end
+      format.html{
+        if @hub.save
+          redirect_to hubs_path, notice: "Hub #{@hub.name} was created successfully."
+        else
+          render action: :new
+        end
+      }
     end
   end
 
-  # PATCH/PUT /hubs/1
-  # PATCH/PUT /hubs/1.json
+  def edit
+    @hub = Hub.find(params[:id])
+  end
+
   def update
+    @hub = Hub.find(params[:id])
     respond_to do |format|
-      if @hub.update(hub_params)
-        format.html { redirect_to @hub, notice: 'Hub was successfully updated.' }
-        format.json { render :show, status: :ok, location: @hub }
-      else
-        format.html { render :edit }
-        format.json { render json: @hub.errors, status: :unprocessable_entity }
-      end
+      format.html{
+        if @hub.update(hub_params)
+          redirect_to hubs_path, notice: "Hub #{@hub.name} was updated successfully."
+        else
+          render action: :edit
+        end
+      }
     end
   end
 
-  # DELETE /hubs/1
-  # DELETE /hubs/1.json
   def destroy
-    @hub.destroy
+    @hub = Hub.find(params[:id])
+    @hub.delete
     respond_to do |format|
-      format.html { redirect_to hubs_url, notice: 'Hub was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html{
+        redirect_to hubs_path, notice: "Hub #{@hub.name} was inactivated successfully."
+      }
+    end
+  end
+
+  def restore
+    @hub = Hub.with_deleted.find(params[:id])
+    @hub.restore
+    respond_to do |format|
+      format.html{
+        redirect_to hubs_path, notice: "Hub #{@hub.name} was activated successfully."
+      }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_hub
-      @hub = Hub.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
     def hub_params
-      params.require(:hub).permit(:name, :fuel_zone, :driver_license_expiration, :medical_card_expiration, :annual_inspection_expiration, :license_plate_expiration, :ifta_expiration, :bobtail_insurance_expiration, :last_quarterly_maintenance_expiration, :demo)
+      params.require(:hub).permit(
+        :name,
+        :annual_inspection_expiration,
+        :bobtail_insurance_expiration,
+        :driver_license_expiration,
+        :fuel_zone,
+        :ifta_expiration,
+        :last_quarterly_maintenance_expiration,
+        :license_plate_expiration,
+        :medical_card_expiration,
+        hub_interchanges_attributes: [
+          :_destroy, :customer_id, :edi, :id
+        ]
+      )
     end
 end

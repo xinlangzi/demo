@@ -1,0 +1,9 @@
+.title-bar
+  h1 Container Daily Volume
+  ul
+    li = link_to 'Container Monthly Volume', monthly_volume_containers_path, title: "To see more information on container volume"
+    li = link_to 'Container Mileages', mileages_containers_path
+.full-page
+  = render :partial => 'containers/daily_volume_filter', :object => @filter
+  .bold.center Note: Date range limit is 1 month (displaying chart for period of up to 31 days).
+  #daily-chart

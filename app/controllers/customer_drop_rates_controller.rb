@@ -1,0 +1,2 @@
+class CustomerDropRatesController < DropRatesController
+end

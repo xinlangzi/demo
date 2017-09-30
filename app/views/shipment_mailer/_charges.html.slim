@@ -1,0 +1,29 @@
+- container_charges = @shipment.container.receivable_container_charges.charges(@shipment.container.customer)
+- if container_charges.present?
+  table.charge-details width="100%" cellpadding=10 cellspacing=0 style="border-bottom: 1px solid #DDD"
+    tr
+      - width = 600.0/container_charges.size
+      - container_charges.each do |cc|
+        td width=width
+          .section 
+            .block
+              .label = cc.chargable.name
+              .h3.num = number_to_currency(cc.amount)
+      td width=180
+        .section 
+          .block.text-right 
+            .h2
+              span Total:&nbsp;
+              span.num =  number_to_currency(container_charges.sum(:amount))
+            - if container.done_tasks?(:receivable)
+              .green These charges are final
+    - unless container.done_tasks?(:receivable)    
+      tr
+        td colspan=container_charges.size  valign="middle"
+          small.red.text-center Additional charges might accrue based on factors affecting completion of the order.&nbsp;
+        td
+          table width="100%" cellpadding="5" cellspacing=0
+            tr
+              td.btn align="center" valign="middle"
+                = link_to "Get Updated Charges", charges_web_container_url(id: container.uuid)
+          

@@ -1,0 +1,67 @@
+.title-bar
+  h1 Audit Chassis Charges
+  ul
+    li = link_to 'Chassis Charges', charges_chassises_path
+    li = link_to 'Reload', audit_chassises_path
+.full-page
+  table.gray.vmiddle.f90#audit-chassises
+    thead
+      tr
+        th #
+        th Chassis No.
+        th Cont. No.
+        th Drop Off No.
+        th Hire Date
+        th Off Date
+        th Bill Start
+        th Bill End
+        th Amount
+        th Tax
+        th Total
+        th Cont. ID
+        th Amount
+        th Company
+        th Details
+        th Invoice
+        th Delivered
+        th Audited?
+    tbody
+      - @records.each_with_index do |record, row|
+        - tag = "#{row+1}-#{record[0]}"
+        - selected = mark_selected(tag)
+        - marks = record.pop
+        tr id=tag class="#{selected ? 'marked' : ''}"
+          td = row + 1
+          - cid = nil
+          - record.each_with_index do |cell, index|
+            - case index
+            - when 0
+              td
+                - if cell
+                  = link_to cell, "/chassises/#{cell}", rel: "facebox"
+                  sup = checkmark(marks.include?(:matched_chassis_no)) if cell.presence
+            - when 1, 2
+              td
+                = cell
+                sup = checkmark(marks.include?(:matched_container_no)) if cell.presence
+            - when 7, 8
+              td.text-right.italic
+                = number_to_currency(cell)
+            - when 9, 11
+              td.text-right.bold
+                = number_to_currency(cell)
+            - when 10
+              td
+                - cid = cell
+                = link_to cid, "/containers/#{cid}/preview", remote: true if cid
+            - else
+              td = cell
+          td = check_box_tag "cid[]", cid, selected, data: { id: tag }, class: 'audit-row'
+
+    tfoot
+      tr.text-right
+        th.f120 colspan=18
+          b Tax:&nbsp;&nbsp;
+          = number_to_currency @records.map{|o| o[8].to_f}.inject(:+)
+          b &nbsp;&nbsp;Total:&nbsp;&nbsp;
+          = number_to_currency @records.map{|o| o[9].to_f}.inject(:+)

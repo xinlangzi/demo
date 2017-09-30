@@ -1,0 +1,9 @@
+- key = attrs[:cache].try(:to_sym)
+.dropzone.image-uploader id=random_id('uploader') data-url=images_path(attrs)
+table.docs
+  - Image.unscoped.where(id: session[key]).each do |image|
+    tr data-id=image.uuid
+      td 
+        a onclick="javascript:App.newPopup('/images/#{image.uuid}', 'ViewDocument', 800, 650, 0, 0)" href="javascript: void(0)" = image.filename
+      td width="50"
+        a data-confirm="Are you sure to delete?" class="red" data-remote="true" rel="nofollow" data-method="delete" href="/images/#{image.uuid}" Delete

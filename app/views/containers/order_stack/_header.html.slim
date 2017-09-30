@@ -1,0 +1,34 @@
+thead
+  tr
+    th rowspan="2" ID
+    - if current_user.is_admin?
+      th rowspan="2" Lock
+    th rowspan="2" Date
+    th colspan="#{driver_mode? ? 2 : 3}" Delivery To
+    th colspan="5" Container
+    - if current_user.is_admin? && !driver_mode?
+      th rowspan="2" Customer
+    - if current_user.is_admin?&&!driver_mode? || current_user.is_trucker?
+      th colspan="3" Accts. Receivable
+    - if current_user.is_admin? || current_user.is_customer?
+      th colspan="3" Accts. Payable
+    - if current_user.is_admin?&&!driver_mode?
+      th rowspan="2" Admin Comments
+  tr
+    - if !driver_mode?
+      th Consignee/Shipper
+    th City
+    th State
+    th Cont. No.
+    th Chassis No.
+    th Terminal
+    th Triaxle
+    th Operations
+    - if current_user.is_admin?&&!driver_mode? || current_user.is_trucker?
+      th Receivable Invoice(s)
+      th Receivable Amount
+      th Receivable Payment(s)
+    - if current_user.is_admin? || current_user.is_customer?
+      th Payable Invoice(s)
+      th Payable Amount
+      th Payable Payment(s)

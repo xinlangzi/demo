@@ -1,0 +1,26 @@
+.title-bar
+  h1 Container Stack
+  ul
+    li
+      a.show-hide rel="search-box"
+        = fa_icon("search")
+    - if current_user.is_admin?
+      li
+        a.show-hide rel='config-headers' Show/Hide Header Columns
+    li = link_to_if controller.crud_class.to_s != 'ImportContainer', 'Import Containers', import_containers_path(q: params[:q].to_h)
+    li = link_to_if controller.crud_class.to_s != 'ExportContainer', 'Export Containers', export_containers_path(q: params[:q].to_h)
+    - unless @containers.empty?
+      - if current_user.is_admin? || current_user.is_customer?
+        li = link_to 'Export to Excel',  polymorphic_path(crud_class, q: params[:q].to_h, format: 'csv'), title: "Max number of containers allowed to be exported is 1000."
+    - if current_user.is_admin?
+      li = render 'selectors'
+    li.rfloat.f90
+      label
+      span Show&nbsp;
+      = select_tag :per_page, options_for_select([10, 20, 30], session[:per_order_stack])
+      span &nbsp;Entries
+.full-page
+  = render 'containers/order_stack/config' if current_user.is_admin?
+  = render 'containers/filter'
+  = render partial: 'containers/containers', object: @containers
+  = paginate @containers

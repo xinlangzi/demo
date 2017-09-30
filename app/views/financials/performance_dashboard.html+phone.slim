@@ -1,0 +1,72 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding Performance Dashboard
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+.list-block.narrow-block
+  = simple_form_for @filter, as: :filter, url: performance_dashboard_path, method: :get, html: { class: 'load-page'} do |s|
+    ul
+      li.row
+        .item-content.col-50
+          .item-inner
+            .item-input
+              = s.input_field :from, required: false, placeholder: 'From', class: 'date_picker date-from'
+            .item-after
+              .ion-ios-close-outline.clear.clear-date data-target='date-from'
+        .item-content.col-50
+          .item-inner
+            .item-input
+              = s.input_field :to, required: false, placeholder: 'To', class: 'date_picker date-to'
+            .item-after
+              .ion-ios-close-outline.clear.clear-date data-target='date-to'
+      li
+        .item-content
+          .item-inner
+            = s.submit 'Search', class: 'button active button-big'
+      li.row
+        .col-33
+          = link_to 'Previous Day', performance_dashboard_path(day: "previous", reference_date: @filter.from), class: 'item-link list-button text-left f14' if @filter.from.present?
+        .col-33
+          = link_to 'Today', performance_dashboard_path, class: 'item-link list-button'
+        .col-33
+          = link_to 'Next Day', performance_dashboard_path(day: "next", reference_date: @filter.to), class: 'item-link list-button text-right f14' if @filter.to.present?
+      li.row
+        .col-50
+          = link_to 'Previous Month', performance_dashboard_path(month: "previous", reference_date: @filter.from), class: 'item-link list-button text-left f14' if @filter.from.present?
+        .col-50
+          = link_to 'Next Month', performance_dashboard_path(month: "next", reference_date: @filter.to), class: 'item-link list-button text-right f14' if @filter.to.present?
+      li.row
+        .col-33 = link_to 'Current Month', performance_dashboard_path(date_range: "current_month"), class: 'item-link list-button f12'
+        .col-33 = link_to 'Last Month', performance_dashboard_path(date_range: "last_month"), class: 'item-link list-button f12'
+        .col-33 = link_to 'Last Quarter', performance_dashboard_path(date_range: "last_quarter"), class: 'item-link list-button f12'
+      li.row
+        .col-50
+          = link_to 'Current Year', performance_dashboard_path(date_range: "current_year"), class: 'item-link list-button f12'
+        .col-50
+          = link_to 'Previous Year', performance_dashboard_path(date_range: "previous_year"), class: 'item-link list-button f12'
+
+.content-block-title
+  b.color-blue style="font-size: 24px;" #{@containers.count}&nbsp;
+  span containers (Delivery/Invoice Date)
+.list-block.narrow-block
+  ul
+    = f7_label_text("Total Revenues", nil) do
+      .color-green.text-right.bold = number_to_currency(@container_revenue + @tp_revenue)
+    = f7_label_text("- Account Orders", nil) do
+      .color-green.text-right = number_to_currency(@container_revenue)
+    = f7_label_text("- Third Party", nil) do
+      .color-green.text-right = number_to_currency(@tp_revenue)
+    = f7_label_text("Total Costs", nil) do
+      .color-red.text-right.bold = number_to_currency(@container_cost + @tp_cost)
+    = f7_label_text("- Account Orders", nil) do
+      .color-red.text-right = number_to_currency(@container_cost)
+    = f7_label_text("- Third Party", nil) do
+      .color-red.text-right = number_to_currency(@tp_cost)
+    = f7_label_text("Gross Profit", nil) do
+      - profit_loss = @container_revenue - @container_cost + @tp_revenue - @tp_cost
+      .text-right.bold class="#{profit_loss > 0 ? 'color-green' : 'color-red' }" = number_to_currency(profit_loss)

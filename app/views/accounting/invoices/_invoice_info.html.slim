@@ -1,0 +1,68 @@
+.bold.red[id="invoice_delete_#{invoice.id}"]
+div[id="invoice_action_#{invoice.id}"]
+  div[id="invoice_info_#{invoice.id}"]
+    #invoiceHeader
+      #invoiceHeaderCompany
+        - if print_status?
+          .bold Bill #{in_receivable? ? "to" : "from"}:
+          div = invoice.company.print_name
+        - else
+          div
+            span.bold Company:&nbsp;
+            span = link_to invoice.company.name, invoice.company, target: "_blank"
+        div
+          span.bold Phone:&nbsp;
+          span = invoice.company.phone
+          span = (" / " + invoice.company.phone_extension) if !invoice.company.phone_extension.blank?
+        div
+          span.bold Address:&nbsp;
+          span = invoice.company.address
+        div
+          span.bold ATTN:&nbsp;
+          span = invoice.company.name
+          | &nbsp;
+          span = mail_to invoice.company.email, invoice.company.email, :subject => "Invoice #{invoice.number}"
+        div
+          span.bold Invoice No.:&nbsp;
+          span #{invoice.number} / #{invoice.issue_date || 'N/A'}
+        - if in_payable?
+          div
+            span.bold Received Date:&nbsp;
+            span = invoice.date_received || 'N/A'
+        - if !invoice.payments.blank?
+          .bold.green Invoice Paid With:
+          ul
+            - invoice.payments.each do |p|
+              li
+                = link_to( "#{p.payment_method.name} #{h p.number}", polymorphic_url(p) )
+                span&nbsp;of&nbsp;
+                span.bold = p.amount
+                span&nbsp;from&nbsp;
+                span.bold = p.issue_date.strftime('%Y-%m-%d')
+      .clear
+    - unless invoice.line_items.empty?
+      table.gray
+        thead
+          tr
+            th #{invoice.type_info.capitalize} Category
+            th Description
+            th.w60 Amount
+            th.w60 Balance
+            th.w60 Payment
+        - invoice.line_items.each do |li|
+          tr
+            td #{li.category.me_with_ancestors.map(&:name).reverse.join(' -> ')}
+            td #{li.description}
+            td.number #{number_to_currency li.amount}
+            td.number #{number_to_currency li.balance}
+            td
+              - li.payments.each do |payment|
+                = link_to( h("#{payment.number}(#{payment.payment_method.name.downcase})"), polymorphic_url(payment) )
+        tfoot
+          = render "accounting/invoices/credits", invoice: invoice
+          tr
+            th colspan='2'
+              b Total
+            th.number id=dom_id(invoice, 'invoice_amount') = number_to_currency(invoice.amount + invoice.sum_credits)
+            th.number id=dom_id(invoice, 'invoice_balance') = number_to_currency(invoice.balance + invoice.sum_remaining_credits)
+            th

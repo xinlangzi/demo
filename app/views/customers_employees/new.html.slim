@@ -1,0 +1,8 @@
+.title-bar
+  h1 New User #{@for_customer  ? "for #{@for_customer.name}" : ""}
+  ul
+    li = link_to 'Cancel', :back
+.content
+  = simple_form_for @company, as: :company, html: { class: 'rows' } do |c|
+    = render 'form', c: c
+    = c.submit 'Create'

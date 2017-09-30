@@ -1,0 +1,57 @@
+table.gray.vmiddle
+  tr
+    th ID
+    th Driver
+    th.w350 Location Sequences
+    th Trip Miles
+    th Base Rate
+    th Fuel Amount
+    th Fuel Percent
+    th Toll Surcharge
+    th Tolls Fee
+    th Fuel Price(Gallon)
+    th Total
+    - if @savable
+      th
+      th Charges
+  tbody
+    - @container_quotes.each do |cq|
+      - container = cq.container
+      - locked = container.lock?
+      - rowspan = cq.quotes.size
+      - cq.quotes.each_with_index do |quote, index|
+        - editable = @savable&&!locked&&!quote.preset
+        = fields_for "quote[#{editable ? quote.operation_id : ''}]", quote do |q|
+          tr
+            - if index == 0
+              td rowspan=rowspan
+                a.f120 href="javascript:void(0)" onclick="javascript:App.newPopup('#{container_path(container)}', 'ViewContainer', 700, 1200, 320, 300)" = container.id
+                .f90 = link_to 'map', map_container_path(container), remote: true, class: 'red'
+            td = quote.operation.trucker rescue 'N/A'
+            td.f70 = address_sequences(quote.operation.location_sequences, quote.operation.action_sequences)
+            td = mileage_sequences(quote.operation.mileage_sequences)
+            td = number_to_currency(quote.base_rate_fee.precision2) unless quote.preset
+            td = number_to_currency(quote.fuel_amount.precision2) unless quote.preset
+            td = "#{quote.percent_fuel.precision2}%" unless quote.preset
+            td = number_to_currency(quote.toll_surcharge) unless quote.preset
+            td = number_to_currency(quote.tolls_fee.precision2) unless quote.preset
+            td = number_to_currency(quote.gallon_price.precision2) unless quote.preset
+            td = number_to_currency( quote.preset ? quote.operation.preset_fee : quote.cal_total.precision2)
+            - if @savable
+              td
+                - unless quote.preset
+                  - if editable
+                    = q.hidden_field :base_rate_fee
+                    = q.hidden_field :fuel_amount
+                    = q.hidden_field :toll_surcharge
+                    = q.hidden_field :tolls_fee
+                    = q.hidden_field :operation_id
+                    = q.hidden_field :miles
+                    = q.hidden_field :gallon_price, value: quote.gallon_price
+                    span.save-charge.btn Save
+                    .red.f75 id="feedback_#{quote.operation_id}"
+                  - else
+                    a.lock
+              - if index == 0
+                td rowspan=rowspan
+                  = link_to(container.payable_container_charges.count, polymorphic_path([container, :payable_container_charges]), {id: "mangify_#{container.id}", class: 'btn', rel: 'facebox', ref: 'eventY' })

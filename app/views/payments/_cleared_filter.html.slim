@@ -1,0 +1,9 @@
+#search-box.search-box
+  .search-inner
+    = simple_form_for @search, url: {action: :cleared}, html: {method: :get, class: 'horiz'} do |s|
+      .w150.pull-right.f80
+        .no-tp Non Third Party
+        .tp Third Party
+      = s.input :cleared_date_gteq, as: :datepicker, label: 'Date From', required: false, wrapper: 'vertical'
+      = s.input :cleared_date_lteq, as: :datepicker, label: 'To', required: false, wrapper: 'vertical'
+      = s.submit 'Search'

@@ -1,0 +1,45 @@
+- missing_count = @missing_j1s.reject(&:locked).size
+- pending_count = @pending_j1s.count
+- rejected_count = @rejected_j1s.count
+li.accordion-item#j1s
+  a.item-content.item-link.ubtn.ubtn-3d-primary.ubtn-rounded.ubtn-jumbo href="#" 
+    .item-inner
+      .item-title J1s
+      - case true
+      - when missing_count > 0
+        .icon36.ion-android-alert.red
+      - when pending_count > 0
+        .icon36.ion-android-alert.orange
+      - when rejected_count > 0
+        .icon36.ion-android-alert.gray
+  .accordion-item-content style="background:#007998;"
+    .card
+      .card-header style="padding:5px;"
+        .buttons-row.full-width
+          a.tab-link.active.button href="#j1s-tab1"
+            span Missing&nbsp;
+            - if missing_count > 0
+              span.badge.bg-red = missing_count
+            - else
+              span.badge.bg-green 0
+          a.tab-link.button href="#j1s-tab2"
+            span Pending&nbsp;
+            - if pending_count > 0
+              span.badge.bg-yellow = pending_count
+            - else
+              span.badge.bg-green 0
+          a.tab-link.button href="#j1s-tab3"
+            span Rejected&nbsp;
+            - if rejected_count > 0
+              span.badge.bg-black = rejected_count
+            - else
+              span.badge.bg-green 0
+
+      .card-content
+        .tabs
+          #j1s-tab1.tab.active
+            == render 'mobiles/drivers/missing_j1s'
+          #j1s-tab2.tab
+            == render 'mobiles/drivers/pending_j1s'
+          #j1s-tab3.tab
+            == render 'mobiles/drivers/rejected_j1s'

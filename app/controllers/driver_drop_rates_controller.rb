@@ -1,0 +1,2 @@
+class DriverDropRatesController < DropRatesController
+end

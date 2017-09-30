@@ -1,0 +1,24 @@
+.customer_rates
+  = form_for :customer_rates, url: save_hub_customer_rates_path(hub), method: :put, remote: true do |f|
+    table.gray.hcenter
+      caption
+        ul
+          li.title Customer Rates
+          li.rfloat.green
+      thead
+        tr
+          th
+          th Miles
+          th Base Rate
+          th Fuel Ratio
+          th Fuel Amount($)
+          th Gallons
+      tbody
+        = render customer_rates
+      tfoot
+        tr
+          th colspan=6
+            .lfloat.green Set max miles 10000 to build a better report.
+            .rfloat
+              = link_to 'New Rate', new_hub_customer_rate_path(hub), remote: true, class: 'btn'
+              = f.submit 'Save'

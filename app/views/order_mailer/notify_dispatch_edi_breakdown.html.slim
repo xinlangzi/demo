@@ -1,0 +1,7 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div Dear Dispatcher,
+      p An attempt to #{@sending ? "send" : "retrieve"} an EDI message failed. You may review its details here: #{link_to edi_log_url(@edi_log_id), edi_log_url(@edi_log_id)}.
+      - if @sending
+        p Since the attempt to send the message (possibly an invoice) will NOT be repeated, it is important not to ignore this email.

@@ -1,0 +1,36 @@
+.title-bar
+  h1 Viewing #{controller.crud_class.to_s.titleize.downcase} #{@line_item.id}
+  ul
+    li #{link_to 'Back to invoice', @line_item.invoice}
+.content
+  fieldset.border
+    span Belongs to #{@line_item.invoice.class.to_s.titleize.downcase} #{link_to @line_item.invoice.number, @line_item.invoice} issued to #{@line_item.invoice.company.name} (#{@line_item.invoice.company.class.to_s})
+    .clear
+    - if @other_line_items.count > 1
+      - oli = @other_line_items.map{|oli| link_to oli.id, [@line_item.invoice, oli]}
+      - oli.delete(link_to @line_item.id)
+      span.ml5 = oli.to_sentence.html_safe
+    - else
+      span.red none.
+  table.gray
+    thead
+      tr
+        th ID
+        th Invoice no.
+        th Container id
+        th.text-right Amount
+        th.text-right Balance
+        th Payment
+    tbody
+      tr
+        td #{@line_item.id}
+        td #{link_to @line_item.invoice.number, @line_item.invoice}
+        td #{link_to @line_item.container.id, @line_item.container}
+        td.number #{number_to_currency @line_item.amount}
+        td.number #{number_to_currency @line_item.balance}
+        - if @line_item_payments != []
+          td
+            - @line_item_payments.each do |li|
+              div #{link_to li.number, li} / #{li.payment_method.name.downcase}
+        - else
+          td unpaid

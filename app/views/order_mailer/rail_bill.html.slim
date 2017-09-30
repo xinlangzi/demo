@@ -1,0 +1,25 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div  Hello,
+      p Please process rail billing, advise also which rail we’re going to take the loaded container.
+      ul.dots style=outlook_font
+        li Container: #{@rail_bill.container.container_no}
+        li Booking Number: #{@rail_bill.container.ssline_booking_no}
+        li Seal Number: #{@rail_bill.container.seal_no}
+        li Weight: #{@rail_bill.container.weight_decimal_humanized} lbs
+        li Commodity: #{@rail_bill.container.commodity}
+      br
+      .bold#rbcontent #{@rail_bill.content.to_s.gsub(/\n/, '<br/>').gsub(/\s/, '&nbsp;').html_safe}
+      br
+      div Thank you.
+      br
+      div = @rail_bill.user.try(:name)
+      br
+      - owner = Owner.first
+      div = owner.name
+      div Tel: #{owner.phone} ext: #{@rail_bill.user.try(:phone_extension)}
+      div Fax: #{owner.fax}
+      div Email: #{owner.email}
+      div Please visit our new website #{link_to owner.web, owner.web}
+      div Best-in-class: Public Quote Engine & Tracking

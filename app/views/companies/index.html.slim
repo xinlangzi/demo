@@ -1,0 +1,8 @@
+- if @companies
+  .title-bar
+    h1
+      span = @title ? @title  : "Listing #{crud_class.new.class.to_s.pluralize}"
+    = render 'ctrls'
+.full-page
+  = render 'filter'
+  = render 'companies/companies', companies: @companies if @companies

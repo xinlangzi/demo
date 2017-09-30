@@ -1,0 +1,4 @@
+$("#<%=params[:target]%> td:nth-child(2)").html('<%=j render(partial: params[:partial], object: @objects) %>')
+$("#<%=params[:target]%>").prev().find(".show-hide").removeAttr('href')
+$("#<%=params[:target]%>").prev().find(".show-hide").removeAttr('data-remote')
+$("#<%=params[:target]%>").prev().find(".show-hide").removeAttr('data-method')

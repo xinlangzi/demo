@@ -1,0 +1,4 @@
+$('#<%=dom_id(@hub)%> .<%=params[:controller]%>').replaceWith('<%=j render("table", hub: @hub, drop_rates: @drop_rates, ctrl: params[:controller])%>')
+<%if @success%>
+BaseRate.loadChartData(<%=@hub.id%>)
+<%end%>

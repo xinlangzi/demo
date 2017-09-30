@@ -1,0 +1,13 @@
+.title-bar
+  h1 Check Template: #{@check_template.name}
+  ul
+    li = link_to 'Back', check_templates_path
+.content
+  fieldset.border
+    div.f120
+      span.bold #{@check_template.name}&nbsp;
+      span by admin #{@check_template.admin.name}
+      span = link_to "Download", check_template_path(@check_template, format: :slim), class: 'ml5 f80', target: "_blank"
+    .slim style="background: url('/check.png') no-repeat 0 0"
+      pre
+        = @check_template.rtf

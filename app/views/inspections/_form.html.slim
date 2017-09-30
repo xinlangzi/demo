@@ -1,0 +1,29 @@
+= simple_form_for @inspection, html: { class: 'rows' } do |f|
+  fieldset
+    legend Basic Information
+    = f.input :trucker_id, as: :grouped_select, collection: Hub.with_default, group_method: :active_truckers, label_method: :name, include_blank: true, input_html: { class: 'chosen-select' }
+    = f.input :issue_date, as: :datepicker
+    = f.input :point, as: :string, input_html: { class: 'w110' }
+    / .inline
+    = f.input :amount, as: :string, input_html: { class: 'w110' }
+      / - if @inspection.persisted?
+      /   = f.input :invoice_no, collection: @inspection.invoice_options, label: 'Invoice No.', include_blank: true, input_html: { class: 'auto-save', id: dom_id(@inspection), ref: "Inspection:#{@inspection.id}:invoice_no" }
+    = f.input :level, as: :select, collection: Inspection::LEVELS, input_html: { class: 'w110' }
+  fieldset
+    legend Violations (SMS: Safety Management System)
+    table.gray.vmiddle.nested-items
+      thead
+        tr
+          th width=80 Code
+          th width=80 Unit
+          th width=40 OOS
+          th width=400 Description
+          th width=50 Included IN SMS
+          th Basic
+          th width=200 Reason Not Included IN SMS
+          th width=30
+      tbody
+        = f.simple_fields_for :violations do |violation|
+          = render 'violation_fields', f: violation
+    .links = link_to_add_association 'Add Violation', f, :violations, data: { "association-insertion-node" => "table.nested-items tbody", "association-insertion-method" => "append"}
+  = f.submit

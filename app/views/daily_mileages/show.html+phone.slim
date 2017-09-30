@@ -1,0 +1,32 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+- unless @daily_mileage.locked?
+  .content-block.top-block
+    a.button.button-big.button-fill.color-green href=edit_daily_mileage_path(@daily_mileage) Edit Daily Mileage
+
+.list-block.narrow-block
+  ul
+    = f7_label_text("Driver", @daily_mileage.trucker.name)
+    = f7_label_text("Date", @daily_mileage.day.try(:us_date))
+    = f7_label_text("Truck No.", @daily_mileage.truck.number)
+    = f7_label_text("Total Miles", @daily_mileage.mileage)
+    li
+      .item-content
+        .item-inner
+          table
+            tbody
+              - @daily_mileage.state_mileages.each do |sm|
+                tr
+                  td = sm.state.abbrev
+                  td
+                    span = sm.miles
+                    sup mi

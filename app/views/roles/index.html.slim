@@ -1,0 +1,7 @@
+.title-bar
+  h1 Roles
+  ul
+    li = link_to 'Create New Role', new_role_path
+    li = link_to "Modify Description of Rights", edit_action_names_roles_path, method: :get
+.content
+  = render 'roles/roles'

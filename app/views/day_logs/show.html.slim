@@ -1,0 +1,14 @@
+- file_exists = @day_log.file_exists?
+- if flash[:notice] =~/saved/
+  - close_window = link_to "Close", "#", onClick: 'window.opener.location.reload();window.close();return false;'
+- else
+  - close_window = link_to "Close", "#", onClick: 'window.close();return false;'
+.title-bar  
+  h1 Daily Log for #{@day_log.trucker} on #{@day_log.issue_date}
+  ul
+    - if file_exists
+      li = link_to 'Delete', [@day_log.trucker, @day_log], method: :delete, data: { confirm: "Are you sure you want to delete?"}
+      li = close_window
+.full-page
+  = render @day_log
+  

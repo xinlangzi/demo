@@ -1,0 +1,17 @@
+fieldset
+  legend Interchanges
+  table.gray.vmiddle.w300.ml50#edi_interchanges
+    thead
+      tr
+        th ✖
+        th Customer
+        th EDI Receiver ID
+    = s.fields_for :hub_interchanges, wrapper: false do |f|
+      tr
+        td = f.input :_destroy, as: :boolean, label: false, wrapper: false
+        td = f.association :customer, label: false, collection: Customer.get_names_and_ids, include_blank: false
+        td = f.input :edi, label: false, input_html: { class: 'w150'}, wrapper: false
+    tfoot
+      tr
+        td.text-right colspan=3
+          = s.link_to_add "new record", :hub_interchanges, :data => { :target => "#edi_interchanges" }, class: 'btn'

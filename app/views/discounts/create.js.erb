@@ -1,0 +1,5 @@
+<%if @success%>
+$("#<%=dom_id(@discount.company)%>").html('<%=j render("company", company: @discount.company)%>')
+<%else%>
+$("#discount_#{@discount.company_id}").html('<%=j render("form", company: @discount.company)%>')
+<%end%>

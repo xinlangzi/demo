@@ -1,0 +1,6 @@
+td.bold = company.id
+td = company.name
+td = "#{company.latest_discount.amount rescue 0}%"
+td = company.latest_discount.created_at.to_s(:db) rescue ''
+td[id="discount_#{company.id}"]
+  = render :partial=>"form", :locals=>{:company=>company}

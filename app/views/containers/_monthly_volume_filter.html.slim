@@ -1,0 +1,17 @@
+#search-box.search-box
+  .search-inner
+    = simple_form_for monthly_volume_filter, as: :filter, :url => monthly_volume_containers_path, html: {method: :get, class: 'horiz'} do |s|
+      = s.error_messages
+      - if current_user.is_admin?
+        = s.input :customer_id, as: :select, collection: Customer.get_all_names_and_ids, include_blank: true, label: "Customer", required: false, wrapper: 'vertical', input_html: {class: 'chosen-select clearable'}
+        = s.input :trucker_id, as: :grouped_select, collection: Hub.with_default, group_method: :truckers, label_method: :name, include_blank: true, label: "Trucker", required: false, wrapper: 'vertical', input_html: {class: 'chosen-select clearable'}
+      .vertical.select.optional
+        = s.label :from, 'From'
+        = select_month(monthly_volume_filter.from.month || Date.today, :field_name => 'month_from')
+        = select_year(monthly_volume_filter.from.year || Date.today, :start_year => Container.the_very_first.try(:delivered_date).try(:year) || Date.today.year, :end_year => Date.today.year, :field_name => 'year_from')
+      .vertical.select.optional
+        = s.label :from, 'From'
+        = select_month(monthly_volume_filter.to.month || Date.today, :field_name => 'month_to')
+        = select_year(monthly_volume_filter.to.year || Date.today, :start_year => Container.the_very_first.try(:delivered_date).try(:year) || Date.today.year, :end_year => Date.today.year, :field_name => 'year_to')
+      = s.submit 'Search'
+      .clear

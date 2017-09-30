@@ -1,0 +1,96 @@
+table.gray.order
+  tr
+    th colspan=4
+      = container.class.to_s.underscore.split('_').map(&:capitalize).join(' ')
+      - if current_user.is_admin?
+        span &nbsp;For:&nbsp;
+        span.icon-text
+          i.fa.fa-building-o
+          = container.customer.name
+        div
+          span Contact Person:&nbsp;
+          span.icon-text
+            i.fa.fa-user
+            = container.customers_employee ? sanitize(container.customers_employee.name) : 'N/A'
+  tr
+    td.pw25.bold SS Line:
+    td.pw25 = container.ssline.name rescue ""
+    td.pw25.bold Reference No.
+    td.pw25 = container.reference_no
+  - if container.kind_of? ImportContainer
+    = render 'containers/import_container', container: container
+  - else
+    = render 'containers/export_container', container: container
+
+  tr
+    td.bold Commodity
+    td
+      = container.commodity
+      div = checkmark(container.haz_cargo?, " Hazardous Cargo")
+    td.bold Weight (lbs)
+    td = container.weight_decimal_humanized
+
+  - if current_user.is_admin?
+    tr
+      td.bold Operation Tasks
+      td 
+        .inline-tasks
+          = render "container_tasks/check_list", type: container._type, account: 'others', container: container
+      td.bold Documents
+      td = attachments_for(container, Container::ORDER_TAG)
+    - unless driver_mode?
+      - receive = container.receivable_container_charges.total_amount
+      tr
+        td.receivableCharges[colspan='4']
+          .rfloat.bold = number_to_currency(receive)
+          .charge_title 
+            span Accts. Receivable&nbsp;
+            span.f80 = link_to '[Charge Detail Link]', charges_web_container_path(id: container.uuid), target: '_blank'
+          = render partial: 'container_charges/container_charges', object: container.receivable_container_charges, locals: { type:  'ReceivableContainerCharges'}
+          .inline-tasks
+            = render partial: "container_tasks/check_list", locals: { type: container._type, account: 'receivable', container: container }
+
+    - payable = container.payable_container_charges.total_amount
+    tr
+      td.payableCharges[colspan='4']
+        .rfloat.bold = number_to_currency(payable)
+        .charge_title Accts. Payable
+        = render partial: 'container_charges/container_charges', object: container.payable_container_charges, locals: { type: 'PayableContainerCharges'}
+        .inline-tasks
+          = render partial: "container_tasks/check_list", locals: { type: container._type, account: 'payable', container: container }
+    - unless driver_mode?
+      tr
+        td.profit[colspan='4']
+          .text-right.bold Profit: #{number_to_currency(receive - payable)}
+  tr
+    td colspan=4
+      center.bold
+        .f120 Container Operations
+        - if current_user.is_admin?
+          hr
+          div Next Estimated Operation Date #{calendar_for(container, :est_ops_date)}
+  = render "containers/chassis/pickup", container: container
+  = render partial: "containers/operation", collection: container.viewable_operations(current_user)
+  = render "containers/chassis/return", container: container
+
+  - if current_user.is_admin?
+    tr
+      td colspan=2
+        .bold Admin Comments:
+        = simple_format(container.admin_comment)
+      td colspan=2
+        .bold Customer Comments:
+        = simple_format(container.customer_comment)
+    tr
+      td colspan=2
+        .bold Chassis Comments:
+        = simple_format(container.chassis_comment)
+      td colspan=2
+        .bold Public Comments:
+        = simple_format(container.public_comment)
+
+  - if current_user.is_customer?
+    tr
+      td colspan=4
+        .bold Comments:
+        = container.customer_comment

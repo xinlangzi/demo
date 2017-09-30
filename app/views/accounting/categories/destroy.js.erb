@@ -1,0 +1,5 @@
+<%if @success%>
+window.location.reload()
+<%else%>
+App.showNotice('<%=@category.errors[:base].join(' ')%>')
+<%end%>

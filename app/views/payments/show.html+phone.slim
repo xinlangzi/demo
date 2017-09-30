@@ -1,0 +1,67 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+.list-block.narrow-block.media-list
+  ul
+    li.black-block
+      .item-content
+        .item-inner
+          .item-title-row
+            .item-title Payment No.
+            .item-after
+              b = @payment.number
+          .item-title-row
+            .item-title Issue Date
+            .item-after
+              b = @payment.issue_date
+          .item-title-row
+            .item-title Subtotal
+            .item-after.green
+              b = number_to_currency(@payment.amount + @payment.total_adjustments_amount)
+          .item-title-row
+            .item-title Total Adjustment
+            .item-after.red
+              b = number_to_currency(@payment.total_adjustments_amount)
+          .item-title-row
+            .item-title Total Posted Amount
+            .item-after.green
+              b = number_to_currency(@payment.posted_amount)
+          .item-title-row
+            .item-title #{@payment.payment_method.name} Amount
+            .item-after.green
+              b = number_to_currency(@payment.amount)
+          .item-title-row
+            .item-title #{@payment.payment_method.name} Balance
+            .item-after.red
+              b = number_to_currency(@payment.balance)
+
+.list-block.narrow-block.media-list
+  ul
+    - @payment.line_item_payments.each do |lip|
+      li
+        .item-content
+          .item-inner
+            .item-title-row
+              .item-title = link_to lip.line_item.container.id, lip.line_item.container
+              .item-after = link_to lip.line_item.invoice.number, lip.line_item.invoice
+            .item-title-row
+              .item-subtitle = lip.line_item.container.container_no
+            .item-title-row
+              .item-title Container Amount
+              .item-after
+                b = number_to_currency(lip.line_item.amount)
+            .item-title-row
+              .item-title Posted Amount
+              .item-after
+                b = number_to_currency(lip.amount)
+            .item-title-row
+              .item-title Balance
+              .item-after
+                b class="#{lip.line_item.balance > 0 ? 'red' : ''}"= number_to_currency(lip.line_item.balance)

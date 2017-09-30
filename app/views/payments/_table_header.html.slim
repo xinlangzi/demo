@@ -1,0 +1,49 @@
+- for_trucker = @payment.company.is_trucker?
+- columns = for_trucker ? 11 : 9
+thead
+  tr
+    th.w40 Select
+    th.w80 Invoice No.
+    th.w80 Invoice Date
+    th Container ID
+    th Container No.
+    th Delivered On
+    - if for_trucker
+      th Week Wages
+      th J1s
+    th.w100 Charged Amount
+    th Balance
+    th.w150 Posted Amount
+tfoot
+  tr
+    th colspan=(columns - 1)
+      span = "Subtotal #{table_header.class.to_s.titleize}"
+    th#payment_subtotal.number = number_to_currency(table_header.amount - table_header.total_adjustments - table_header.total_credits)
+  - if @payment.needs_adjustments?
+    tr
+      th colspan=(columns - 1)
+        span Total Adjustments
+        table.pw100.vmiddle
+          - table_header.adjustment_selectors.each do |ppd|
+            = render 'adjustments/payments/adjustment', ppd: ppd
+      th#payment_total_adjustments.number = number_to_currency(table_header.total_adjustments)
+  tr
+    th colspan=(columns - 1)
+      span Total Credits
+      table.pw100.vmiddle
+        - table_header.credit_selectors.each do |credit|
+          = render 'credits/payments/credit', credit: credit
+    th#payment_total_credits.number = number_to_currency(table_header.total_credits)
+  tr
+    th colspan=(columns - 1) Payment Total Amount
+    th#payment_total_amount.number = number_to_currency(table_header.amount)
+
+  tr
+    th colspan=(columns - 1) Total Posted Amount
+    th#payment_posted_amount.number = number_to_currency(table_header.posted_amount)
+  tr
+    th colspan=(columns - 1) Remaining Balance
+    th#payment_balance.number = number_to_currency(table_header.balance)
+  tr
+    th.text-right colspan=columns
+      = submit_tag button_name(@payment), disable_with: PLEASE_WAIT, class: 'w120'

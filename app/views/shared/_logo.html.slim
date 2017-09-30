@@ -1,0 +1,1 @@
+.logo = link_to(sanitize(image_tag(@owner.logo.url, alt: @owner.name)), root_path, target: '_blank') if @owner.logo?

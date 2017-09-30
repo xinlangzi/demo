@@ -1,0 +1,7 @@
+- if current_user.is_admin?
+  #search-box.search-box
+    .search-inner
+      = simple_form_for(@search, url: customers_employees_path, html: {method: :get, class: 'horiz'}) do|f|
+        = f.input :customer_id_eq, as: :select, collection: Customer.active.get_names_and_ids, include_blank: true, label: "Customer", wrapper: 'vertical', required: false
+        = f.input :name_cont, label: 'Name', required: false, wrapper: 'vertical', input_html: { data: { url: request.fullpath, term: 'name' }, class: 'w250 autocomplete'}
+        = f.submit 'Search'

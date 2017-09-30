@@ -1,0 +1,5 @@
+<%if @link_code.new_record?%>
+$('#new-link-code').html('<%=j render("link_codes/form")%>')
+<%else%>
+$('#link-codes-list').prepend('<%=j render(partial: "link_codes/link_code", object: @link_code)%>')
+<%end%>

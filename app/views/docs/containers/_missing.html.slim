@@ -1,0 +1,33 @@
+- unless @j1s.empty?
+  table.gray.f90.vmiddle
+    caption Operations with Missing J1s
+    thead
+      tr
+        th ID
+        th.w100 Appt Date
+        th.w100 Customer
+        th Container No.
+        th Chassis No.
+        th Operations
+    tbody
+      - @j1s.group_by(&:container_id).each do |container_id, j1s|
+        - container = Container.find(container_id)
+        tr
+          td = link_to container.id, [:preview, container], remote: true
+          td = appt_range(container, true)
+          td = container.customer.name
+          td = container.container_no
+          td = container.chassis_no
+          td
+            table.full-width
+              - j1s.each do |j1|
+                tr
+                  td.text-left.w120 = j1.action_name
+                  td.text-left
+                    a.choose-action data-confirm="Are you sure to assign to this action?" data-imagable-type=j1.object.class.table_name.classify data-imagable-id=j1.object.id data-column-name=j1.column_name = j1.company.try(:name)
+                    ul.docs
+                      - @images.select{|i| i.to_s == j1.to_s }.each_with_index do |image, index|
+                        li.num class=image.status id=dom_id(image, 'status')
+                          = link_to index + 1, doc_path(image), remote: true
+  .hidden.datatable-config
+    | {"bPaginate": false, "bInfo": false, "aaSorting": [[ 1, "asc" ]]}

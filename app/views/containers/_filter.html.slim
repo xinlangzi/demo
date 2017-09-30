@@ -1,0 +1,36 @@
+#search-box.search-box
+  .search-inner
+    = simple_form_for @search, url: containers_path, html: {id: 'form_search', method: :get, class: 'horiz'} do |s|
+      - if current_user.is_admin? || current_user.is_customer?
+        = s.input :hub_id_eq, label: 'Hub', collection: accessible_hubs, required: false, wrapper: 'vertical', input_html: { class: 'clearable' }, include_blank: "- All Hubs -"
+      = s.input :id_eq, label: "Container ID", required: false, wrapper: 'vertical', input_html: {class: 'w70 clearable nospace'}
+      = s.input :container_no_cont, label: "Container No.", required: false, wrapper: 'vertical', input_html: {class: 'w110 clearable nospace'}
+      = s.input :chassis_no_cont, label: "Chassis No.", required: false, wrapper: 'vertical', input_html: {class: 'w110 clearable nospace'}
+      = s.input :ssline_booking_no_or_ssline_bl_no_cont, label: "SSLine Booking/BL No.", required: false, wrapper: 'vertical', input_html: {class: 'w120 clearable nospace'}
+      = s.input :delivered_at_from, as: :datepicker, label: "From", required: false, wrapper: 'vertical', input_html: {class: 'clearable', dateFormat: 'yy-mm-dd'}
+      = s.input :delivered_at_to, as: :datepicker, label: "To", required: false, wrapper: 'vertical', input_html: {class: 'clearable', dateFormat: 'yy-mm-dd' }
+      = s.input :container_size_id_eq, as: :select, collection: objects_for_select(ContainerSize.all), :include_blank => true, label: 'Size', required: false, wrapper: 'vertical', input_html: {class: 'clearable'}
+      = s.input :container_type_id_eq, as: :select, collection: objects_for_select(ContainerType.all), :include_blank => true, label: 'Type', required: false, wrapper: 'vertical', input_html: {class: 'clearable'}
+      - if current_user.is_superadmin?
+        = s.input :lock_eq, as: :select, collection: [["All",nil],["Locked", true],["Unlocked", false]], label: "Status", required: false, wrapper: 'vertical', input_html: {class: 'clearable'}
+      = s.submit "Search"
+      a.clear_button.btn Clear
+      .clear
+      - if current_user.is_trucker?
+        = s.input :terminal_id_eq, as: :select, collection: current_hub.terminals.get_names_and_ids, label: "Terminal", required: false, wrapper: 'vertical', input_html: {class: 'clearable chosen-select'}
+      = s.input :ssline_id_eq, as: :select, collection: Ssline.get_names_and_ids, label: "Ssline", required: false, wrapper: 'vertical', input_html: {class: 'clearable chosen-select', data: { width: 200 }}
+      - if !current_user.is_trucker?
+        = s.input :terminal_id_eq, as: :select, collection: current_hub.terminals.get_names_and_ids, include_blank: true, label: "Terminal", required: false, wrapper: 'vertical', input_html: {class: 'clearable chosen-select', data: { width: 200 } }
+        - if current_user.is_admin?
+          = s.input :customer_id_eq, as: :select, collection: Customer.get_all_names_and_ids, include_blank: true, label: "Customer", required: false, wrapper: 'vertical', input_html: {class: 'w clearable chosen-select', data: { width: 250 }}
+          = s.input :trucker_id_eq, as: :select, collection: current_hub.truckers.get_all_names_and_ids, include_blank: true, label: "Trucker", required: false, wrapper: 'vertical', input_html: {class: 'clearable chosen-select', data: { width: 200 }}
+          .clear
+          - blank_label = '&nbsp;'.html_safe
+          = s.input :consignee_name_like, label: blank_label, required: false, wrapper: 'vertical', input_html: { data: { url: autocomplete_name_consignees_path, term: 'name'}, class: 'w200 placeholder autocomplete clearable', title: CustomersClient::DEFAULT_CONSIGNEE_FIELD }
+          = s.input :consignee_city_like, label: blank_label, required: false, wrapper: 'vertical', input_html: { data: { url: autocomplete_name_consignees_path, term: 'address_city' }, class: 'w100 placeholder autocomplete clearable', title: CustomersClient::DEFAULT_CITY_FIELD}
+          = s.input :consignee_state_eq,  as: :select, collection: State.get_state_abbrev_and_ids, :include_blank => true, label: blank_label, required: false, wrapper: 'vertical', input_html: {class: 'clearable chosen-select', data: { width: 200 }}
+
+          = s.input :shipper_name_like, label: blank_label, required: false, wrapper: 'vertical', input_html: { data: { url: autocomplete_name_shippers_path, term: 'name' }, class: 'w200 placeholder autocomplete clearable', title: CustomersClient::DEFAULT_SHIPPER_FIELD}
+          = s.input :shipper_city_like, label: blank_label, required: false, wrapper: 'vertical', input_html: { data: { url: autocomplete_name_shippers_path, term: 'address_city' }, class: 'w100 placeholder autocomplete clearable', title: CustomersClient::DEFAULT_CITY_FIELD}
+          = s.input :shipper_state_eq,  as: :select, collection: State.get_state_abbrev_and_ids, :include_blank => true, label: blank_label, required: false, wrapper: 'vertical', input_html: {class: 'clearable chosen-select', data: { width: 200 }}
+    .clear

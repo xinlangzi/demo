@@ -1,0 +1,45 @@
+.title-bar
+  h1 Editing Owner #{@owner.try(:name)}
+.content
+  = simple_form_for(@owner, :html => {multipart: true, id: 'edit_owner_form', class: 'rows'}) do |s|
+    = s.error_messages
+    fieldset.relative
+      legend System Logo
+      = s.input :logo, as: :file, hint: 'Leave blank unless choosing different logo.'
+      #logo-thumb = image_tag @owner.logo.url, height: '80' if @owner.logo?
+    fieldset
+      legend Account information
+      = s.input :name, label: 'Company Name'
+      = s.input :contact_person, label: 'Contact Person'
+      = s.input :email
+      = s.input :web, required: true
+      .inline
+        = s.input :phone
+        = s.input :phone_extension, label: 'ext', input_html: {size: 3, class: 'w60'}
+      = s.input :phone_mobile, label: 'Cell Phone', input_html: {size: 12}
+      = s.input :fax, input_html: {size: 12}
+    fieldset.address-entry#address1
+      legend Address Information
+      = s.input :address_street, label: 'Street Address', input_html: { size: 60, class: 'geocode w300 street', autocomplete: "off" }
+      = s.input :address_street_2, label: 'Street Address Line 2', input_html: { size: 60, class: 'geocode w300 street2', autocomplete: "off" }
+      = s.input :address_city,  label: 'City', input_html: { class: 'geocode city', autocomplete: "off" }
+
+      .inline
+        = s.input :address_state_id, as: :select, collection: State.get_states_and_ids, include_blank: true, label: 'State', input_html: { class: 'geocode state' }
+        = s.input :zip_code, as: :string, label: 'Zip Code', input_html: { size: 7, class: 'geocode w60 zipcode', autocomplete: "off" }, wrapper_html: {class: 'nofirst'}
+        a.f80.clear-address Clear Address
+        | &nbsp;&nbsp;
+        a.f80.validate-address Validate by Google Map
+      .clear
+      .inline
+        = s.input :lat, as: :string, label: 'Latitude', input_html: { size: 10, class: 'w100 lat' }
+        = s.input :lng, as: :string, label: 'Longitude', input_html: { size: 10, class: 'w100 lng' }, wrapper_html: { class: 'nofirst' }
+      .geocoded
+    fieldset
+      legend QuickBooks Integration
+      = s.input :quickbooks_integration
+
+    fieldset
+      legend Others
+      = s.input :comments, input_html: {rows: 4, cols: 60, class: 'w600'}
+    = s.submit "Save Owner"

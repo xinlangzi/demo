@@ -1,0 +1,18 @@
+- cache("financials_receivables_quickbooks") do
+  .title-bar
+    h1 Accounts: Receivables
+
+  .content.guides
+    h2 Add / New
+    ul
+      li = link_to "Generate Invoice", new_receivable_invoice_path
+    h2 List / Search
+    ul
+      li = link_to "Search for Receivable Invoice", receivable_invoices_path
+    h2 Settings
+    ul
+      li = link_to "Modify Default Container Charges for Customers", receivable_charges_path
+      li = link_to "Revenue Categories", accounting_categories_path(:type=>'revenue')
+    h2 QuickBooks
+    ul
+      li = link_to 'Export Receivable Invoices', quick_book_receivable_invoices_path

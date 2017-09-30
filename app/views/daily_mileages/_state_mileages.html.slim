@@ -1,0 +1,10 @@
+table.gray.w300
+  thead
+    tr
+      th State
+      th Miles
+  tbody
+    - for sm in @state_mileages
+      tr
+        td = sm.state.abbrev
+        td = sm.miles

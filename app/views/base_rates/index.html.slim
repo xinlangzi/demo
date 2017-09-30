@@ -1,0 +1,31 @@
+.title-bar
+  h1 Base Rates
+.full-page
+  #base-rate-tabs
+    ul
+      - @hubs.each do |hub|
+        li
+          a href="##{dom_id(hub)}" data-id="#{hub.id}" = hub.name
+    - @hubs.each do |hub|
+      div id=dom_id(hub)
+        table.full-width
+          tr
+            td.w400
+              = render 'base_rates/copy' if hub == @demo
+              = render 'base_rates/config' if hub == @demo
+              = render 'mile_rates/config', hub: hub, mile_rate: MileRate.default(hub)
+              br
+              = render 'customer_rates/table', hub: hub, customer_rates: CustomerRate.for_hub(hub).editable
+              br
+              = render 'driver_rates/table', hub: hub, driver_rates: DriverRate.for_hub(hub).editable
+              br
+              = render 'drop_rates/table', hub: hub, drop_rates: CustomerDropRate.for_hub(hub), ctrl: :customer_drop_rates
+              br
+              = render 'drop_rates/table', hub: hub, drop_rates: DriverDropRate.for_hub(hub), ctrl: :driver_drop_rates
+            td
+              .rfloat
+                span.green.bold Fuel/Gallon: #{number_to_currency(Fuel.latest_price(hub))}&nbsp;&nbsp;
+                = link_to "View detail table report", sample_base_rate_path(hub.id), target: '_blank'
+              .d3-chart.h600
+              javascript:
+                BaseRate.loadChartData(#{hub.id})

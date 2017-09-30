@@ -1,0 +1,29 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.list-block.narrow-block.media-list
+  ul
+    - @inspections.each do |inspection|
+      li
+        .item-content
+          .item-inner
+            .item-title-row
+              .item-title
+                small = inspection.issue_date
+              .item-after
+                small = inspection.amount
+            - if inspection.penalty?
+              .item-title-row
+                .item-subtitle
+                  small = inspection.violation
+                .item-after
+                  small Point: #{inspection.point}
+              .item-text = inspection.description

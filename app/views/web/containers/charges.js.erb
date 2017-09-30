@@ -1,0 +1,5 @@
+<%if @container%>
+window.location = '<%= charges_web_container_path(id: @container.uuid)%>'
+<%else%>
+$('#container-search').html("Can't find matched container. Try again!").addClass('red')
+<%end%>

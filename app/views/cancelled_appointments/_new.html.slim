@@ -1,0 +1,6 @@
+= simple_form_for cancelled_appointment, remote: true, html: { class: 'rows' } do |f|
+  = f.input :container_id, as: :hidden
+  = f.input :trucker_id, as: :select, collection: cancelled_appointment.container.hub.truckers.get_names_and_ids, label_html: { class: 'w80' }, input_html: { class: 'chosen-select'}
+  = f.input :issue_date, as: :datepicker, label: 'Issue Date', label_html: { class: 'w80' }
+  = f.input :reason, label_html: { class: 'w80' }, input_html: { class: 'w250', rows: 3 }
+  = f.submit "Create", class: 'ml80', disable_with: PLEASE_WAIT

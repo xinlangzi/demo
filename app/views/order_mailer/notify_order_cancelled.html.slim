@@ -1,0 +1,21 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div #{@container.customer.name} Team,
+      p Please note your order under internal ID #{@container.id} has been cancelled with #{@owner.name}.
+      table
+        tr style=outlook_font
+          td width="120" align="right"
+            strong Container No.:
+          td #{@container.container_no}
+        tr style=outlook_font
+        - if @container.kind_of?(ExportContainer)
+          td width="120" align="right"
+            strong Booking No.:
+          td = @container.ssline_booking_no
+        - else
+          td width="120" align="right"
+            strong SS Line B/L No.:
+          td = @container.ssline_bl_no
+      p Please feel free to contact us with any questions or concerns. We look forward to your continued business.
+      p Thank You.

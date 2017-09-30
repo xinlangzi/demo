@@ -1,0 +1,7 @@
+- content_for :title_bar_nav do
+  li = link_to "Add New User", new_customer_customers_employee_path(@company)
+  li = link_to "New Invoice", new_receivable_invoice_path(filter: { company_id: @company.id })
+  li = link_to "New Payment", new_receivable_payment_path(filter: { company_id: @company.id })
+= render partial: 'companies/company', object: @company
+- if @customers_employees.blank?
+  .warning You need to add a user for this customer.

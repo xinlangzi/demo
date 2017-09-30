@@ -1,0 +1,13 @@
+table.gray.vmiddle
+  tr
+    th Base Rate
+    td = number_to_currency(@quote[:base_rate])
+  tr
+    th Fuel Surcharge
+    td = number_to_currency(@quote[:fuel_amount])
+  tr
+    th Fuel Percent
+    td #{@quote[:fuel_percent]}%
+  tr
+    th Total
+    th = number_to_currency(@quote[:total])

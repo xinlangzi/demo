@@ -1,0 +1,29 @@
+.title-bar
+  h1 Online Driver Application
+  ul
+    li = link_to "Back to Owner Operators", truckers_path
+    li = link_to "Active Applicants", applicants_path
+
+.content
+  table.gray
+    thead
+      tr
+        th Hub
+        th Name
+        th Email
+        th Phone
+        th Applied On
+        th Deleted On
+        th
+
+    tbody
+      - @applicants.each do |applicant|
+        tr
+          td = applicant.hub.try(:name)
+          td = link_to applicant.name, applicant
+          td = applicant.email
+          td = applicant.phone
+          td = applicant.created_at.ymd
+          td = applicant.deleted_at.ymd
+          td = link_to '', applicant, data: { confirm: 'Are you sure to permanently delete?' }, method: :delete, class: 'fa fa-trash'
+  center = paginate @applicants

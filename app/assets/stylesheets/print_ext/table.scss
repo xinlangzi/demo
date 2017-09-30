@@ -1,0 +1,74 @@
+table{
+  @include table-scaffolding;
+  &.center{
+    td{
+      text-align: center !important;
+    }
+  }
+  &.small{
+    font-size: 13px;
+  }
+  &.gray {
+    width: 100%;
+    border: 1px solid #F0F0F0 !important;
+    margin: 10px 0px;
+    tr {
+      &.overdue{
+        border: 2px solid $red;
+      }
+      &:nth-child(2n+1), &.odd, &:nth-child(2n+1) td, &.odd td{
+        background-color: #FFF !important;
+      }
+      &:nth-child(2n), &.even, &:nth-child(2n) td, &.even td{
+        background-color: #F9F9F9 !important;
+      }
+    }
+    th {
+      background: #E4E4E4;
+      border: 1px solid #C0C0C0;
+      word-wrap: break-all;
+      font-size: 90%;
+      text-align: center;
+      color: $gray50;
+      vertical-align: middle;
+      padding: 5px;
+      &.header{
+        font-size: 105%;
+      }
+    }
+    td{
+      color: #0C0C0C;
+      font-size: 92%;
+      border: 1px solid #C0C0C0;
+      padding: 5px;
+      line-height: 1.2;
+      &.number{
+        text-align: right;
+      }
+      a{
+        text-decoration: underline;
+        font-weight: bold;
+        color: $blue !important;
+      }
+      label{
+        font-size: 11px;
+        font-weight: bold;
+        &.gray-label{
+          font-size: 10px;
+          font-weight: normal;
+          font-style: italic;
+          text-align: center;
+          display: block;
+          padding: 0px 2px;
+          float: left;
+          width: 25px;
+          margin-right: 2px;
+          line-height: 13px;
+          @include border-radius(3px);
+          background: $gray10;
+          color: $white;
+        }
+      }
+    }
+  }
+}

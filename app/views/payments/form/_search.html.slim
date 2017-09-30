@@ -1,0 +1,70 @@
+= simple_form_for @search, url: polymorphic_path(crud_class.new), html: { method: :get } do |f|
+  table.gray.lform.f80
+    - if current_user.is_admin?
+      tr
+        - if in_payable?
+          td = f.label :trucker_id_eq, "Trucker"
+          td = f.select :trucker_id_eq, Trucker.get_all_names_and_ids, { selected: @search.company_id_eq, include_blank: true }, { class: 'chosen-select' }
+        - else
+          td = f.label :customer_id_eq, "Customer"
+          td = f.select :customer_id_eq, Customer.get_all_names_and_ids, { selected: @search.company_id_eq, include_blank: true }, { class: 'chosen-select' }
+
+        - if in_payable?
+          td = f.label :tp_company_id_eq, "TP Vendor"
+          td
+            - companies = Accounting::TpVendor.for_user(current_user).get_all_names_and_ids
+            = f.select :tp_company_id_eq, companies, { selected: @search.company_id_eq.to_i, include_blank: true }, { class: 'chosen-select' }
+        - else
+          td = f.label :tp_company_id_eq, "TP Customer"
+          td
+            - companies = Accounting::TpCustomer.for_user(current_user).get_all_names_and_ids
+            = f.select :tp_company_id_eq, companies, { selected: @search.company_id_eq.to_i, include_blank: true }, { class: 'chosen-select' }
+
+        td = f.label :company_id_eq, "Others"
+        td = f.select :company_id_eq, Company.active.invoiced(@accounts_type).other.get_names_and_ids, {include_blank: true }, { class: 'chosen-select' }
+    tr
+      td = f.label :issue_date_gteq, 'Issue Date'
+      td
+        = f.text_field :issue_date_gteq, class: 'date_picker mr10'
+        = f.text_field :issue_date_lteq, class: 'date_picker'
+      td = f.label :cleared_date_gteq, 'Cleared Date'
+      td
+        = f.text_field :cleared_date_gteq, class: 'date_picker mr10'
+        = f.text_field :cleared_date_lteq, class: 'date_picker'
+      - if in_payable?
+        td
+        td
+      - else
+        td = f.label :date_received_gteq, 'Received Date'
+        td
+          = f.text_field :date_received_gteq, class: 'date_picker mr10'
+          = f.text_field :date_received_lteq, class: 'date_picker'
+    tr
+      td = f.label :payment_method_id_eq, 'Payment Method'
+      td = f.select :payment_method_id_eq, PaymentMethod.names_and_ids, { include_blank: true }, { class: 'chosen-select' }
+      td = f.label :balance_gteq, 'Balance'
+      td
+        = f.text_field :balance_gteq, size: 3, class: 'nocomma w100 mr10', placeholder: 'Greater than'
+        = f.text_field :balance_lt, size: 3, class: 'nocomma w100', placeholder: 'Less than'
+      td = f.label :amount_gteq, 'Amount'
+      td
+        = f.text_field :amount_gteq, size: 3, class: 'nocomma w100 mr10', placeholder: 'Greater than'
+        = f.text_field :amount_lt, size: 3, class: 'nocomma w100 mr10', placeholder: 'Less than'
+        = f.text_field :amount_eq, size: 3, class: 'nocomma w100', placeholder: 'Exactly'
+    tr
+      td = f.label :payment_no_in, 'Payment No.'
+      td colspan=3
+        = f.text_field :number_cont, placeholder: 'Contains'
+        | &nbsp;&nbsp;
+        = f.text_field :payment_no_in, size: 24, class: 'w300', placeholder: 'Comma separated multiple exact number'
+      td = f.label :comments_cont, 'Comment'
+      td = f.text_field :comments_cont
+    tr
+      td = f.label :category, 'Category'
+      td colspan=5 = f.select :category, grouped_categories(@search.category), { include_blank: true }, { class: 'chosen-select'}
+    tr
+      th.text-right colspan=6
+        = submit_tag 'Search', name: 'search_submit', class: 'rfloat'
+        - if controller.class.to_s =~ /payments/i && in_payable?
+          = f.check_box :number_null, class: 'pull-right mr10'
+          = f.label :number_null, 'Only Without No.', class: 'pull-right mr5'

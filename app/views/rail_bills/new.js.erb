@@ -1,0 +1,6 @@
+<%if @rail_bill%>
+$('.error-recap').remove()
+App.showDialog({maxHeight: 750, title: 'Send Rail Bill Email'}).html('<%=j render("rail_bills/new")%>')
+<%else%>
+window.location = '<%= edit_polymorphic_path(@container, rail_bill: true)%>'
+<%end%>

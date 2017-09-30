@@ -1,0 +1,5 @@
+tr
+  - state_id = f.object.state_id || SystemSetting.default.state_id
+  td = f.input :state_id, as: :select, collection: State.driving.get_states_and_ids, selected: state_id, label: false, wrapper: 'vertical', input_html: { class: 'unobservable'}
+  td = f.input :miles, as: :string, label: false, input_html: { size: 6, class: 'w100 unobservable' }, wrapper: 'vertical'
+  td = f.input :_destroy, as: :boolean, label: false, wrapper: false, input_html: { class: 'unobservable' }

@@ -1,0 +1,68 @@
+- if current_user.is_admin?
+  fieldset
+    legend Hub
+    = c.association :hub, label: 'Name'
+fieldset
+  legend Driver Basic Information
+  = c.input :name, label: 'Display Name'
+  = c.input :email
+  = c.input :phone_mobile, label: 'Phone Mobile'
+  = c.input :extra_contact_info, as: :text, input_html: { rows: 5, cols: 40, class: 'w500' }, label: 'Extra Contact Info.'
+  .address-entry#address1
+    = c.input :address_street, label: 'Street Address', input_html: { size: 60, class: 'geocode w300 street', autocomplete: "off" }
+    = c.input :address_street_2, label: 'Street Address Line 2', input_html: { size: 60, class: 'geocode w300 street2', autocomplete: "off" }
+    = c.input :address_city,  label: 'City', input_html: { class: 'geocode city', autocomplete: "off" }
+    .inline
+      = c.input :address_state_id, as: :select, collection: State.get_states_and_ids, include_blank: true, label: 'State', input_html: { class: 'geocode state' }
+      = c.input :zip_code, as: :string, label: 'Zip Code', input_html: { size: 7, class: 'geocode w60 zipcode', autocomplete: "off" }, wrapper_html: {class: 'nofirst'}
+      a.f80.clear-address Clear Address
+      | &nbsp;&nbsp;
+      a.f80.validate-address Validate by Google Map
+    .geocoded
+  - if current_user.is_admin?
+    = c.input :dl_no, label: "Driver License No.", required: false
+    = c.input :dl_haz_endorsement, as: :boolean, label: "CDL Haz Endorsement", required: false
+    = c.input :dl_state_id, as: :select, collection: State.get_states_and_ids, include_blank: true, label: 'DL Issued In', required: false
+    .inline
+      = c.input :dl_expiration_date, as: :datepicker, label: "Driver License Expir", required: false
+      = c.input :medical_card_expiration_date, as: :datepicker, label: "Medical Card Expir", required: false
+    .clear
+    .inline
+      = c.input :hire_date, as: :datepicker, label: "Hire Date", required: false
+      = c.input :termination_date, as: :datepicker, label: "Termination Date", required: false
+    .clear
+    .inline
+      = c.input :date_of_birth, as: :datepicker, label: 'Date of Birth', required: false, input_html: { data: { year_range: '-60:-15' } }
+fieldset
+  legend Payable Party
+  = c.input :onfile1099, label: '1099 Independent Driver', wrapper: :default
+  = c.input :print_name, label: 'Print Name', hint:  "Print on check as"
+  = c.input :contact_person, label: 'Contact Person'
+  - if current_user.is_admin?
+    = c.input :ssn, label: "Social Security No.", hint: "e.g. 123-45-6789", required: false
+  = c.input :fein, label: "FEIN"
+  .address-entry#address2
+    = c.input :billing_street, label: 'Street Address', input_html: { size: 60, class: 'geocode w300 street', autocomplete: "off" }
+    = c.input :billing_street_2, label: 'Street Address Line 2', input_html: { size: 60, class: 'geocode w300 street2', autocomplete: "off" }
+    = c.input :billing_city,  label: 'City', input_html: { class: 'geocode city', autocomplete: "off" }
+    .inline
+      = c.input :billing_state_id, as: :select, collection: State.get_states_and_ids, include_blank: true, label: 'State', input_html: { class: 'geocode state' }
+      = c.input :billing_zip_code, as: :string, label: 'Zip Code', input_html: { size: 7, class: 'geocode w60 zipcode', autocomplete: "off" }, wrapper_html: { class: 'nofirst' }
+      a.f80.clear-address Clear Address
+      | &nbsp;&nbsp;
+      a.f80.validate-address Validate by Google Map
+    .geocoded
+  = c.input :week_pay, as: :select, collection: x_week_pay, label: "Week Pay", required: false if current_user.is_admin?
+fieldset
+  legend
+    span Security
+    - unless @company.new_record?
+      label.inline.f80.green
+        | &nbsp;&nbsp;
+        = c.check_box :change_pwd
+        | Check if you want to change password
+  = c.input :password, input_html: {value: '', autocomplete: "off"}
+  = c.input :password_confirmation, label: 'Retype password', input_html: {value: '', autocomplete: "off"}
+fieldset
+  legend Comments
+  = c.input :comments, as: :text, label: '&nbsp;'.html_safe, input_html: {rows: 5, cols: 40, class: 'w500'}

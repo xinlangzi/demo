@@ -1,0 +1,56 @@
+.operation-at, .appt-at{
+  text-align: center;
+}
+#text_message_message{
+  height: 200px;
+}
+
+.container-card{
+  .card-header{
+    display: block;
+  }
+  .locked-status{
+    position: absolute;
+    right: 18px;
+    top: 0px;
+    font-size: 32px;
+    color: red;
+    font-weight: bold;
+  }
+  .appt-date{
+    font-size: 13px;
+    color: #999;
+    br{
+      display: none;
+    }
+  }
+  .operation-type{
+    font-size: 14px;
+    color: #66;
+  }
+  .company{
+    font-size: 12px;
+    color: #333;
+  }
+  .address{
+    font-size: 12px;
+    font-style: italic;
+    color: #999;
+  }
+  .upload-icon{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 32px;
+    z-index: 9999;
+  }
+  .miles{
+    font-size: 16px;
+  }
+  .upload-j1s{
+    font-size: 32px;
+    padding-left: 10px;
+    position: relative;
+    top: -10px;
+  }
+}

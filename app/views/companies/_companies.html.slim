@@ -1,0 +1,17 @@
+table.gray.vmiddle
+  thead
+    tr
+      - column_list.keys.each do |column|
+        th = column.html_safe
+      th colspan=3
+  tbody
+    - text_left_columns = %w{name}
+    - companies.each do |company|
+      tr
+        - column_list.each do |name, proc|
+          - klass = text_left_columns.include?(name.downcase) ? 'text-left' : ''
+          td[class="#{klass}"] = proc.call(company)
+        - actions_list.each do |name, proc|
+          - if action = proc.call(company)
+            td = action
+= paginate companies rescue nil

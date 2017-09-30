@@ -1,0 +1,20 @@
+tr
+  th INV
+  th C ID
+  th CONTAINER
+  th AMNT
+  th INV
+  th C ID
+  th CONTAINER
+  th AMNT
+- payment.line_item_payments.each_slice(2) do |lips|
+  tr
+    = render "line_item", lip: lips[0]
+    - if lips[1]
+      = render "line_item", lip: lips[1]
+    - else
+      td colspan="4" &nbsp;
+tr
+  td colspan="6" &nbsp;
+  td TOTAL
+  td.money = sprintf("$%.2f", payment.amount)

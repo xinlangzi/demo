@@ -1,0 +1,2 @@
+class ReceivableContainerChargesController < ContainerChargesController
+end

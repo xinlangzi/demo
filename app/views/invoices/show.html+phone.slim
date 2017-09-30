@@ -1,0 +1,119 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.list-block.narrow-block.media-list
+  ul
+    li.black-block
+      .item-content
+        .item-inner
+          .item-title-row
+            .item-title Invoice No.
+            .item-after
+              b = @invoice.number
+          .item-title-row
+            .item-title Issue Date
+            .item-after
+              b = @invoice.issue_date
+          .item-title-row
+            .item-title Amount
+            .item-after.green
+              b = number_to_currency(@invoice.amount + @invoice.sum_adjustments)
+          .item-title-row
+            .item-title Balance
+            .item-after.red
+              b = number_to_currency(@invoice.balance + @invoice.sum_remaining_adjustments)
+.content-block.narrow-block
+  .buttons-row style="margin: 10px 0px"
+    a.tab-link.active.button href="#containers"  Containers
+    a.tab-link.button href="#adjustments"  Adjustments
+  .tabs
+    #containers.tab.active
+      .list-block.narrow-block.media-list
+        ul
+          li.gray-block
+            .item-content
+              .item-inner
+                .item-title-row
+                  .item-title Amount
+                  .item-after.green = number_to_currency(@invoice.amount)
+                .item-title-row
+                  .item-title Balance
+                  .item-after.red = number_to_currency(@invoice.balance)
+          - @invoice.line_items.each do |li|
+            - container = li.container
+            li
+              .item-content
+                .item-inner
+                  .item-title-row
+                    .item-title = link_to container.id, container
+                    .item-after
+                      .item-text = container.container_no
+                  .item-title-row
+                    .item-subtitle = container.reference_no
+                  .item-title-row
+                    .item-subtitle = container.is_a?(ImportContainer) ? container.ssline_bl_no : container.ssline_booking_no
+
+                  - container.consignees_or_shippers_info.each do |customer|
+                    .item-title-row
+                      small.item-title = customer.name.upcase
+                    .item-title-row
+                      .item-subtitle #{customer.address_city }, #{customer.state}
+                  - if li.payments.empty?
+                    .button.button-fill.color-red No Payment Yet
+                  - li.payments.uniq.each do |payment|
+                    = link_to "#{payment.payment_method.name.downcase}: #{payment.number}", payment, class: 'button button-fill'
+
+                  table
+                    caption
+                      - if container.delivered_date
+                        a.color-blue Delivered Date: #{container.delivered_date.to_date}
+                      - else
+                        a.color-red Delivered Date: N/A
+                    tbody
+                      - container.charges(@invoice.class.to_s.gsub('Invoice','').downcase, @invoice.company_id).each do |cc|
+                          tr
+                            td = cc.name
+                            td.text-right = number_to_currency cc.amount
+                            td = cc.details
+                    tfoot
+                      tr
+                        th colspan=3
+                          .buttons-row
+                            a.button.item-link.borderless Amount: #{number_to_currency(li.amount)}
+                            a.button.item-link.borderless Balance: #{number_to_currency(li.balance)}
+    #adjustments.tab
+      .list-block.narrow-block.media-list
+        ul
+          li.gray-block
+            .item-content
+              .item-inner
+                .item-title-row
+                  .item-title Amount
+                  .item-after = number_to_currency(@invoice.sum_adjustments)
+                .item-title-row
+                  .item-title Balance
+                  .item-after = number_to_currency(@invoice.sum_remaining_adjustments)
+          - @invoice.adjustments.each do |adjustment|
+            li
+              .item-content
+                .item-inner
+                  .item-title-row
+                    .item-title 
+                      span = number_to_currency(adjustment.amount)
+                      sup = adjustment.category.try(:name)
+                    .item-after = adjustment.payment.nil? ? 'N/A' : link_to(adjustment.payment.number, adjustment.payment)
+                  .item-subtitle 
+                    div = adjustment.comment                    
+                    - if adjustment.images.present?
+                      .buttons-row
+                        a.button.active href="#" Docs:&nbsp;
+                        - adjustment.images.each_with_index do |image, index|
+                          = link_to "#{index + 1}", image_path(image), class: 'external link button', target: '_blank'

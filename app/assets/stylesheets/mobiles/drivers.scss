@@ -1,0 +1,64 @@
+.bonus{
+  .min{
+    position: relative;
+    left: -5px;
+  }
+  .max{
+    position: relative;
+    right: -5px;
+  }
+}
+#j1s{
+  .tabs{
+    // margin: 0 -8px;
+  }
+}
+
+#stops{
+  .swiper-container{
+    .card{
+      margin: 0px;
+    }
+    .map{
+      border-bottom: 1px solid #DDD;
+      img{
+        display: block;
+        width: 100%;
+      }
+    }
+    .pw85{
+      width: 85%;
+    }
+    .pw15{
+      text-align: center;
+      width: 15%;
+    }
+  }
+}
+
+.expiration-dates{
+  .item-subtitle{
+    font-style: italic;
+    font-weight: bold;
+    font-size: 13px;
+  }
+  .missing{
+    color: #ff43fc;
+  }
+  .normal{
+    color: green;
+  }
+  .expiring{
+    color: orange;
+  }
+  .expired{
+    color: red;
+  }
+  .upload-icon{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 32px;
+    z-index: 9999;
+  }
+}

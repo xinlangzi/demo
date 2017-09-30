@@ -1,0 +1,23 @@
+.settings-links{
+  ul{
+    li{
+      @include filter-gradient($gray-20, $gray-10);
+      &:hover{
+        @include filter-gradient(#00A900, $base);
+      }
+    }
+  }
+}
+
+.profile {
+  ul {
+    @include filter-gradient(#6f6f6f, #242424);
+  }
+}
+ul.calendar_tabs{
+  & > li{
+    .tab{
+      background: $gray-20;
+    }
+  }
+}

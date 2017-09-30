@@ -1,0 +1,10 @@
+.title-bar
+  h1 Container to Review
+  ul
+    li = link_to "Orders Awaiting Rejection/Acceptance", edi_containers_path
+    li = link_to "Logs", edi_logs_path
+    li = link_to "Uncompleted EDI Cycles", incomplete_edi_logs_path
+
+.content
+  = render "containers/by_edi", containers: @import_containers, title: 'Import Containers'
+  = render "containers/by_edi", containers: @export_containers, title: 'Export Containers'

@@ -1,0 +1,68 @@
+#notification {
+  width: 240px;
+  max-height: 425px;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  background: inherit;
+  border: 1px solid rgba(0,0,0,0.1);
+  @include border-radius(5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+  z-index: 99999;
+
+  .title {
+    background: #03A9F4;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    text-align: center;
+    font-weight: bold;
+    line-height: 24px;
+    color: #FFF;
+    .max-min{
+      float: right;
+      a{
+        color: #FFF;
+        font-weight: normal;
+      }
+    }
+    &:hover {
+      cursor: move;
+    }
+  }
+
+  ul.content {
+    background: rgba(200,200,200, 0.85);
+    max-height: 400px;
+    overflow: auto;
+    padding: 0;
+    li{
+      margin: 3px;
+      background: #FFF;
+      padding: 3px;
+      .action{
+        font-weight: bold;
+        color: #666;
+        .delete{
+          color: #999;
+        }
+      }
+      .detail{
+        font-size: 90%;
+      }
+      .user{
+        font-size: 80%;
+        color: #999;
+        float: left;
+        font-style: italic;
+      }
+      .time{
+        font-size: 80%;
+        color: #999;
+        float: right;
+        font-style: italic;
+      }
+      &:not(:first-child){
+        margin-top: 0;
+      }
+    }
+  }
+}

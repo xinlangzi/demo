@@ -1,0 +1,5 @@
+$(".<%=@mark%>").append('<%= content_tag(:option, @company.name, value: @company.id)%>')
+$(".<%=@mark%>").val('<%=@company.id%>')
+$(".<%=@mark%>").trigger('change')
+App.refreshChosenSelect()
+App.closeDialog()

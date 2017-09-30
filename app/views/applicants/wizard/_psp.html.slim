@@ -1,0 +1,5 @@
+= render 'applicants/wizard/steps', step: 3
+iframe#docusign src=@embedded_docusign_url
+center = link_to 'Go Back', wizard_applicants_path(commit: 'Previous')
+javascript:
+  $('body').scrollTop(100)

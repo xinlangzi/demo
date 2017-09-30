@@ -1,0 +1,35 @@
+.title-bar
+  h1 Listing Hubs
+  ul
+    li = link_to "New Hub", new_hub_path
+.content
+  table.gray
+    tr
+      th Name
+      th Consignees
+      th Depots
+      th Shippers
+      th Terminals
+      th Truckers
+      th Yards
+      th Ports
+      th Fuel Price
+      th Fuel Zone
+      th
+      th
+      th
+    - @hubs.each do |hub|
+      tr
+        td = hub.name
+        td = hub.consignees.count
+        td = hub.depots.count
+        td = hub.shippers.count
+        td = hub.terminals.count
+        td = hub.truckers.count
+        td = hub.yards.count
+        td = hub.ports.count
+        td = "#{number_to_currency(Fuel.latest_price(hub))}/gallon"
+        td = hub.fuel_zone
+        td = link_to '', edit_hub_path(hub), class: 'fa fa-edit'
+        td = link_to '', hub, data: { confirm: "Are you sure you want to inactivate this hub?" } , method: :delete, class: 'fa fa-trash' unless hub.deleted?
+        td = link_to '', [:restore, hub], data: { confirm: "Are you sure you want to activate this hub?" }, method: :patch, class: 'fa fa-repeat' if hub.deleted?

@@ -1,0 +1,5 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div Dear Dispatcher,
+      p An EDI 210 message was sent for invoice #{link_to(@invoice.id, receivable_invoice_url(@invoice))}. However, after 25 minutes of waiting, the customer has not yet sent a 997 acknowledgement message. Please click #{link_to('here', edi_log_url(@edi_log_id))} to review the original 210 log.

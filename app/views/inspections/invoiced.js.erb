@@ -1,0 +1,5 @@
+<% if request.get?%>
+$('.adjustment-items').append('<%=j render("inspections/adjustment", adjustment: @adjustment)%>')
+<%else%>
+$('#<%=dom_id(@adjustment, "form")%>').replaceWith('<%=j render("inspections/adjustment", adjustment: @adjustment)%>')
+<%end%>

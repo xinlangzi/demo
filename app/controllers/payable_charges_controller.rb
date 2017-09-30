@@ -1,0 +1,3 @@
+class PayableChargesController < ChargesController
+
+end

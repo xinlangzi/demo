@@ -1,0 +1,80 @@
+.menu{
+  position: relative;
+  display: table;
+  margin: auto;
+  & > ul{
+    @include horizontal-list-container;
+    overflow: visible;
+    height: 28px;
+    li.active > a, li a:hover, li:hover > a{
+      background: lighten($base, 8%);
+      color:#FFFFFF;
+      text-decoration:none;
+    }
+    a{
+      color: #FFF !important;
+      display: block;
+      text-decoration: none;
+    }
+    & > li{
+      @include horizontal-list-item;
+      padding: 0px;
+      & > a{
+        line-height: 28px;
+        border-left: 1px solid $gray40;
+        padding: 0px 10px;
+        text-align: center;
+      }
+      &.last > a{
+        border-right: 1px solid $gray40;
+      }
+      ul{
+        position: absolute;
+        background:#333;
+        visibility: hidden;
+        opacity: 0.9;
+        z-index: 99999;
+        li{
+          padding: 2px;
+          min-width: 130px;
+          a{
+            line-height:26px;
+            font-size: 12px;
+            margin:0px;
+            padding: 0px 10px 0px 15px;
+            text-align: left;
+          }
+          &.sub{
+            background: #444;
+            a{
+              padding-left: 20px;
+            }
+          }
+        }
+      }
+      &:hover ul{
+        visibility: visible;
+      }
+    }
+  }
+}
+#footer{
+  .driver-mode{
+    display: none;
+  }
+  .menu{
+    font-size: 90%;
+    & > ul{
+      height: 24px;
+      & > li{
+        a{
+          line-height: 24px;
+        }
+        ul{
+          background: #333;
+          bottom: 24px;
+        }
+      }
+    }
+  }
+}

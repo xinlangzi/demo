@@ -1,0 +1,29 @@
+table.gray
+  tr
+    th.w80.f110 Total
+    td.w120.bold.f105#payment_total_amount_box.currency.number = number_to_currency(message_box.amount)
+    td.bold.f100.pl10.pl10[rowspan=3]
+      .red
+        #check_remaining_balance[style="display:none"]
+          =PayablePayment::MINIMUM_CHECK_ERROR
+
+      .red
+        #check_amount_warning[style="display:none"] Cannot create a payment where the payment total is less than or equal to 0.
+
+      .red
+        - info = "The payment total amount doesn't cover the selected invoices computed posted amounts. You cannot have a negative balance."
+        #warning[style="display:none"] #{info}
+      .remaining
+        - info = "There is a positive balance on payment.<br />You may consider selecting invoice(s) and/or changing posted amount(s)."
+        #remaining[style="display:none"] #{info.html_safe}
+
+      .ok
+        - info = "There is no remaining balance on #{message_box.payment_method.name.downcase rescue ''} payment."
+        #ok[style="display:none"] #{info}
+      #validate_errors.red
+  tr
+    th.f110 Posted
+    td#payment_posted_amount_box.currency.number.bold.f105 = number_to_currency(message_box.posted_amount * (-1))
+  tr
+    th.f110 Balance
+    td#payment_balance_box.currency.number.bold.f105 = number_to_currency(message_box.balance)    

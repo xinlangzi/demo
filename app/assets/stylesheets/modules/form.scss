@@ -1,0 +1,322 @@
+input.placeholder{
+  color: $gray20;
+}
+
+form{
+  &.rows{
+    padding: 5px;
+    input[type=submit]{
+      text-transform: capitalize;
+      margin-left: 160px;
+      &.left{
+        margin-left: 0px;
+      }
+    }
+
+  }
+}
+
+
+.hint{
+  display: block;
+  font-size: 11px;
+  color: #999;
+  line-height: 12px;
+  font-weight: normal !important;
+  .group &{
+    margin-left: 160px;
+    width: 500px;
+  }
+  .vertical &{
+  }
+}
+label{
+  color: $gray30;
+  display: block;
+  font-weight: bold;
+  line-height: 24px;
+  .group &{
+    float: left;
+    width: 160px;
+    color: $gray30;
+    font-weight: bold;
+    text-align: right;
+    padding: 0px 5px 0 0 !important;
+  }
+  .vertical &{
+    padding-bottom: 1px;
+    font-weight: bold;
+  }
+  .search-box .vertical &{
+    font-size: 85%;
+    line-height: 85%;
+  }
+  .container &{
+    color: $gray30 !important;
+  }
+}
+
+label.no_float {
+  float: none;
+}
+
+textarea{
+  border: 1px solid $gray;
+  width: 95%;
+}
+input{
+  font-size: 13px;
+  border: 1px solid $gray;
+  width: 200px;
+  padding: 3px;
+  height: 24px;
+  @include border-radius(1px);
+  @include box-sizing(border-box);
+  &[type=hidden]{
+    display: none;
+  }
+  &[type=checkbox]{
+    width: 15px;
+    padding: 0px !important;
+    margin: 0px 2px;
+    vertical-align: bottom;
+  }
+  &[type=radio]{
+    width: 15px;
+    margin: 0px 2px;
+    border: none;
+    vertical-align: bottom;
+  }
+  &[type=submit], &[type=button]{
+    @include color-btn(lighten($base, 3%));
+  }
+
+  &.datepicker{
+    width: 110px !important;
+  }
+  & + label{
+    line-height: 24px;
+  }
+}
+select{
+  height: 24px;
+  font-size: 13px;
+  margin-left: 0px;
+  border: 1px solid $gray;
+  padding: 1px;
+}
+span.error, label.error{
+  font-size: 90% !important;
+  color: $red;
+  .group &{
+    display: block;
+    margin-left: 160px;
+  }
+  .vertical &{
+    margin-left: 2px;
+  }
+  .file &{
+    display: block;
+    font-size: 12px;
+  }
+}
+.group{
+  position: relative;
+  margin: 8px 0px;
+}
+.vertical{
+  margin-bottom: 5px;
+  .horiz &{
+    float: left;
+    margin-right: 5px;
+  }
+}
+.checkbox{
+  margin-bottom: 10px;
+  .horiz &{
+    float: left;
+    margin-right: 5px;
+    label{
+      margin-left: 0px !important;
+      margin-top: 9px;
+    }
+  }
+}
+
+.inline{
+  .group{
+    display: inline-block;
+    &:nth-child(n+2), &.nofirst{
+      label{
+        width: auto !important;
+        margin-left: 15px;
+      }
+    }
+  }
+  .vertical{
+    display: inline-block !important;
+    padding-right: 20px;
+    vertical-align: top;
+  }
+}
+
+.group-checkboxs{
+  .checkbox{
+    float: left;
+    display: table;
+    margin: 1px;
+    padding: 0px 4px;
+    background: $gray-15;
+    border: 1px solid $gray-10;
+    opacity: 0.9;
+    @include border-radius(5px);
+    &:hover{
+      background: $gray-20;
+      @include box-shadow;
+    }
+    input{
+      display: table-cell;
+    }
+    label{
+      float: none;
+      display: table-cell;
+      top: -1px;
+      left: 1px;
+    }
+  }
+  &.auto-width{
+    .checkbox{
+      label{
+        width: auto;
+      }
+    }
+  }
+}
+.group-radios{
+  margin-bottom: 10px;
+  .radio{
+    display: block;
+    float: left;
+    margin-right: 5px;
+    padding: 2px 5px;
+    background: $gray-10;
+    opacity: 0.9;
+    @include border-radius(5px);
+    .radio_buttons{
+      position: relative;
+      top: 3px;
+    }
+    label{
+      width: auto;
+    }
+  }
+}
+.field_with_errors input, .field_with_errors select, .field_with_errors textarea{
+  border: 1px solid $red !important;
+}
+.field_with_errors .chosen-container .chosen-default{
+  color: $red;
+}
+
+.error-recap {
+  border: 1px solid red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  text-align: left;
+  .title-error{
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 14px;
+    margin: -7px;
+    background-color: #c00;
+    color: #fff;
+    margin-bottom: 10px;
+    border:2px solid #c00;
+  }
+  li {
+    margin: 0px 0px 0px 15px;
+    list-style: square;
+  }
+}
+.simple_form{
+  .alert-error{
+    font-weight: bold;
+    color: #C90000;
+    margin: 2px 0px 10px 0px;
+    padding: 5px;
+    background: #FFAEC2;
+    @include border-radius(5px);
+  }
+  .error{
+    display: block;
+  }
+  label.boolean{
+    float: none;
+    width: auto;
+    text-align: left;
+    margin-left: 156px;
+  }
+}
+
+.icon-checkbox, .lock-checkbox{
+  display: inline-block;
+  input[type='checkbox']{
+    display: none;
+  }
+  input[type='checkbox']:disabled + span{
+    cursor: default;
+  }
+}
+.icon-checkbox{
+  input[type='checkbox'] + span{
+    @extend .fa;
+    @extend .fa-circle;
+    @extend .red;
+    &::before{
+      margin-right: 2px;
+    }
+    cursor: pointer;
+  }
+  input[type='checkbox']:checked + span{
+    @extend .lgreen;
+  }
+}
+
+.lock-checkbox{
+  line-height: 20px;
+  vertical-align: middle;
+  input[type='checkbox'] + span{
+    cursor: pointer;
+    display: inline-block;
+    background-image: asset-data-url("img/lock.png");
+    width: 20px;
+    height: 20px;
+    background-position: 20px 0px;
+  }
+  input[type='checkbox']:checked + span{
+    cursor: pointer;
+    display: inline-block;
+    background-image: asset-data-url("img/lock.png");
+    width: 20px;
+    height: 20px;
+    background-position: 0px 0px;
+  }
+}
+.nested-fields{
+  .checkbox{
+    margin: 0;
+  }
+}
+.hidden-border{
+  border: none;
+  background: none;
+  font-size: 11px;
+  text-align: center;
+  width: 100%;
+  &:focus{
+    background: #FFF;
+  }
+}

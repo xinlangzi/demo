@@ -1,0 +1,10 @@
+.title-bar
+  h1 Send Mobile Message for #{current_hub.name}
+
+.content
+  = simple_form_for @mobile_message, url: '/messaging/send_mobile_message', method: :post do |s|
+    fieldset.form.pb10
+      b.rfloat.green Please switch the hub to set individual mobile message to drivers in different hub.
+      = s.input :content, wrapper: 'vertical', input_html: { rows: 8 }, hint: "Message will display on the mobile home page. Won't display if content is blank"
+      = s.submit "Update", disable_with: PLEASE_WAIT
+      span.red Last Updated: #{@mobile_message.updated_at.us_datetime}

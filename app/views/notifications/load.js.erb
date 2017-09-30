@@ -1,0 +1,2 @@
+$('#notification ul').prepend('<%=j render("message", message: @notification)%>')
+$('#<%=dom_id(@notification)%>').effect("highlight", { color: '#e6ffee'}, 1500)

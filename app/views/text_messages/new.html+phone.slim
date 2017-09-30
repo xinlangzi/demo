@@ -1,0 +1,46 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.list-block.narrow-block
+  = simple_form_for @text_message, html: { id: 'sms-form'} do |s|
+    = hidden_field_tag :operation_id, params[:operation_id]
+    = s.hidden_field :company_id
+    = s.hidden_field :container_id
+    ul
+      li
+        .item-content
+          .item-media
+            i.f7-icons person
+          .item-inner
+            .item-input
+              input type="text" value=@operation.trucker.name disabled="true"
+      li
+        .item-content
+          .item-media
+            i.f7-icons phone
+          .item-inner
+            .item-input
+              = s.input_field :phone_number, required: true
+      li
+        .item-content
+          .item-media
+            i.f7-icons chat
+          .item-inner
+            .item-input
+              = s.input_field :message, as: :text, required: true, class: 'msg'
+      li
+        .item-content
+          .item-inner.row
+            .col-60
+              = s.submit 'Send SMS', class: 'button button-big active'
+            .col-40
+              a.link.back.button.button-big.button-fill.color-red href="#" Cancel
+  .error-messages

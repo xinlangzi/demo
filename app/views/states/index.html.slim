@@ -1,0 +1,23 @@
+- if @states
+  .title-bar
+    h1
+      span Listing States
+.content
+  table.gray
+    thead
+      tr
+        th Name
+        th Abbrev
+        th Tolls Fee
+        th Driving
+    tbody
+      - @states.each do |state|
+        tr
+          td = state.name
+          td = state.abbrev
+          td
+            = fields_for :state, state do |s|
+              = s.text_field :tolls_fee, :class=>"w80 f90 auto-save nospace center", :id => "tolls_fee_#{state.id}", :ref=>"#{state.class.to_s}:#{state.id}:tolls_fee"
+          td
+            = fields_for :state, state do |s|
+              = s.check_box :driving, :class=>"auto-save center", id: dom_id(state, 'driving'), :ref=>"#{state.class.to_s}:#{state.id}:driving"

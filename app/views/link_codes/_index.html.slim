@@ -1,0 +1,13 @@
+.search-box
+  .search-inner
+    .title Link Codes
+    #new-link-code
+      = render 'form'
+    table.gray
+      tr
+        th Link Code
+        th Rail Road
+        th Additional Fee
+        th Delete
+      tbody#link-codes-list
+        = render @link_codes

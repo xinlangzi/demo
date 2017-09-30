@@ -1,0 +1,2 @@
+$("#payment_total_credits").html('<%=number_to_currency(@payment.total_credits)%>').effect("highlight", {color:"#84E002"}, 2000 )
+$('#payment_total_amount').html('<%=number_to_currency(@payment.computed_amount)%>').effect("highlight", {color:"#84E002"}, 2000 )

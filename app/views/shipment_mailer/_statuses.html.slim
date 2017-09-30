@@ -1,0 +1,47 @@
+table width="100%" cellpadding=10 cellspacing=0
+  tr style=outlook_font
+    td.text-left
+      .container
+        .title
+          - if container.is_a?(ImportContainer)
+            a href=container_url(container)
+              span IMPORT #{container.container_no.to_s.upcase}&nbsp;&nbsp;
+              b #{container.size.to_s.upcase} ID #{container.id}
+          - else
+            - booking = container.ssline_booking_no
+            a href=container_url(container)
+              span EXPORT #{booking.to_s.blank? ? '' : 'BK#' + booking.upcase} #{container.container_no.to_s.upcase}&nbsp;&nbsp;
+              b #{container.size.to_s.upcase} ID #{container.id}
+        .info
+          label Appointment Date:&nbsp;
+          span #{appt_range(container, true).gsub('<br/>','')}&nbsp;
+          | &nbsp;&nbsp;&nbsp;&nbsp;
+          label Confirmed By:&nbsp;
+          span #{container.confirmed_by}
+
+table.shipment-steps width="100%" cellpadding=10 cellspacing=0
+  - container.operations.traceable_by_customer.each do |operation|
+    tr style=outlook_font
+      td
+        strong = operation.operation_type.name
+      td
+        - if operation.company
+          strong #{operation.company.name}
+          div
+            em style="color:#555" #{operation.company.address_street}
+          div
+            em style="color:#555" #{operation.company.address_city}, #{operation.company.state} #{operation.company.zip_code}
+      td
+        strong
+          - if operation.public_view_operated_at
+            .green = operation.public_view_operated_at
+        - if operation.is_drop?
+          - if container.is_export?
+            em Estimated Load Pickup:
+          - else
+            em Estimated Empty Pickup:
+          - if operation.view_appt_at
+            .red = operation.view_appt_at
+      td
+        - if operation.operated_at?
+          img src="#{root_url}/assets/icons/yes.png"

@@ -1,0 +1,9 @@
+<%if params[:popup].present?%>
+$(".category").append('<%= content_tag(:option, @category.name, value: @category.id)%>')
+$(".category").val('<%=@category.id%>')
+$(".category").trigger('change')
+App.refreshChosenSelect()
+App.closeDialog()
+<%else%>
+window.location.reload()
+<%end%>

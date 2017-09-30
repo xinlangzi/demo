@@ -1,0 +1,5 @@
+<%if @valid%>
+$('#quote-form').html('<%=j render("quote_engines/feedback")%>')
+<%else%>
+$('#quote-form').html('<%=j render("quote_engines/form")%>')
+<%end%>

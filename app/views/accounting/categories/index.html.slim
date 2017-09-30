@@ -1,0 +1,37 @@
+.title-bar
+  h1 #{params[:type].capitalize} Categories
+.full-page
+  #category_form
+    = render 'form'
+  table.gray
+    tr
+      th Name
+      th Description
+      th Accounting Group
+      th width=100 For Container
+      th width=100 Only for Acct.
+      th width=120 Road Side Service
+      th Status
+      th width=50
+      th width=50
+    - Accounting::Category.parent_options(current_user, params[:type]).each do |category|
+      - object = crud_class.find(category[1])
+      tr
+        td.text-left = category[0]
+        td = category[2]
+        td
+          = fields_for :category, object do |f|
+            = f.select :accounting_group_id, objects_for_select(Accounting::Group.all), { include_blank: true }, { class: "auto-save center", id: dom_id(object, 'accounting_group_id'), ref: "#{crud_class.to_s}:#{object.id}:accounting_group_id" }
+
+        td
+          = fields_for :category, object do |f|
+            = f.check_box :for_container, class: "auto-save center", id: dom_id(object, 'for_container'), ref: "#{crud_class.to_s}:#{object.id}:for_container"
+        td
+          = fields_for :category, object do |f|
+            = f.check_box :acct_only, class: "auto-save center", id: dom_id(object, 'acct_only'), ref: "#{crud_class.to_s}:#{object.id}:acct_only"
+        td
+          = fields_for :category, object do |f|
+            = f.check_box :road_side_service, class: "auto-save center", id: dom_id(object, 'road_side_service'), ref: "#{crud_class.to_s}:#{object.id}:road_side_service"
+        td = status(category[1])
+        td = link_to "", edit_accounting_category_path(category[1]), method: :get, remote: true, class: 'fa fa-edit'
+        td = delete_undelete_link(category[1])

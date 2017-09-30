@@ -1,0 +1,48 @@
+.title-bar
+  h1 Editing #{@invoice.class.to_s.gsub('Invoice', '')} Invoice No. #{link_to @invoice.number.to_s, @invoice}
+  ul
+    li = link_to 'Cancel', @invoice
+
+.content
+  fieldset.form
+    - company = @invoice.company
+    div id=dom_id(company)
+      = simple_form_for @invoice, as: :invoice, html: { class: 'observe-form', data: { url: polymorphic_path([:update_total_on_edit, @invoice]), method: :put, remote: true} } do |inv|
+        = render partial: 'invoices/form/basic_edit_form', locals: {invoice: @invoice}
+        p
+          span Payment:&nbsp;
+          - if !@invoice.payments.empty?
+            - @invoice.payments.each do |payment|
+              = (payment.number ? link_to(payment.number, payment) : link_to('set number', payment)) + " / " + payment.payment_method.name.downcase
+              br
+          - else
+            span.red N/A
+        table.gray
+          tr
+            th Select
+            th Line Item ID
+            th Cont. ID
+            th Cont. No.
+            th Customer
+            th Trucker
+            th Delivered on
+            th Amount
+          tfoot
+            - adjustments = 0
+            - if @invoice.needs_adjustments?
+              tr
+                th[colspan="7"] Total Adjustments
+                th.number = number_to_currency(@invoice.sum_adjustments)
+                = hidden_field_tag :adjustments, @invoice.sum_adjustments
+                - adjustments = @invoice.sum_adjustments
+            tr
+              th[colspan="7"] Total Payment
+              th.number
+                .invoice-amount = number_to_currency(@invoice.amount + adjustments)
+          tbody
+            = render :partial => 'invoices/form/existing_line_items', :object => @invoice.line_items
+            = render :partial => 'invoices/form/new_line_items', :object => @uninvoiced_containers, :locals => {:invoice => @invoice}
+        = inv.submit 'Update',:disable_with => PLEASE_WAIT, id: "invoice_submit"
+
+      #delete_invoice.red.bold[style="display:none"] No line items have been selected. If you proceed, the invoice will be deleted.
+      #invalid_payment.red.bold[style="display:none"] Please select more line items to make sure total payment is greater than 0.

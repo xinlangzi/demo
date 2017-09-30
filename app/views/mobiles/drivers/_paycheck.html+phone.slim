@@ -1,0 +1,39 @@
+li.accordion-item#paycheck
+  a.item-content.item-link.ubtn.ubtn-3d-highlight.ubtn-rounded.ubtn-jumbo href="#" 
+    .item-inner
+      .item-title Paycheck
+  .accordion-item-content style="background:#bf7004;"
+    .card
+      .card-header 
+        small Current Week's Earnings(#{@monday.strftime("%m/%d")} - #{@sunday.strftime("%m/%d")})
+      .card-content
+        h2.green.text-center = number_to_currency(@container_charges.sum(:amount))
+        .swiper-container
+          .swiper-wrapper
+            - @container_charges.group_by(&:container).each do |container, ccs|
+              .swiper-slide
+                .card.container-card.no-box
+                  .card-header
+                    .pull-right
+                      b.badge.bg-green = number_to_currency(ccs.sum(&:amount).round(2))
+                    .bold = link_to container.id, container
+                  .card-content
+                    .list-block.media-list
+                      ul
+                        - ccs.each do |cc|
+                          li
+                            .item-content
+                              .item-inner
+                                .item-title-row
+                                  .item-title.operation-type = cc.chargable.name
+                                  .item-after
+                                    small
+                                      b.color-blue = number_to_currency(cc.amount)
+                                .item-title-row
+                                  .item-subtitle
+                                    small = cc.details
+                                  .item-after
+                                    small = link_to cc.line_item.invoice.number, cc.line_item.invoice if cc.line_item
+          br
+          br
+          .swiper-pagination

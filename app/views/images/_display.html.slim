@@ -1,0 +1,15 @@
+- unless imagable.file_exists?
+  center.red Document resource is not found.
+- else
+  fieldset.border
+    - if imagable.file.image?
+      ul.nav
+        li
+          = link_to rotate_pictures_path({ picture: { id: imagable.id, klass: imagable.class.to_s, method: "file" }, zoom: true }), remote: true do
+            = fa_icon("rotate-right", text: "Rotate 90° to the Right")
+      = render 'images/zoom', imagable: imagable
+    - if imagable.file.pdf?
+      object data="#{imagable.file.url}" type="application/pdf" height="700px" width="600px"
+        center.red Please click #{link_to("here", "http://get.adobe.com/reader/", target: "_blank")} to install Adobe Reader if PDF is not displaying.
+        embed src="#{imagable.file.url}" name="plugin" height="700px" width="600px"
+      

@@ -1,0 +1,4 @@
+h1.bold.center.normal #{@container.class.to_s.titleize} No. #{@container.container_no}
+= render 'containers/container_pdf', container: @container
+- if current_user.is_trucker?
+  .bold For IVR services, please call #{Owner.first.phone}.

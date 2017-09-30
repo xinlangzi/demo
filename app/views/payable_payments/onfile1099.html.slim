@@ -1,0 +1,48 @@
+- min_date = 1.year.ago.beginning_of_year.ymd
+- max_date = 1.year.since.end_of_year.ymd
+
+.title-bar
+  h1 Search cleared 1099s payments
+  ul
+    li = link_to 'Back', '/accounts_payable'
+    li = link_to 'Export to Excel', onfile1099_payable_payments_path(q: params[:q].to_h, format: 'csv') if @payments
+
+.content
+  #search-box.search-box
+    .search-inner
+      = simple_form_for @search, url: onfile1099_payable_payments_path, html: {method: :get, class: 'horiz'} do |s|
+        = s.input :cleared_date_gteq, as: :datepicker, label: 'From', required: false, wrapper: 'vertical'
+        = s.input :cleared_date_lteq, as: :datepicker, label: 'To', required: false, wrapper: 'vertical'
+        = s.submit 'Search'
+        .clear
+        
+  - if @payments
+    span.bold.green Green: Trucker
+    span.bold.red.ml60 Red: Third Party Vendor
+    table.gray
+      tr
+      	th Company
+      	th Amount
+        th Print Name
+        th SSN
+        th Street
+        th City
+        th State
+        th Zip Code
+      tbody
+        - @payments.group_by(&:company).each do |company, payments|
+          - is_trucker = company.is_a?(Trucker)
+          tr
+            td.text-left = link_to company.name, company, class: is_trucker ? 'green' : 'red'
+            td.number = number_to_currency(payments.map(&:amount).sum)      
+            td = company.print_name
+            td = company.ssn
+            td = is_trucker ? company.billing_street : company.address_street
+            td = is_trucker ? company.billing_city : company.address_city
+            td = is_trucker ? company.billing_state.abbrev : company.address_state.abbrev
+            td = is_trucker ? company.billing_zip_code : company.zip_code
+      tfoot
+        tr.f120
+          th Total
+          th.number = number_to_currency(@payments.sum(:amount))
+          th colspan=6

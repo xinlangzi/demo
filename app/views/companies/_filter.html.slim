@@ -1,0 +1,6 @@
+#auto-search-box.search-box
+  .search-inner
+    = simple_form_for @search, url: request.fullpath, html: {method: :get, class: 'horiz'} do |f|
+      = f.input :hub_id_eq, collection: accessible_hubs, label: 'Hub', required: false, wrapper: 'vertical', include_blank: "- All Hubs -" if @search.klass.new.respond_to?(:hub)
+      = f.input :name_cont, label: 'Name', required: false, wrapper: 'vertical', input_html: { data: { url: request.fullpath, term: 'name' }, class: 'w250 autocomplete unobservable'}
+      = f.submit 'Search'

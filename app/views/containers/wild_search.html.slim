@@ -1,0 +1,11 @@
+- wild_params = params[:wild_search].to_unsafe_h rescue {}
+.title-bar
+  h1 Container Wild Search
+  ul
+    li
+      a.show-hide rel="search-box"
+        = fa_icon("search")
+    li = link_to 'Export to Excel', wild_to_csv_containers_path(search: wild_params, format: :csv), { title: "Max number of containers allowed to be exported is 1000." }
+.full-page
+  = render 'containers/filter'
+  = render 'containers/wild_search'

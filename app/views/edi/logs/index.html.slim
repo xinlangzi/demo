@@ -1,0 +1,35 @@
+.title-bar
+  h1 Logs to Review
+  ul
+    li = link_to "Orders Awaiting Rejection/Acceptance", edi_containers_path
+    li = link_to "Logs", edi_logs_path
+    li = link_to "Uncompleted EDI Cycles", incomplete_edi_logs_path
+
+.content
+  table.gray
+    thead
+      tr
+        th Log id
+        th Timestamp
+        th Company
+        th Direction
+        th Container
+        th Invoice
+    tbody
+      - @edi_logs.each do |edi_log|
+        tr
+          td = link_to edi_log.id, edi_log
+          td = edi_log.created_at
+          td = link_to(edi_log.customer, edi_log.customer) if edi_log.customer 
+          td = edi_log.is_inbound ? "Inward" : "Outward" unless edi_log.is_inbound.nil?
+          td
+            - unless edi_log.containers.empty?
+              - edi_log.containers.each do |container|
+                = link_to(container, container)
+                span &nbsp;&nbsp;&nbsp;
+          td
+            - unless edi_log.invoices.empty?
+              - edi_log.invoices.each do |invoice|
+                = link_to(invoice, invoice)
+                span &nbsp;&nbsp;&nbsp;
+  = paginate @edi_logs

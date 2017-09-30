@@ -1,0 +1,20 @@
+- if current_user.is_admin?
+  - cache("settings") do
+    .settings-links
+      ul
+        li = link_to 'Admins', admins_path
+        li = link_to 'Owner Operators', truckers_path
+        li = link_to 'Customers', customers_path
+        li = link_to 'TP Customers', accounting_tp_customers_path
+        li = link_to 'TP Vendors', accounting_tp_vendors_path
+        li = link_to 'Terminals', terminals_path
+        li = link_to 'Depots', depots_path
+        li = link_to 'SSLines', sslines_path
+        li = link_to 'Shippers', shippers_path
+        li = link_to 'Consignees', consignees_path
+        li = link_to 'Quotes', moves_path
+        li = link_to 'Roles and Rights', roles_path
+        li = link_to 'Users', customers_employees_path
+        li = link_to 'System Settings', system_setting_path
+        li = link_to 'Incomplete Addresses', incomplete_addresses_path
+        li = link_to 'State', states_path

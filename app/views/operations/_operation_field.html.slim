@@ -1,0 +1,62 @@
+- unless defined?(operation_field)
+  - operation_field = nil
+  - container_form = ActionView::Helpers::FormBuilder.new(:container, container, self, {})
+  - container_form.fields_for :operations, operation, child_index: rand(10**3) do |builder|
+    - operation_field = builder
+- operation = operation_field.object
+- uid = operation.uid
+- classes = ['operation-detail']
+- classes << 'new-operation-detail' if operation.new_record?
+li class=classes id=uid
+  - operation_type = operation.operation_type
+  = operation_field.hidden_field :operation_type_id
+  = operation_field.hidden_field :pos, class: 'operation_pos'
+  .right-control
+    ul
+      - if current_user.is_admin?
+        - if operation_type.use_bobtail
+          li
+            a.f90.add-bobtail[data-charge-id="#{PayableCharge.bobtail.id}"] ✚ Bobtail Fee
+        li
+          a.f90.add-charge ✚ Accts. Payable
+      - if operation.removable?
+      	li = link_to "✖ Quick Delete", "/operations/#{operation.id.to_i}?uid=#{uid}", method: :delete, remote: true, class: 'f90 quick-delete', ref: uid
+  .tableless
+    .table-cell.pw50
+      div
+        label.bold = operation_type.name
+        - id = operation_type.related_id(container)
+        - warning = operation_type.warning(current_hub, id)
+        - trigger_id = random_id('trigger')
+        = operation_field.select :company_id, operation_type.options(current_hub, id).collect{|c| [c.name, c.id]}, {include_blank: warning || true}, {class: ["w350 chosen-select", operation_type.mark, "company-chooser", (warning.nil? ? '' : 'red')].join(' '), id: trigger_id, disabled: !operation.company_editable?}
+
+        .company-info
+          = render 'shared/print_brief_company_without_name', company: operation.company
+
+      - if operation_type.is_drop?
+        div
+          - trigger_id = random_id('trigger')
+          br
+          label.bold Home Yard
+          = operation_field.select :yard_id, current_hub.yards.map{|y|[y.name, y.id]}, {include_blank: true}, {class: "w350 yard company-chooser chosen-select", id: trigger_id, disabled: !operation.yard_editable?}
+          .company-info
+            = render 'shared/print_brief_company_without_name', company: operation.yard
+      - if operation.company_editable?
+        .mt2 &nbsp;
+        .add-company
+          - ssline_id = container.ssline_id if operation_type.is_depot?
+          - customer_id = container.customer_id if operation_type.is_consignee? || operation_type.is_shipper?
+          - new_company_link = new_polymorphic_path(operation_type.mark.capitalize.constantize.new, ssline_id: ssline_id, customer_id: customer_id)
+          = link_to "Add #{operation_type.mark.capitalize}", new_company_link, remote: true, class: 'f80' if accessible_url?(new_company_link)
+          - new_company_link = new_polymorphic_path(Yard.new)
+          = link_to "Add Yard", new_company_link, remote: true, class: 'f80 ml10' if accessible_url?(new_company_link)&&operation_type.is_drop?
+
+    .table-cell
+      - if current_user.is_admin?
+        .trucker-select
+          label Trucker&Instruction
+          - driver_disabled = !operation.driver_editable?
+          = operation_field.select :trucker_id,  current_hub.truckers.active.collect{|c| [c.name, c.id]}, {include_blank: true}, { class: 'chosen-select trucker-chooser', ref: operation.uid, disabled: driver_disabled }
+          = operation_field.text_area :instructions, :rows => 4, :cols => 60, placeholder: 'Instruction', class: 'unresize', disabled: driver_disabled
+  = operation_field.hidden_field :uid, class: 'uid'
+  = operation_field.hidden_field :id

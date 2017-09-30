@@ -1,0 +1,4 @@
+fieldset.border id="invoice#{invoice.id}"
+  - unless print_status?
+    = render 'invoice_ctrls', invoice: invoice, show: 'multiple'
+  = render 'invoice_info', invoice: invoice

@@ -1,0 +1,44 @@
+.list-block.narrow-block
+  = simple_nested_form_for @daily_mileage, html: { id: 'daily-mileage-form' } do |s|
+    ul#mileages
+      li
+        a.item-link.smart-select href="#" data-back-on-select="true"
+          = s.input_field :truck_id, collection: @daily_mileage.related_trucks.map{|t| [t.number, t.id]}, include_blank: false
+          .item-content.small
+            .item-inner
+              .item-title.label Truck No.
+      li
+        .item-content.small
+          .item-inner
+            .item-title.label Date
+            .item-input
+              = s.input_field :day, as: :string, required: true, placeholder: 'Date', class: 'date_picker text-right'
+      li
+        .item-content.small
+          .item-inner
+            .item-title.label Start Mileage
+            .item-input
+              = s.input_field :start, as: :string, required: true, placeholder: 'Start Mileage', class: 'text-right mileage'
+      li
+        .item-content.small
+          .item-inner
+            .item-title.label End Mileage
+            .item-input
+              = s.input_field :end, as: :string, required: true, placeholder: 'End Mileage', class: 'text-right mileage'
+      li
+        .item-content.small
+          .item-inner
+            .item-title.label Difference
+            .item-input.text-right#diff = @daily_mileage.mileage
+
+      li
+        .item-content
+          .item-inner.row
+            .col-50
+              = s.link_to_add "Add State Miles", :state_mileages, data: { target: "#mileages" }, class: 'external button button-big button-fill color-red'
+            .col-50
+              = s.submit 'Submit', class: 'button button-big active'
+      = s.fields_for :state_mileages, wrapper: false
+.error-messages
+
+

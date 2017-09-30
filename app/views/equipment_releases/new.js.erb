@@ -1,0 +1,6 @@
+<%if @equipment_release%>
+$('.error-recap').remove()
+App.showDialog({maxHeight: 750, title: 'Equipment Release Request Email'}).html('<%=j render("equipment_releases/new")%>')
+<%else%>
+window.location = '<%= edit_polymorphic_path(@container, equipment_release: true)%>'
+<%end%>

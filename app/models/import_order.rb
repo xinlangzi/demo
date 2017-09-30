@@ -1,0 +1,2 @@
+class ImportOrder < Order
+end

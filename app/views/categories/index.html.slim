@@ -1,0 +1,27 @@
+.title-bar
+  h1 = crud_class.to_s.pluralize.titleize
+  ul
+    li = link_to "New Category", new_polymorphic_path(crud_class)
+.content
+  table.gray
+    thead
+      tr
+        th Name
+        th Number
+        th Description
+        th Adjustments
+        th
+        th
+    tbody
+      - @categories.each do |category|
+        tr
+          td = category.name
+          td = category.number.titleize
+          td = category.description
+          td = category.adjustments.count
+          td
+            = link_to [:edit, category] do
+              i.fa.fa-edit
+          td
+            = link_to category, method: :delete, data: { confirm: "Are you sure to delete?" } do
+              i.fa.fa-trash

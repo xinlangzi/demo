@@ -1,0 +1,6 @@
+<%if @success%>
+  <%@images.each do |image|%>
+    $('li[data-id=<%=image.uuid%>]').fadeTo("slow", 0.6).removeClass().addClass('approved')
+    $('#<%=dom_id(image, "status")%>').removeClass().addClass('num approved')
+  <%end%>
+<%end%>

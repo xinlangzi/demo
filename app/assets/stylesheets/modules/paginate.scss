@@ -1,0 +1,31 @@
+.pagination{
+  display: block;
+  padding: 5px 10px;
+  span{
+    margin: 0px 3px;
+    text-align: center;
+    a{
+      text-decoration: none;
+      padding: 2px 7px;
+      border: 1px solid #EBEBEB;
+      background-color: whiteSmoke;
+      color: darken($base, 10%);
+      font-weight: normal !important;
+    }
+    &.current{
+      padding: 2px 5px;
+      font-weight: bold;
+      color: darken($base, 20%);
+      border: 1px solid #BDF;
+      background-color: #DEF;
+    }
+    &.gap{
+      border: none;
+    }
+    &:hover a{
+      border: 1px solid #BDF;
+      background-color: #DEF;
+    }
+  }
+
+}

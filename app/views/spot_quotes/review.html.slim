@@ -1,0 +1,42 @@
+.title-bar
+  h1 Review Quotes
+  ul
+    li = link_to 'Back to Reports', '/reports'
+.full-page
+  .search-box
+    .search-inner
+      = simple_form_for @search, :url => review_spot_quotes_path, :html=>{:method => :get, class: 'horiz'}  do |s|
+        = s.input :customer_id_eq, as: :select, collection: Customer.get_names_and_ids, include_blank: true, wrapper: 'vertical', required: false, label:'Customer',input_html: { class: 'chosen-select' }
+        = s.input :created_gteq, as: :datepicker, label: 'From', dateFormat: 'yy-mm-dd', wrapper: 'vertical', required: false
+        = s.input :created_lt, as: :datepicker, label: 'To', dateFormat: 'yy-mm-dd', wrapper: 'vertical', required: false
+        = s.input :ssline_id_eq, as: :select, collection: Ssline.get_names_and_ids, include_blank: true, wrapper: 'vertical', required: false, label: 'Ssline', input_html: { class: 'chosen-select' }
+        = s.input :rail_road_id_eq, as: :select, collection: RailRoad.all, include_blank: true, wrapper: 'vertical', required: false, label: 'Rail Road', input_html: { class: 'chosen-select' }
+        = s.input :dest_address_cont, label: "Destination Address", wrapper: 'vertical', required: false
+        = s.submit "Search"
+
+  table.gray.vmiddle.f90
+    tr
+      th.w30 ID
+      th.w100 Created/Expired
+      th User/Email
+      th.w100 Customer
+      th Ssline
+      th Rail Road
+      th Destination Address
+      th Miles
+      th.w100 Container Size/Cargo Weight
+      th Over Fees
+      th Reefer Fee
+      th Base Rate Fee
+      th Drop Rate Fee
+      th Chassis Fee
+      th Chassis Dray
+      th Fuel Price
+      th Fuel Amount
+      th.w100 Other Charges
+      th Live Load
+      th Drop And Pull
+      th Comments
+    tbody
+      = render @quotes
+  = paginate @quotes

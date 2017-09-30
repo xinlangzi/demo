@@ -1,0 +1,10 @@
+/# to-remove
+/ .hidden id=id
+/   .center = trucker.name
+/   table.gray.w500
+/     - vacations.each_slice(5) do |dates|
+/       tr
+/         - dates.each do |date|
+/           td.text-left
+/             span = date.us_date
+/             sup  = date.strftime('%a')

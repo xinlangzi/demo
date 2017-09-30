@@ -1,0 +1,43 @@
+h2 = @inspection.trucker
+.box
+  .box-title Inspection/Violations
+  .box-content
+    table.gray.w800
+      tr
+        th Issue Date
+        th Point
+        th Amount
+        th Level
+      tr
+        td = @inspection.issue_date
+        td = @inspection.point
+        td = number_to_currency(@inspection.amount)
+        td = @inspection.level
+    table.gray.f90
+      tr
+        th width=80 Code
+        th width=80 Unit
+        th width=80 OOS
+        th width=400 Description
+        th width=50 Included IN SMS
+        th Basic
+        th width=200 Reason Not Included IN SMS
+      - @inspection.violations.each do |v|
+        tr 
+          td = v.code
+          td = v.unit
+          td = v.oos
+          td = simple_format(v.description)
+          td = checkmark(v.included_in_sms)
+          td = v.basic
+          td = simple_format(v.reason_not_included_in_sms)      
+.box
+  .box-title 
+    = link_to invoiced_inspection_path(@inspection), remote: true do 
+      = fa_icon('plus-circle')
+    span Invoices
+  .box-content.adjustment-items
+    - @inspection.adjustments.each do |adjustment|
+      = render 'adjustment', adjustment: adjustment
+    
+  

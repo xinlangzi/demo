@@ -1,0 +1,8 @@
+= simple_form_for(@applicant) do |f|
+  = f.error_notification
+  = f.input :name, wrapper: :vertical, input_html: { autocomplete: 'off', class: 'itext' }
+  = f.input :email, wrapper: :vertical, input_html: { autocomplete: 'off', type: 'email', class: 'itext' }
+  = f.input :phone, wrapper: :vertical, input_html: { autocomplete: 'off', type: 'phone', class: 'itext' }
+  = f.association :hub, collection: Hub.with_default, include_blank: false, wrapper: :vertical, input_html: { autocomplete: 'off', class: 'full-width' }
+  = f.input :comment, wrapper: :vertical, input_html: { autocomplete: 'off', class: 'itext', rows: 3 }
+  = f.submit 'Apply', class: 'w100 green-btn'

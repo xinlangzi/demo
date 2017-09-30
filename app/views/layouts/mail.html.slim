@@ -1,0 +1,57 @@
+- ss = SystemSetting.default
+- owner = Owner.first
+doctype transitional
+html xmlns="http://www.w3.org/1999/xhtml"
+  head
+    meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    = stylesheet_link_tag 'email', media: 'all'
+    title = owner.name
+  body.mail bgcolor="#FFF"
+    table.outer width="100%" cellpadding="0" cellspacing="0"
+      tr
+        td colspan="3" style="height:20px;" height="20"
+      tr
+        td style="padding:0px;margin:0px;" &nbsp;
+        td.content align="center" valign="top" width="800"
+          table.header width="100%" cellpadding="5" cellspacing="0" bgcolor="#F0F0F0"
+            tr
+              td align="center"
+                - if owner.logo?
+                a.logo href=root_url
+                  img src="#{owner.logo.url}" border="0" width="150" height="75"
+          table.main width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFF"
+            tr
+              td align="left"
+                == yield
+          table.footer width="100%" cellpadding="20" bgcolor="#F3F3F3"
+            tr
+              td align="left" style=outlook_font
+                strong STAY CONNECTED
+                table width="75"
+                  tr
+                    td width="25" align="center"
+                      - if ss.facebook_url.present?
+                        = link_to ss.facebook_url, target: '_blank' do
+                          img style="opacity: 0.7" src="#{root_url}/assets/icons/facebook.png"
+                    td width="25" align="center"
+                      - if ss.twitter_url.present?
+                        = link_to ss.twitter_url, target: '_blank' do
+                          img style="opacity: 0.7" src="#{root_url}/assets/icons/twitter.png"
+                    td width="25" align="center"
+                      - if ss.google_plus_url.present?
+                        = link_to ss.google_plus_url, target: '_blank' do
+                          img style="opacity: 0.7" src="#{root_url}/assets/icons/google-plus.png"
+                br
+                div The information contained in this e-mail is intended for the original recipient only.
+                br
+                div = owner.name
+                div = mail_to(owner.email)
+                div = owner.phone
+                div = owner.address_street
+                div = "#{owner.address_city}, #{owner.address_state.abbrev} #{owner.zip_code}"
+                br
+                div Copyright © #{Date.today.year} #{owner.name} All Rights Reserved
+        td style="padding:0px;margin:0px;" &nbsp;
+      tr
+        td colspan="3" style="height:20px;" height="20"

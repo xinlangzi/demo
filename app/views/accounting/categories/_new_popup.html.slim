@@ -1,0 +1,15 @@
+= simple_form_for @category, remote: true, html: {class: 'rows'} do |f|
+  = f.error_notification
+  = hidden_field_tag :popup, true
+  fieldset
+    legend #{@category.feature.capitalize} Category
+    = f.input :name
+    - all_categories = Accounting::Category.parent_options(current_user, @category.feature, nil, false).collect{|x| x[0..1]}
+    = f.input :parent_id, as: :select, collection: all_categories, include_blank: true, input_html: { class: 'chosen-select', data: { width: 300 } }
+    = f.association :accounting_group, input_html: { class: 'w300' }
+    = f.input :description, input_html: {rows: 5, cols: 40, class: 'w300'}
+    = f.input :for_container, wrapper: 'checkbox'
+    = f.input :acct_only, wrapper: 'checkbox', label: 'Only for Acct.'
+    = f.input :road_side_service, wrapper: 'checkbox'
+    = f.input :feature, as: :hidden
+  = f.submit

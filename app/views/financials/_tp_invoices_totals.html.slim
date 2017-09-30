@@ -1,0 +1,42 @@
+table.gray
+
+  thead
+    tr
+      th Company name
+      th.w120 Total Amount
+      th.w120 Balance
+
+
+    - if tp_invoices_totals.blank?
+      tbody
+        tr
+          td.red[colspan=3] No items found
+    - else
+      tbody
+        - filter_params = {q: { issue_date_gteq: @invoice_filter.from, issue_date_lteq: @invoice_filter.to }}
+        - tp_invoices_totals.each do |invoice|
+          tr
+            td.text-left
+              - filter_params[:q].merge!(company_id_eq: invoice.company_id)
+              - if invoice.class.to_s=~/ReceivableInvoice/
+                = link_to_if invoice.company, (invoice.company.name rescue 'N/A'), polymorphic_path(ReceivableInvoice.new, filter_params), target: "_blank"
+              - else
+                = link_to_if invoice.company, (invoice.company.name rescue 'N/A'), polymorphic_path(PayableInvoice.new, filter_params), target: "_blank"
+            td.number[rel="#{invoice.amount}"] = number_to_currency invoice.amount
+            td.number[rel="#{invoice.balance}"] = number_to_currency invoice.balance
+      tfoot
+        tr
+          th Total
+          th.number = number_to_currency tp_invoices_totals.map(&:amount).sum
+          th.number = number_to_currency tp_invoices_totals.map(&:balance).sum
+- unless tp_invoices_totals.blank?
+  .hidden.datatable-config
+    | {
+        "bPaginate": false,
+        "aaSorting": [[ 1, "desc" ]],
+        "aoColumns": [
+          null,
+          {"sSortDataType": "cell", "sType": "numric"},
+          {"sSortDataType": "cell", "sType": "numric"}
+        ]
+      }

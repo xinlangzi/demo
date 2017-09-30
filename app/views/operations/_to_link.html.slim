@@ -1,0 +1,9 @@
+.search-box
+  .search-inner
+    = simple_form_for Container.search, url: linkable_operations_path, remote: true, method: :get, html: {class: 'horiz'} do |f|
+      = f.input :id_eq, label: 'Container ID', required: false, wrapper: 'vertical', input_html: { class: 'w100' }
+      = f.input :container_no_cont, label: 'Container No.', required: false, wrapper: 'vertical', input_html: { class: 'w200' }
+      = hidden_field_tag :me, @operation.id
+      = f.submit 'Search'
+.full-page
+  #linkable-operations

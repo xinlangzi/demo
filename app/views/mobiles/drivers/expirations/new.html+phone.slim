@@ -1,0 +1,41 @@
+- column_name = @image.column_name.to_sym
+.card.container-card
+  .card-header = Trucker::DOC_NAME_MAPS[column_name]
+  .card-content
+    .list-block.narrow-block
+      = simple_form_for @image, url: mobiles_drivers_expirations_path, html: { multipart: true, id: 'image-form' }  do |s|
+        = s.input :imagable_type, as: :hidden
+        = s.input :imagable_id, as: :hidden
+        = s.input :column_name, as: :hidden
+        .row#captured
+          .col-33.add-image
+            .icon.ion-ios-plus-outline
+            input.camera-input type="file" accept="image/*" capture="camera" data-max=1
+        ul
+          li
+            .item-content.small
+              .item-inner
+                = s.submit 'Upload', class: 'button button-big active'
+      .error-messages
+- latest = @image.imagable.images.for_column(column_name).last
+- if latest.try(:file_exists?)
+  .content-block-title
+    center.bold.green.title Uploaded Doc
+  .card.doc-card
+    .card-content
+      - pdf = latest.file.content_type =~/pdf/
+      - if pdf
+        h3.text-center This is a PDF document.
+      - else
+        = image_tag(latest.file.url(:thumb), width: '100%')
+      - if latest.rejected?
+        .card-content-inner = simple_format(latest.comment)
+    .card-footer
+      a.link
+      -  if pdf
+        = link_to "Open PDF", latest.file.url, class: 'external link', target: '_blank'
+      - else
+        a.link
+        a.link = latest.status.try(:titleize)
+  br
+  br

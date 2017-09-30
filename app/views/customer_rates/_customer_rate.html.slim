@@ -1,0 +1,11 @@
+= fields_for "customer_rate[#{rand(10**5)}]", customer_rate do |fields|
+  tr
+    td
+      a.fa.fa-times-circle.remove-row
+    td = fields.text_field :miles, class: 'w60 center', required: true
+    td = fields.text_field :rate, class: 'w60 center', required: true
+    td
+      = fields.text_field :fuel_ratio, class: 'w60 center', required: true
+      span %
+    td = customer_rate.fuel_amount
+    td = customer_rate.gallons

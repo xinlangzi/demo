@@ -1,0 +1,63 @@
+/ .title-bar
+/   h1 Profit&Loss
+
+/ .content
+/   .search-box
+/     .search-inner
+/       = simple_form_for @filter, as: :filter, url: profit_loss_path, html: { method: :get, class: 'horiz'} do |s|
+/         = s.input :issue_date_from, as: :datepicker, label: 'Issue Date From', required: false, wrapper: 'vertical'
+/         = s.input :issue_date_to, as: :datepicker, label: 'To', required: false, wrapper: 'vertical'
+/         = s.input :cleared_date_from, as: :datepicker, label: 'Cleared Date From', required: false, wrapper: 'vertical'
+/         = s.input :cleared_date_to, as: :datepicker, label: 'To', required: false, wrapper: 'vertical'
+/         = s.input :unpaid, as: :boolean, label: 'Unpaid Invoices', required: false, wrapper: 'checkbox'
+/         = s.submit "Search"
+
+/   - receivable_amount = @receivable_charges.map(&:amount).sum
+/   - tp_receivable_amount = @tp_receivable_line_items.map(&:amount).sum
+/   - payable_amount = @payable_charges.map(&:amount).sum
+/   - tp_payable_amount = @tp_payable_line_items.map(&:amount).sum
+/   table.gray
+/     tfoot
+/       tr
+/         th.pw25 Balance
+/         th.pw70.number = number_to_currency(receivable_amount + tp_receivable_amount - payable_amount - tp_payable_amount)
+/         th.pw5
+/     tbody
+/       tr
+/         th Total Revenues
+/         td.number.green = number_to_currency(receivable_amount + tp_receivable_amount)
+/         td
+/       tr
+/         th.pw25 Account Receivable Orders
+/         td.pw70.number = number_to_currency(receivable_amount)
+/         td = link_to '', sql_path(@receivable_container_charges_sql.iid, tmpl: 'financials/show_all', partial: 'financials/accounting/container_charges', target: 'rccs'), remote: true, class: 'show-hide fa fa-list-ul', title: 'show/hide all', rel: 'rccs'
+/       tr.hidden#rccs
+/         td
+/         td colspan=2
+/       tr
+/         th Third Party Receivable
+/         td.number = number_to_currency(tp_receivable_amount)
+/         td = link_to '', sql_path(@tp_receivable_line_items_sql.iid, tmpl: 'financials/show_all', partial: 'financials/accounting/tp_line_items', target: 'tprlis'), remote: true, class: 'show-hide fa fa-list-ul', title: 'show/hide all', rel: 'tprlis'
+/       tr.hidden#tprlis
+/         td
+/         td colspan=2
+/       tr
+/         td colspan=3 &nbsp;
+/       tr
+/         th Total Costs
+/         td.number.red = number_to_currency(payable_amount + tp_payable_amount)
+/         td
+/       tr
+/         th Account Payable Orders
+/         td.number = number_to_currency(payable_amount)
+/         td = link_to '', sql_path(@payable_container_charges_sql.iid, tmpl: 'financials/show_all', partial: 'financials/accounting/container_charges', target: 'pccs'), remote: true, class: 'show-hide fa fa-list-ul', title: 'show/hide all', rel: 'pccs'
+/       tr.hidden#pccs
+/         td
+/         td colspan=2
+/       tr
+/         th Third Party Payable
+/         td.number = number_to_currency(tp_payable_amount)
+/         td = link_to '', sql_path(@tp_payable_line_items_sql.iid, tmpl: 'financials/show_all', partial: 'financials/accounting/tp_line_items', target: 'tpplis'), remote: true, class: 'show-hide fa fa-list-ul', title: 'show/hide all', rel: 'tpplis'
+/       tr.hidden#tpplis
+/         td
+/         td colspan=2

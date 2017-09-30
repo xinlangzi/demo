@@ -1,0 +1,40 @@
+- readonly = container_charge.mark_as_readonly? || !container_charge.can_be_modified?
+- removable = container_charge.can_be_modified?
+- tr_class = Proc.new{|obj| classes = [obj.uid]; classes << "readonly" if obj.mark_as_readonly?; classes.join(' ')}
+- account_type = container_charge.class.to_s.underscore.split('_').first
+= fields_for "#{container_charge.class.to_s.underscore.pluralize}[#{container_charge.key}]", container_charge do |ccf|
+  - unless container_charge.errors.empty?
+    tr class=tr_class.call(container_charge)
+      td colspan=6
+        i.fa.fa-arrow-down.red.bold = container_charge.errors.full_messages.join("; ")
+  tr class=tr_class.call(container_charge) id="container_charge_row_#{container_charge.key}"
+    td
+      = ccf.text_field :amount, size: 8, readonly: readonly, class: 'w100 center cc_amount'
+      = ccf.hidden_field :key
+      = ccf.hidden_field :delete_it, class: 'delete-it'
+      = ccf.hidden_field :uid
+      = ccf.hidden_field :auto_save
+      = ccf.hidden_field :chargable_type
+    td
+      - if readonly
+        .bold
+          = container_charge.chargable.name rescue 'N/A'
+        = ccf.hidden_field :chargable_id
+      - else
+        = ccf.select :chargable_id, objects_for_select(container_charge.charges), { include_blank: true }, { class: "chosen-select #{container_charge.new_record? ? 'new-charge-type' : ''}", data: { type: container_charge.class.to_s.underscore.pluralize, key: container_charge.key, width: 200 } }
+    td
+      - if readonly || container_charge.uid.present?
+        .bold
+          = container_charge.company.name rescue 'N/A'
+          = inactive_tip(container_charge.company)
+        = ccf.hidden_field :company_id
+      - else
+        - grouped_options = option_groups_from_collection_for_select(container_charge.companies, :group_options, :to_s, :id, :name, container_charge.company_id)
+        = ccf.select :company_id, grouped_options, { include_blank: true }, { class: "#{account_type}-company chosen-select" }
+    td = ccf.text_area :details, readonly: readonly, rows: 1, cols: 30, class: "auto-area"
+    td
+      center = link_to "#{container_charge.line_item.invoice.number}", container_charge.line_item.invoice rescue 'N/A'
+
+    td.w10
+      - if removable
+        a.fa.fa-times-circle.remove-charge

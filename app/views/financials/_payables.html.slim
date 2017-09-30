@@ -1,0 +1,26 @@
+- cache("financials_payables") do
+  .title-bar
+    h1 Accounts: Payables
+
+  .content.guides
+    h2 Add / New
+    ul
+      li = link_to "Record Received Invoice", new_payable_invoice_path
+      li = link_to "Make a Payment", new_payable_payment_path
+      li #{link_to "Set Bank Cleared Date for Payments", uncleared_payable_payments_path} to help you with bank reconciliation.
+    h2 List / Search
+    ul
+      li = link_to "Search for Payments Made", payable_payments_path
+      li = link_to "Search Payable Invoice", payable_invoices_path
+      li = link_to "Outstanding Payable Invoices", payable_invoices_path(q: { outstanding_true: '1' })
+      li #{link_to "List Cleared Payments Between Dates", cleared_payable_payments_path} - bank reconciliation</li>
+      li = link_to 'List Cleared 1099s Payment Between Dates', onfile1099_payable_payments_path
+      li = link_to 'Search for Trucker Advances', adjustments_path
+      li = link_to 'Search for Vendor Credits', vendor_credits_path
+    h2 Settings
+    ul
+      li = link_to "Set Default Check Template for Printing", check_templates_path
+      li = link_to "Modify Default Container Charges for Truckers", payable_charges_path
+      li = link_to "Adjustment Categories", adjustment_categories_path
+      li = link_to "Cost Categories", accounting_categories_path(type: 'cost')
+      li = link_to "Groups", accounting_groups_path

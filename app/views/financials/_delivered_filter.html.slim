@@ -1,0 +1,32 @@
+.search-box
+  .search-inner
+    = simple_form_for @filter, as: :filter, url: performance_dashboard_path, html: {method: :get, class: 'horiz'} do |s|
+      = s.input :from, as: :datepicker, input_html: { value: @filter.from.to_s}, wrapper: 'vertical'
+      = s.input :to, as: :datepicker, input_html: { value: @filter.to.to_s}, wrapper: 'vertical'
+      = s.submit "Search"
+      .inline.f90
+        | &nbsp;&nbsp;&nbsp;&nbsp;
+        = link_to "Today", performance_dashboard_path
+        - if @filter.try(:from) == @filter.try(:to)
+          | &nbsp;&nbsp;&nbsp;&nbsp;
+          = link_to "<< Previous Day", performance_dashboard_path(day: "previous", reference_date: @filter.from) if @filter.from.present?
+          | &nbsp;&nbsp;&nbsp;&nbsp;
+          = link_to 'Next Day >>', performance_dashboard_path(day: "next", reference_date: @filter.from) if @filter.from.present?
+        | &nbsp;&nbsp;&nbsp;&nbsp;
+        = link_to "<< Previous Month", performance_dashboard_path(month: "previous", reference_date: @filter.from) if @filter.from.present?
+        | &nbsp;&nbsp;&nbsp;&nbsp;
+        = link_to 'Next Month >>', performance_dashboard_path(month: "next", reference_date: @filter.to) if @filter.to.present?
+.search-box
+  .search-inner
+    = link_to 'Current Month', performance_dashboard_path(date_range: "current_month"), class: 'mr20 f90'
+    = link_to 'Last Month', performance_dashboard_path(date_range: "last_month"), class: 'mr20 f90'
+    = link_to 'Last Quarter', performance_dashboard_path(date_range: "last_quarter"), class: 'mr20 f90'
+    = link_to 'Current Year', performance_dashboard_path(date_range: "current_year"), class: 'mr20 f90'
+    = link_to 'Previous Year', performance_dashboard_path(date_range: "previous_year"), class: 'mr20 f90'
+
+javascript:
+  $( "#filter_from" ).datepicker({
+    onSelect: function( selectedDate ) {
+      $("#filter_to" ).datepicker( "option", "minDate", selectedDate );
+    }
+  });

@@ -1,0 +1,8 @@
+= form_for @payment, as: :payment, url: polymorphic_url(@payment), html: { method: :post, id: 'payment_form', class: 'observe-form' } do |p|
+  = render partial: 'payments/form/payment', object: @payment
+  = render partial: 'payments/message_box', object: @payment
+  = render 'payable_payments/select_widget', payment: @payment
+  table.gray.vmiddle
+    = render partial: 'payments/table_header', object: @payment
+    tbody
+      = render partial: 'payments/form/line_item_payments', collection: @payment.line_item_payments, as: :line_item_payment

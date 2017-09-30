@@ -1,0 +1,7 @@
+div id=dom_id(imagable, 'zoom')
+  - width = imagable.file.dimensions.width
+  - height = imagable.file.dimensions.height
+  - if width > height
+    = image_tag(imagable.file.url, { width: 650, class: 'zoom-image', style: 'max-width: 100%;', data: { zoom_image: imagable.file.url } })
+  - else
+    = image_tag(imagable.file.url, { width: 650, height: 550, class: 'zoom-image', style: 'max-width: 100%;',  data: { zoom_image: imagable.file.url } })

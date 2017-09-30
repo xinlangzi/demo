@@ -1,0 +1,24 @@
+.title-bar
+  h1 Text Messages
+
+.full-page
+  table.gray.vmiddle
+    tr
+      th.w120 To
+      th.w120 Phone No.
+      th.w600 Message
+      th Status
+      th Admin
+      th Container
+      th When
+    - @text_messages.each do |txt|
+      tr
+        td = txt.company ? link_to(txt.company.name, txt.company) : "N/A"
+        td = txt.phone_number
+        td.text-left.f90 = txt.message
+        td = txt.status
+        td = txt.admin ? link_to(txt.admin.name, txt.admin) : 'N/A'
+        td = txt.container ? link_to(txt.container.container_no, txt.container) : 'N/A'
+        td = txt.created_at.us_datetime
+
+  = paginate @text_messages

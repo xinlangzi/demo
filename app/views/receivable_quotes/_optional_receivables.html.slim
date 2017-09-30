@@ -1,0 +1,4 @@
+- unless @customer_quotes.empty?
+  = simple_form_for :receivable_quote, url: receivable_quotes_path, remote: true do |f|
+    = render 'spot_quotes/optional_receivables', quotes: @customer_quotes
+    = f.submit "Build into Accts. Receivables"

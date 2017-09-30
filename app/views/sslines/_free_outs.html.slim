@@ -1,0 +1,8 @@
+table.gray.w400
+  tr
+    th Container Size/Type
+    th Days
+  - free_outs.each do |free_out|
+    tr
+      td = free_out.container_style
+      td = free_out.days

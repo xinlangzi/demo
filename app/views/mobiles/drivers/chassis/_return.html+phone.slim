@@ -1,0 +1,22 @@
+- if container.chassis_return_required?
+  - company = container.chassis_return_company
+  - if company
+    .swiper-slide
+      .card.container-card.no-box
+        .card-header
+          .pull-right
+            .badge.bg-green Chassis Return
+          .bold = link_to container.id, container
+          .company = company.name
+          .address = "#{company.address_street}, #{company.address_city}, #{company.state} #{company.zip_code}"
+        .card-content
+          .map
+            img src="https://maps.googleapis.com/maps/api/staticmap?zoom=10&size=350x200&maptype=roadmap&markers=size:mid%7Ccolor:red|#{company.address}"
+        .card-footer.buttons-row
+          - ymd = container.chassis_return_at.try(:ymd)
+          - klasses = %w{only_date auto-save}
+          .pw85.relative.operation-date.button.button-big
+            = text_field_tag :chassis_return_at, ymd, class: klasses, placeholder: 'Chassis Return Date', ref: "#{container.class.to_s}:#{container.id}:chassis_return_at", disabled: !container.chassis_return_at_updatable_by?(current_user)
+            i class=alter_status_icon(container, :chassis_return_at)
+          a.ajax-popup.button.button-big.button-fill.color-green.pw15 href="#" data-url=new_doc_path(image: { imagable_type: 'Container', imagable_id: container.id, column_name: 'chassis_return' }, layout: 'popup', target: 'stops')
+            i.upload-icon.ion-images.text-center&nbsp;

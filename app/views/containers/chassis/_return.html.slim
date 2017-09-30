@@ -1,0 +1,16 @@
+- if container.chassis_return_required?
+  tr.operation-detail
+    td.operation-info colspan=4
+      .containerOperationDiv
+        .operationDetail
+          .bold Chassis Return
+          - if container.chassis_return_company
+            = render partial: 'shared/print_brief_company', object: container.chassis_return_company
+          - else
+            = fa_icon('chain', text: 'with container')
+          .operationDate
+            - unless container.chassis_return_with_container
+              = calendar_for(container, :chassis_return_at, { disabled: container.lock? })
+              = attachments_for(container, :chassis_return)
+        .operationDrop
+        .operationDriver

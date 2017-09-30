@@ -1,0 +1,29 @@
+.title-bar
+  h1 Pre-alerts
+  ul
+    li
+      a.show-hide rel="search-box"
+        = fa_icon("search")
+    - Settings.order_types.each do |name, values|
+      li = link_to "New " + name, values['url']
+
+.full-page
+  = render "containers/pre_alerts_search"
+  - if !@import_containers.empty?
+    = content_for :import_caption do
+      li.title Import Containers
+      - if current_user.is_admin?
+        li = link_to "Export to Excel", pre_alerts_import_containers_path(q: params[:q].to_h, format: 'csv')
+    = render partial: 'containers/containers_brief', object: @import_containers, locals: { caption: :import_caption}
+  - else
+    .border-info.red There are no pre-alerts for imports.
+
+
+  - if !@export_containers.empty?
+    = content_for :export_caption do
+      li.title Export Containers
+      - if current_user.is_admin?
+        li = link_to "Export to Excel", pre_alerts_export_containers_path(q: params[:q].to_h, format: 'csv')
+    = render partial: 'containers/containers_brief', object: @export_containers, locals: { caption: :export_caption}
+  - else
+    .border-info.red There are no pre-alerts for exports.

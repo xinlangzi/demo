@@ -1,0 +1,85 @@
+h1 Proof of Delivery
+.sections.container
+  .row
+    .col-md-12.gray
+      = form_tag pods_web_containers_path, method: :get, class: 'horiz' do 
+        .vertical
+          label.required for="email"
+            abbr *
+            | &nbsp;Email
+          = text_field_tag :email, params[:email], required: true, id: 'email', class: 'w300'
+        .vertical
+          label.required for="container_no"
+            abbr *
+            | &nbsp;Container No.
+          = text_field_tag :container_no, params[:container_no], required: true, id: 'container_no'
+        .vertical
+          label &nbsp;
+          = submit_tag 'Get Pods', class: 'btn'
+        .clearfix
+        - if params[:email]
+          .red = "Can't find matched container. Try again!" if @containers.empty?
+        - else
+          .green Enter email and Container No. to query PODs
+- @containers.each do |container|
+  .sections.container
+    .row
+      .col-md-4
+        .block
+          .label Customer
+          .h3 = container.customer
+          em = container.customers_employee
+        .block
+          .label Order ID
+          .h2 = link_to container.id, container
+        .block
+          .label Container No.
+          .h2 = container.container_no
+        .block
+          .label Container Size/Type
+          .h2 = container.size
+        .block
+          .label Reference No.
+          .h2 = container.reference_no
+      .col-md-4
+        .block
+          .label Commodity
+          .h3 = container.commodity
+        .block
+          .label Weight
+          .h3 #{container.weight_decimal_humanized} LBS
+        - if container.is_a?(ImportContainer)
+          .block
+            .row.container-fluid
+              .col-xs-5
+                .label Terminal/Rail ETA
+                .h3 = container.terminal_eta
+          .block
+            .label SS Line B/L No.*
+            .h3 = container.ssline_bl_no
+        - else
+          .block
+            .row.container-fluid
+              .col-xs-5
+                .label Early Receiving Date
+                .h3 = container.early_receiving_date
+              .col-xs-2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              .col-xs-5
+                .label Rail Cutoff Date
+                .h3 = container.rail_cutoff_date
+          .block
+            .label SS Line Booking No.*
+            .h3 = container.ssline_booking_no
+      .col-md-4.text-right
+        .block.pod
+          .h2 
+            span POD:
+            - if container.pod_docs.empty?
+              em.red.f80 &nbsp;Pending
+            - else
+              - container.pod_docs.each_with_index do |doc, index|
+                = link_to index + 1, doc.file.url, target: '_blank'
+        = link_to 'View Comprehensive Container Data', elink_web_container_path(container, email: params[:email]), remote: true
+        .red id=dom_id(container, 'more')
+      .col-md-12.gray
+        = render 'containers/progress', container: container

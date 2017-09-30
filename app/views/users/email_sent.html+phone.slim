@@ -1,0 +1,18 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .center.sliding = logo_tag
+
+.content-block.tablet-inset.narrow-block
+  .content-block-inner
+    h3.text-center Password reset mail is on its way!
+    ul
+      li An email containing your password reset link has been sent.
+
+      li If you do not receive an email within 10 minutes, check your spam folder first, then try again.
+      li
+        | If the issue persists, please&nbsp;
+        a.external href='/contact.html' contact us
+        | .
+      li 
+        a.external href='/login' Back to Login

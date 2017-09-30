@@ -1,0 +1,12 @@
+.ml5
+  - unless @container.container_edi_detail.nil?
+    #edi-tabs.tabs
+      ul
+        li
+          a[href="#edi_raw_detail"] Edi Raw Detail
+        li
+          a[href="#edi_parsed_detail"] Edi Parsed Detail
+      #edi_raw_detail.edi_box
+        = @container.container_edi_detail.raw_message.gsub("\n", "<br>").html_safe
+      #edi_parsed_detail.edi_box
+        = @container.container_edi_detail.parsed_message.gsub("\n", "<br>").html_safe

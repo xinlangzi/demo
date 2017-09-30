@@ -1,0 +1,35 @@
+.title-bar
+  h1 Viewing #{controller.crud_class.to_s.titleize.downcase} #{@line_item_payment.id}
+  ul
+    li = link_to 'Back to payment', @line_item_payment.payment
+.content
+  fieldset.border
+    span Belongs to #{@line_item_payment.payment.class.to_s.titleize.downcase} 
+    - if @line_item_payment.payment.kind_of?(ReceivablePayment)
+      span received from:
+    - else
+      span paid to:
+    span.company  #{@line_item_payment.payment.company.name}
+    .clear
+    span.bold.green Other line item payments in payment:
+    - if @other_line_item_payments.count > 1
+      - oli = @other_line_item_payments.map{|oli| link_to oli.id, [@line_item_payment.payment, oli]}
+      - oli.delete(link_to @line_item_payment.id)
+      span.ml5 = oli.to_sentence.html_safe
+    - else
+      span.red none.
+  table.gray
+    thead
+      tr
+        th ID
+        th Payment No.
+        th Payment Method
+        th Amount
+        th Cleared On
+    tbody
+      tr
+        td = @line_item_payment.id
+        td = link_to @line_item_payment.payment.number, @line_item_payment.payment
+        td = @line_item_payment.payment.payment_method.name 
+        td.number = number_to_currency @line_item_payment.amount
+        td = @line_item_payment.payment.cleared_date ? h(@line_item_payment.payment.cleared_date) : (link_to 'set cleared date', :controller => "#{@line_item_payment.payment.class.to_s.underscore.pluralize}", :action => 'uncleared') 

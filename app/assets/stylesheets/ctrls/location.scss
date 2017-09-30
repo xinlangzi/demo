@@ -1,0 +1,53 @@
+#track-location-layout{
+  height: 100%;
+  form{
+    .datetime_picker{
+      width: 100% !important;
+    }
+    background: #F9F9F9;
+    padding: 5px 10px;
+    border: 1px solid #DDD;
+    input, select{
+      width: 100%;
+    }
+  }
+}
+
+.trigger-marker{
+  li{
+    color: #666;
+    background: #EEE;
+    margin: 2px 0px;
+    padding: 1px 1px 1px 5px;
+    border: 1px solid #DDD;
+    @include border-radius(3px);
+    &.active{
+      background: #F0F900;
+    }
+    &:hover{
+      cursor: pointer;
+      color: red;
+    }
+    &.title{
+      border: none;
+      font-weight: bold;
+      background: #333;
+      font-size: 14px;
+      color: #FFF;
+      &:hover{
+        cursor: normal;
+        color: #FFF;
+      }
+    }
+    .time{
+      color: $red;
+      font-size: 10px;
+      line-height: 10px;
+      text-transform: lowercase;
+     }
+  }
+}
+#view-gps{
+  margin-bottom: 10px;
+  clear: both;
+}

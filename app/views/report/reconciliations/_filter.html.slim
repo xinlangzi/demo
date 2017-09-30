@@ -1,0 +1,10 @@
+- min_date = Payment.first.cleared_date.beginning_of_year rescue Time.now.beginning_of_year.ymd
+- max_date = Time.now.end_of_year.ymd
+#search-box.search-box
+    fieldset.search-inner
+      legend.bold Search by Cleared Date
+      = simple_form_for @search, as: :search, url: search_report_reconciliations_path, html: {method: :get, class: 'horiz'} do |s|
+        = s.input :cleared_date_gteq, as: :datepicker, label: 'From', required: true, wrapper: 'vertical', input_html: { minDate: min_date, maxDate: max_date }
+        = s.input :cleared_date_lteq, as: :datepicker, label: 'To', required: false, wrapper: 'vertical', input_html: { minDate: min_date, maxDate: max_date }
+        = s.submit "Search"
+        = s.submit "Run at Background"

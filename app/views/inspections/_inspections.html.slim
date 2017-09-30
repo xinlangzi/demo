@@ -1,0 +1,70 @@
+table.gray.vmiddle
+  thead
+    tr
+      th
+      th Issue Date
+      th Driver
+      th Level
+      th Point
+      th Amount
+      th width=200 Amount to Invoice
+      th Attachments
+      th.no-sort
+      th.no-sort
+  tbody
+    - @inspections.each do |inspection|
+      tr
+        td = checkmark(inspection.clear?)
+        td = link_to inspection.issue_date, inspection, rel: 'facebox', ref: 'eventY'
+        td = inspection.trucker
+        td = inspection.level
+        td = inspection.point
+        td = number_to_currency(inspection.amount)
+        td = number_to_currency(inspection.adjustments.sum(:amount))
+        td = attachments_for(inspection)
+        td = link_to '', [:edit, inspection], class: 'fa fa-edit'
+        td = link_to '', inspection, method: :delete, data: { confirm: "Are you sure to delete this inspection?" }, class: 'fa fa-trash'
+.hidden.datatable-config
+  | {
+      "bStateSave": false,
+      "bInfo": false,
+      "paging": false,
+      "aaSorting": [[ 1, "desc" ]],
+      "aoColumns": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        { "bSortable": false },
+        { "bSortable": false },
+        { "bSortable": false }
+      ]
+    }
+center = paginate @inspections rescue nil
+- if @operations
+  table.gray.vmiddle
+    thead
+      tr
+        th Container#
+        th Customer
+        th Appt. Date(s)
+        th Mileages(mi)
+    tbody
+      - grouped = @operations.group_by(&:container)
+      - grouped.each do |container, ops|
+        tr
+          td
+            = link_to container.id, container
+            = link_to '', polymorphic_path([:preview, container]), remote: true, class: "dialog fa fa-eye invisible"
+          td = container.customer
+          td = ops.map(&:actual_appt).map(&:ymd).sort.uniq.join(', ')
+          td = ops.map(&:complete_mileage).sum
+    tfoot
+      tr
+        th Total Containers
+        th = grouped.size
+        th Total Miles
+        th = @operations.map(&:complete_mileage).sum

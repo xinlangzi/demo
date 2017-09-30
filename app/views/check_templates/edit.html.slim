@@ -1,0 +1,8 @@
+.title-bar
+  h1 Editing Check Template
+  ul
+    li = link_to 'Back', check_templates_path
+    li = link_to 'Show', @check_template
+
+.content
+  = render 'form'

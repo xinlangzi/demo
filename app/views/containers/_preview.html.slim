@@ -1,0 +1,12 @@
+.title-bar
+  ul
+    - if current_user.is_admin?
+      li = link_to 'Calculate Receivables', query_receivable_quotes_path(container_id: @container.id, inner_dialog: true, preview: true), remote: true
+    - if accessible?('containers', 'lock')
+      li = lock_checkbox(@container, { ajax: true, reload: true })
+.content
+  .w900
+    #inner-dialog
+    = render 'containers/warnings'
+    = render partial: 'containers/siblings',  object: @container.siblings
+    = render partial: 'containers/container', object: @container

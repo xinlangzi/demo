@@ -1,0 +1,10 @@
+- warnings = []
+- warnings << "Please remember to manually enter prepull charge." if @container.require_prepull_charge?
+- warnings << "The system is calculating mileages at background, please refresh page later. If refresh can't work, please try the button 'Calculate Mileages' again." unless @container.mileages_ready?
+- warnings << sanitize("The linker/linked container #{@container.chains_without_mileage.map{|c| link_to(c.id, c)}.join(", ")} is lack of mileage.") if @container.chains_without_mileage.present?
+- if warnings.present?
+  fieldset.border.guides
+    .bold.red Important Tips:
+    ul
+      - warnings.each do |warning|
+        li.red = warning

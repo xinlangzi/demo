@@ -1,0 +1,39 @@
+tr
+  td.bold House BL No.
+  td = c.text_field :house_bl_no, class: 'nospace'
+  td.bold SS Line B/L No.:*
+  td = c.text_field :ssline_bl_no, class: 'nospace'
+  
+= render 'containers/form/container2', c: c, container: container
+
+tr
+  td.bold Appointment
+  td
+    = c.input_field :appt_date, as: :datepicker, class: "check-warning #{current_user.is_customer? ? 'check-appt' : ''}"
+    | &nbsp;&nbsp;
+    label class='inline'
+      = radio_button "container", "appt_is_range", "false", :onclick=>"$('#appt_termination').hide(); return true;"
+      | at&nbsp;&nbsp;
+    label class='inline'
+      = radio_button "container", "appt_is_range", "true", :onclick=>"$('#appt_termination').show(); return true;"
+      | between
+    hr
+    = c.time_select :appt_start, :minute_step=>15, :include_blank=>true
+    span#appt_termination[style="#{container.appt_is_range == 'true' ? '' : 'display: none'}"]
+      span and
+      = c.time_select :appt_end, :minute_step=>15, :include_blank=>true
+  td
+  td
+tr
+  td.bold Pickup No.
+  td = c.text_field :pickup_no, class: 'nospace'
+  td.bold Rail Last Free Day
+  td
+    = c.input_field :rail_lfd, as: :datepicker, minDate: Time.now.beginning_of_year.ymd, maxDate: Time.now.next_year.end_of_year.ymd, class: 'check-warning'
+tr
+  td.bold Per Diem Last Free Day
+  td
+    = c.input_field :per_diem_lfd, as: :datepicker, minDate: Time.now.beginning_of_year.ymd, maxDate: Time.now.next_year.end_of_year.ymd
+  td.bold Terminal/Rail ETA
+  td
+    = c.input_field :terminal_eta, as: :datepicker, minDate: Time.now.beginning_of_year.ymd, maxDate: Time.now.next_year.end_of_year.ymd, class: 'check-warning'

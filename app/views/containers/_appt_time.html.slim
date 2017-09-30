@@ -1,0 +1,22 @@
+- btw = random_id('btw')
+= simple_form_for container, as: :container, url: update_appt_time_container_path(container), remote: true, html: {id: 'appt_time'} do |c|
+  table.gray
+    tr
+      td[colspan=2]
+        = c.submit "Set Appointment Time", class: 'w200'
+    tr
+      td.pl60[colspan=2]
+        label.inline
+          = c.radio_button "appt_is_range", "false", onclick: "$('##{btw}').hide();"
+          | at
+        | &nbsp;&nbsp;&nbsp;&nbsp;
+        label.inline
+          = c.radio_button "appt_is_range", "true", onclick: "$('##{btw}').show();"
+          | between
+
+    tr
+      td = c.input :appt_start, as: :time, minute_step: 15, include_blank: true, label: false, wrapper: 'concise'
+      td id="#{btw}" style="#{container.appt_is_range == "true" ? "" : "display: none"}"
+        = c.input :appt_end,  as: :time, minute_step: 15, include_blank: true, label: false, wrapper: 'concise'
+    tr
+      td.text-left.red[id="appt_time_range_#{container.id}" colspan=2]

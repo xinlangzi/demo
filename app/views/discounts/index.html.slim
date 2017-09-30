@@ -1,0 +1,35 @@
+.title-bar
+  h1 Base Rate Increase
+.content
+  table.gray.vmiddle
+    caption
+      ul
+        li.title Discount for Truckers
+    thead
+      tr
+        th ID
+        th Name
+        th Increase
+        th.w150 Datetime
+        th.w200 Action
+    tbody
+      = render partial: 'all', object: @rate_for_all_truckers
+      - Trucker.active.each do |trucker|
+        tr[id="#{dom_id(trucker)}"]
+          = render "company", company: trucker
+  table.gray.vmiddle
+    caption
+      ul
+        li.title Discount for Customers
+    thead
+      tr
+        th ID
+        th Name
+        th Increase
+        th.w150 Datetime
+        th.w200 Action
+    tbody
+      = render partial: 'all', object: @rate_for_all_customers
+      - Customer.active.each do |customer|
+        tr[id="#{dom_id(customer)}"]
+          = render "company", company: customer

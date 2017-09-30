@@ -1,0 +1,4 @@
+App.showDialog({ minHeight: 600, title: 'New Contact' }).html('<%=j render("customers_employees/new_popup")%>')
+<%if request.get?%>
+$('#company_customer_id').val($('#container_customer_id').val())
+<%end%>

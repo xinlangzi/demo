@@ -1,0 +1,1 @@
+$('.batch-amount').html('<%= number_to_currency(session[:batch_amount].values.sum(&:to_f))%>')

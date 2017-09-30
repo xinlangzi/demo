@@ -1,0 +1,11 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div Dear Dispatcher,
+      p A container amendment was received from #{@edi_log.customer}, but the system could not automatically identify it with an existing container. This is what we know about it:
+      ul.dots style=outlook_font
+        li Container No: #{@conditions[:container_no]}
+        li Reference No: #{@conditions[:reference_no]}
+        li SS Line ID: #{link_to Ssline.find(@conditions[:ssline_id]), ssline_url(@conditions[:ssline_id]) rescue ""}
+        li Type: #{@conditions[:type]}
+      p You can also review the log to try to identify it: #{link_to edi_log_url(@edi_log), edi_log_url(@edi_log)}.

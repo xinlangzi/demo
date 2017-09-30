@@ -1,0 +1,10 @@
+.search-box
+  .search-inner
+    - hint = "Required ordered columns: #{BulkQuote::REQUIRED_COLUMNS.join(', ')}"
+    = simple_form_for @bulk_quote||= BulkQuote.new, html: { class: 'horiz', multipart: true} do |s|
+      = s.error_notification
+      = s.input :csv, as: :file, label: 'CSV File', required: true, wrapper: 'vertical', input_html: {class: 'w300'}
+      = s.input :base_ratio, label: 'Base Ratio', required: true, wrapper: 'vertical'
+      = s.submit "Upload"
+    .clear
+    .bold.red = hint

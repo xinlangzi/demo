@@ -1,0 +1,17 @@
+- if current_hub
+
+  - cache [current_hub, 'avail_stats'], expires_in: 5.minutes, skip_digest: true do
+
+    table.tiny-avail-stats.inited
+      - AvailStats.summary(current_hub).each_slice(7) do |rows|
+        tr
+          - rows.each do |date, stats|
+            td
+              .info
+                span.date = date.to_date.strftime("%m/%d")
+                sup = date.to_date.strftime("%a")
+                - avail = AvailStats.adjust_avail(date.to_date, stats.available)
+                - if avail == 0
+                  span.red-label 0 Left
+                - else
+                  span.green-label #{avail} Avail.

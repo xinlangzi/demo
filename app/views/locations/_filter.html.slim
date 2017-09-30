@@ -1,0 +1,5 @@
+= simple_form_for @search, url: request.fullpath, html: {method: :get, class: 'horiz'} do |f|
+  = f.input :company_id_eq, as: :select, collection: Trucker.active, required: true, label: false, include_blank: '-- Trucker --'
+  = f.input :timestamp_from, as: :datetime_picker, required: true, label: false
+  = f.input :timestamp_to, as: :datetime_picker, required: true, label: false
+  = f.submit 'Track'

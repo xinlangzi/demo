@@ -1,0 +1,26 @@
+Expiring <%=h @doc.pluralize%>
+
+<table>
+	<thead>
+		<tr>
+			<%if @object_class == Truck%>
+				<td>Trucker</td>
+			<%end%>
+			<td><%=h @object_class%></td>
+			<td><%=h @doc.downcase.capitalize%> expires on</td>
+		</tr>
+	</thead>
+	<tbody>
+		<%for t in @list%>
+			<tr>
+				<%if @object_class == 'Trucker'%>
+					<td><%=h t.name%></td>
+				<%else%>
+					<td><%=h t.trucker.name%></td>
+					<td><%=h t.number%></td>
+				<%end%>
+				<td><%=h eval("t." + @date_field) %></td>
+			</tr>
+		<%end%>
+	</tbody>
+</table>

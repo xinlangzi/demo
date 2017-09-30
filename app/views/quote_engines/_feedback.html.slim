@@ -1,0 +1,21 @@
+br
+- if current_user
+  - if @quote_engine.send_quote
+    = render "quotes"
+  - else
+    center
+      p The requested email #{@quote_engine.email_to} is not registered.  Please enter an email address for your company and an email with the quote will be sent.
+      button.btn onclick="window.location.reload()" Try Again
+- else
+  - if @quote_engine.send_quote
+    center
+      p We have sent a quote to #{@quote_engine.email_to}. Please check your email and review it.
+      button.btn onclick="window.location.reload()" Get Quote Again
+  - else
+    center
+      p
+        | Your email #{@quote_engine.email_to} is not registered. Please contact us at (773) 359-1515 or email&nbsp;
+        a href="mail-to:#{SystemSetting.default.dispatch_email}" = SystemSetting.default.dispatch_email
+        | &nbsp;to be registered and compute quotes online. Thank you.
+      button.btn onclick="window.location.reload()" Get Quote Again
+br

@@ -1,0 +1,18 @@
+fieldset.form
+  = simple_form_for @check_template, html: { multipart: true, class: 'rows' } do |f|
+    = f.error_messages
+    = f.input :name, required: false
+    = f.input :rtf, as: :file, label: 'Select a file', required: false, hint: "Please select a *.slim file. If you want to leave the current one, leave this field blank."
+    = f.input :as_default, as: :boolean, label: 'Set as Default'
+    = f.submit
+.clear
+fieldset.border
+  h2 Available Template Variables
+  ul
+    li @check_details[:customer_name]
+    li @check_details[:customer_address_street]
+    li @check_details[:customer_address_street_2]
+    li @check_details[:customer_address_city]
+    li @check_details[:check_amount]
+    li @check_details[:check_amount_words]
+    li @check_details[:check_date]

@@ -1,0 +1,8 @@
+You have a new message from <%= @contact_name %>.
+To access it <%=link_to 'click here', url_for(:controller => 'messages', :action => 'show', :id => @message.id, :only_path => false) %>.
+
+Full message follows:
+
+Subject: <%= @subject %>
+
+<%= @body %>

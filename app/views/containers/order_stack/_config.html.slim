@@ -1,0 +1,8 @@
+- header = OrderStackHeader.for_user(current_user)
+- cache header do
+  fieldset.border.hidden#config-headers
+    legend.title.f90 Click to Toggle
+    ul.headers
+      - OrderStackHeader::COLUMNS.each do |name|
+        li class="#{header.column_visible?(name) ? 'show' : 'hide'}"
+          = link_to name, toggle_header_path(header, key: name), method: :get, remote: true

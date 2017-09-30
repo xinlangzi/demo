@@ -1,0 +1,31 @@
+.basic-form
+  - inv = SimpleForm::FormBuilder.new(:invoice, invoice, self, {})
+  = inv.error_messages
+  table.gray.lform
+    tr
+      td.w120.bold = inv.label :company_id
+      td
+        = invoice.company
+        = inv.hidden_field :company_id
+    - if invoice.class.to_s == 'PayableInvoice'
+      tr
+        td.bold = inv.label :number, 'Invoice No.'
+        td
+          = inv.text_field :number, size: 10, class: 'lfloat invoice-number unobservable'
+          label
+            = inv.check_box :auto_number, class: 'lfloat ml20 invoice-auto-number unobservable'
+            span Check if you want the system to generate a number for you
+    tr
+      td.bold = inv.label :issue_date
+      td
+        .inline = inv.input_field :issue_date, as: :datepicker, required: true, value: (invoice.issue_date.ymd rescue Time.now.ymd), class: 'unobservable', data: { sync: '#invoice_date_received' }
+        | &nbsp;
+        .inline Current date will be used unless you set it different below
+
+    - if in_payable?&&!invoice.company.is_trucker?
+      tr
+        td.bold = inv.label :date_received, 'Received Date'
+        td = inv.input_field :date_received, as: :datepicker, class: 'unobservable'
+    tr
+      td.bold = inv.label :comments
+      td = inv.text_area :comments, rows: 5, cols: 30, class: 'unobservable'

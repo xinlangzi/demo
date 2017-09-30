@@ -1,0 +1,100 @@
+.title-bar
+  h1
+    span Truck Availability Details
+  ul
+    li = link_to 'Back to Reports', '/reports'
+.full-page
+  table.gray
+    tr
+      th
+      - @from.upto(@to) do |i|
+        th #{i.strftime("%m/%d")}(#{i.strftime("%a")})
+    tr
+      th Assigned Weight Factors
+      - @from.upto(@to) do |i|
+        td
+          - id = random_id('fb')
+          = link_to @assigned_factors[i.to_s].to_f, "##{id}", rel: "facebox", ref: "eventY", class: 'bold red'
+          = render 'avail_stats/containers_by_date', id: id, containers_by_date: @assigned_containers[i.to_s]
+    tr
+      th
+        div Unassigned Weight Factors
+        div 1 business day ago
+      - @from.upto(@to) do |i|
+        td
+          - if i.weekend?
+            .bold.red 0
+          - else
+            - id = random_id('fb')
+            = link_to @unassigned_factors[i.prior_business_day(1).to_s].to_f, "##{id}", rel: "facebox", ref: "eventY", class: 'bold red'
+            hr
+            .f80 #{i.prior_business_day(1).strftime("%m/%d")}
+            = render 'avail_stats/containers_by_date', id: id, containers_by_date: @unassigned_containers[i.prior_business_day(1).to_s]
+    tr
+      th
+        div Dropped Weight Factors
+        div 3 business day ago
+      - @from.upto(@to) do |i|
+        td
+          - if i.weekend?
+            .bold.red 0
+          - else
+            - id = random_id('fb')
+            = link_to @dropped_factors[i.prior_business_day(3).to_s].to_f, "##{id}", rel: "facebox", ref: "eventY", class: 'bold red'
+            hr
+            .f80 #{i.prior_business_day(3).strftime("%m/%d")}
+            = render 'avail_stats/containers_by_date', id: id, containers_by_date: @dropped_containers[i.prior_business_day(3).to_s]
+    tr
+      th
+        div Prelaert Weight Factors
+        div 1 business day ago
+      - @from.upto(@to) do |i|
+        td
+          - if i.weekend?
+            .bold.red 0
+          - else
+            - id = random_id('fb')
+            - dates = AvailStats.prealert_piror_dates(i)
+            = link_to dates.map{|date| @prealert_factors[date.ymd].to_f}.sum, "##{id}", rel: "facebox", ref: "eventY", class: 'bold red'
+            hr
+            .f80 #{i.prior_business_day(1).strftime("%m/%d")}
+            = render 'avail_stats/containers_by_date', id: id, containers_by_date: dates.map{|date| @prealert_containers[date.ymd] }.flatten.compact
+    tr
+      th colspan=15 &nbsp;
+    tr
+      th Available Trucker Factors
+      - @summary.each do |key, values|
+        td
+          .bold.green = values[:available]
+    tr
+      th Total Weight Factors
+      - @from.upto(@to) do |i|
+        td
+          .bold.red
+            - factors = @assigned_factors[i.to_s].to_f
+            - factors+= i.weekend? ? 0 : @unassigned_factors[i.prior_business_day(1).to_s].to_f
+            - factors+= i.weekend? ? 0 : @dropped_factors[i.prior_business_day(3).to_s].to_f
+            - factors+= i.weekend? ? 0 : AvailStats.prealert_piror_dates(i).map{|date| @prealert_factors[date.ymd].to_f }.sum
+            = factors
+
+    tr
+      th Summary
+      - additional_factors = 0
+      - @summary.each do |date, stats|
+        - factors = stats[:available]
+        - date = date.to_date
+        - factors-= additional_factors
+        - factors-= @assigned_factors[date.ymd].to_f
+        - factors-= date.weekend? ? 0 : @unassigned_factors[date.prior_business_day(1).ymd].to_f
+        - factors-= date.weekend? ? 0 : @dropped_factors[date.prior_business_day(3).ymd].to_f
+        - factors-= date.weekend? ? 0 : AvailStats.prealert_piror_dates(date).map{|date| @prealert_factors[date.ymd].to_f }.sum
+        td
+          - ret = 0
+          - if factors < 0
+            - additional_factors = factors.abs
+          - else
+            - ret = factors
+            - additional_factors = 0
+          div = -additional_factors
+          hr
+          .bold = ret

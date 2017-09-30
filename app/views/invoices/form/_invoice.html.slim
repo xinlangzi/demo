@@ -1,0 +1,62 @@
+- company = invoice.company
+- observe_url = polymorphic_path([:update_total, invoice.class.new])
+div id=dom_id(company)
+  = simple_form_for invoice, as: :invoice, html: { class: 'observe-form', data: { url: observe_url, method: :post, remote: true } } do |inv|
+    = hidden_field_tag :batch, controller.action_name == 'batch'
+    = render 'invoices/form/basic_form', invoice: invoice
+    = render 'invoices/select_widget', company: company
+    table.gray.vmiddle
+      thead
+        tr
+          th
+          th ID
+          th Tasks
+          th Cont. No.
+          th Refer. No.
+          th Chassis No.
+          th Bkg/BL No.
+          th Customer
+          th Trucker
+          th Consignee/Shipper
+          th Delivered
+          th Pod?
+          th Amount
+      tfoot
+        tr
+          th colspan=12 Total
+          th.number.f120
+            .invoice-amount = number_to_currency invoice.amount
+        tr
+          th colspan=13
+            .rfloat
+              label.lfloat
+                | One invoice per container
+                = inv.check_box :generate_multiple, class: 'unobservable'
+                | &nbsp;&nbsp;
+              .lfloat
+                = submit_tag 'Invoice these', class: "create-invoice", disable_with: PLEASE_WAIT, disabled: true
+      tbody.f90
+        - invoice.line_items.each do |li|
+          - container = li.container
+          tr
+            td
+              = fields_for "line_items[#{container.id}]", li do |l|
+                = l.check_box :selected_for_invoice, onclick: "App.markSelection($(this))", class: "line-item-#{company.id}"
+                = l.hidden_field :container_id
+                = l.hidden_field :amount
+            td = link_to container.id, container
+            td = render "container_tasks/check_list", type: container._type, account: @accounts_type.downcase, container: container
+            td = container.container_no
+            td = container.reference_no
+            td = container.chassis_no
+            td = container.is_a?(ImportContainer) ? container.ssline_bl_no : container.ssline_booking_no
+            td = container.customer.name
+            td = container.trucker_names.join("\n") rescue 'N/A'
+            td = container.consignees_or_shippers_info.map(&:name).join("\n") rescue 'N/A'
+            td = container.delivered_date.us_datetime rescue 'N/A'
+            td.f120 = checkmark(container.has_pod?)
+            td.number.f120 = number_to_currency container.amount(@accounts_type, invoice.company_id)
+          - unless li.valid?
+            tr
+              td colspan=13 =errors_for(li)
+

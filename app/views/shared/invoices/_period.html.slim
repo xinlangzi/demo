@@ -1,0 +1,29 @@
+- show_all_id = "#{time}_showall"
+- action_name = controller.action_name
+.period_summary
+  table.gray.period
+    caption.removeWhenCopy
+      ul
+        li.bold.f110 = InvoiceSearch::AGING_DETAILS[time]
+        li.actions = link_to 'Export to Excel', polymorphic_path(crud_class.new, q: @q.to_h, time: time, format: 'csv')
+    thead
+      tr
+        th Total Amount
+        th Total Credit
+        th Total Adjustment
+        th Total Paid
+        th Total Balance
+        th Invoices
+        th.removeWhenCopy
+    tr id="#{time}-summary"
+      td.total_amount     = number_to_currency(invoices[:total_amount])
+      td.total_credit     = number_to_currency(invoices[:total_credit])
+      td.total_adjustment  = number_to_currency(invoices[:total_adjustment])
+      td.total_paid       = number_to_currency(invoices[:total_paid])
+      td.total_balance    = number_to_currency(invoices[:total_balance])
+      td.total_invoices   = invoices[:size]
+      td.removeWhenCopy
+        = link_to '', polymorphic_path(crud_class.new, q: @q.to_h, time: time), method: :get, remote: true, class: 'show-hide fa fa-list-ul', title: 'show/hide all', rel: show_all_id
+        = link_to '', polymorphic_path(crud_class.new, q: @q.to_h, time: time, summary: true), method: :get, remote: true, class: 'reload-period'
+    tr.hidden id=show_all_id
+      = render "shared/invoices/invoices" if showall

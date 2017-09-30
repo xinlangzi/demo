@@ -1,0 +1,27 @@
+tr id="invoice_#{invoice.id}"
+  - if emailx_form_need
+    td.removeWhenCopy = check_box_tag 'invoice[ids][]', invoice.id, false, class: "invcb #{@time} #{@time}-#{invoice.mail_status}", id: "invcb#{invoice.id}"
+  - if show_email_status
+    td.removeWhenCopy
+      a[class="mail-icon icons-mail-#{invoice.mail_status} icon16"]
+  td = link_to invoice.number, invoice, class: (invoice.try(:third_party?) ? 'tp' : 'no-tp'), target: '_blank'
+  - if show_reference_no
+    td width=135
+      - if invoice.respond_to?(:containers)
+        - if current_user.is_admin?
+          - invoice.containers.distinct.each do |container|
+            = fields_for :container, container do |f|
+              = f.text_field :reference_no, class: "auto-save hidden-border", id: dom_id(container, 'reference_no'), ref: "Container:#{container.id}:reference_no" 
+        - else
+          = invoice.containers.map(&:reference_no).join("<br/>").html_safe
+  td = invoice.company.name
+  td = invoice.issue_date.us_date
+  td.number = number_to_currency(invoice.amount)
+  td.number = number_to_currency(invoice.credit)
+  td.number = number_to_currency(invoice.adjustment)
+  td.number = number_to_currency(invoice.paid - invoice.credited + invoice.adjusted)
+  td.number = number_to_currency(invoice.amount - invoice.paid - (invoice.credit - invoice.credited) + (invoice.adjustment - invoice.adjusted))
+  td.removeWhenCopy = link_to '', polymorphic_path(invoice, search: @search_params), class: 'fa fa-info-circle action'
+  - if current_user.is_admin?
+    td.removeWhenCopy = link_to '', edit_polymorphic_path(invoice, search: @search_params), class: 'fa fa-edit action'
+    td.removeWhenCopy = link_to '', invoice_path(invoice.id), data: { confirm: 'Are you sure you want to delete this invoice?' }, method: :delete, remote: true, class: 'fa fa-trash action'

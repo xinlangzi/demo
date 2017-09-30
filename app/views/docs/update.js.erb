@@ -1,0 +1,4 @@
+<%if @success%>
+$('#<%=dom_id(@image, "tags")%>').html('<%=@image.tag_list%>')
+App.closeFacebox()
+<%end%>

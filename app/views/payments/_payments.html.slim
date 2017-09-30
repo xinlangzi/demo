@@ -1,0 +1,49 @@
+table.gray
+  thead
+    tr
+      th Type
+      th No
+      th Company
+      th.sortfirstasc Issue Date
+      th Amount
+      th Balance
+      th Cleared Date
+      th
+      th
+      th
+  tfoot
+    tr
+      th colspan=4 Total
+      th.number = number_to_currency @total_amount
+      th.number = number_to_currency @total_balance
+      th
+      th
+      th
+      th
+  tbody#tbody_payments
+    - if @payments.empty?
+      tr
+        td colspan=10 No payment found.
+    - else
+      = render partial: 'payments/listed_payment', collection: @payments
+- unless @payments.empty?
+  .hidden.datatable-config
+    | {
+        "dom": "rft",
+        "bStateSave": true,
+        "bPaginate": false,
+        "aaSorting": [[3, "asc" ]],
+        "aoColumns": [
+          null,
+          null,
+          null,
+          {"sSortDataType": "cell", "sType": "numric"},
+          {"sSortDataType": "cell", "sType": "currency" },
+          {"sSortDataType": "cell", "sType": "currency" },
+          {"sSortDataType": "cell", "sType": "numric"},
+          {"bSortable": false},
+          {"bSortable": false},
+          {"bSortable": false}
+        ]
+      }
+/ = paginate @payments

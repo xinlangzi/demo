@@ -1,0 +1,51 @@
+= content_for :title_bar do
+  .title-bar
+    h1 Calendar
+    ul
+      - if current_user.is_admin?
+        li
+          a.show-hide rel='config-headers' Show/Hide Header Columns
+      li = text_field_tag :date, params[:date], id: 'calendar-date-picker'
+
+- if current_user.is_admin?
+  = content_for :west do
+    = render 'drivers/pane'
+
+= render layout: 'containers/layouts/calendar' do
+  .full-page
+    = render 'containers/calendar/config' if current_user.is_admin?
+    #container-on-calendar
+      ul.calendar_tabs
+        - date = params[:date]
+        li
+          .tab.show-hide-all.show-all rel=date
+            span.type.bold = date
+          = render_async cal_date_containers_path(date: params[:date])
+        li
+          .tab.show-hide-all rel="rel2"
+            span.type.green.bold Dropped Without Appt Date
+          ul
+            - @drop_without_estimateds.group_by(&:type).each do |type, containers|
+              li
+                .tab-inner.show-hide
+                  span.type = type.tableize.titleize
+                  - unless containers.blank?
+                    sup.count = "(#{containers.size})"
+                  - else
+                    span.empty Empty
+                .containers-table.rel2
+                  = render "containers/calendar/day", containers: containers
+        li
+          .tab.show-hide-all rel="rel3"
+            span.type.red.bold Confirmed Without Appt Date
+          ul
+            - @without_appt_dates.group_by(&:type).each do |type, containers|
+              li
+                .tab-inner.show-hide
+                  span.type = type.tableize.titleize
+                  - unless containers.blank?
+                    sup.count = "(#{containers.size})"
+                  - else
+                    span.empty Empty
+                .containers-table.rel3
+                  = render "containers/calendar/day", containers: containers

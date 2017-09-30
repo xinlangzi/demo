@@ -1,0 +1,8 @@
+center.notice.red = flash[:notice]
+= simple_form_for User.new, url: login_path do |s|
+  = s.input :email, required: true, wrapper: :vertical, input_html: { autocomplete: 'off', type: 'email', class: 'itext'}
+  = s.input :password, as: :password, required: true, wrapper: :vertical, input_html: {autocomplete: 'off', class: 'itext'}
+  .remember-me
+    = s.input :remember_me, as: :boolean, label: 'Remember me on this computer', input_html: {checked: false }
+  = s.submit 'Login', class: 'w100 green-btn'
+  = link_to "Forgot Password", retrieve_password_path, class: 'forgot-password'

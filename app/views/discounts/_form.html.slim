@@ -1,0 +1,4 @@
+= simple_form_for @discount||=Discount.new, url: discounts_path, method: :post, remote: true, html: {class: 'horiz discount'} do |d|
+  = d.hidden_field :company_id, value: company.id
+  = d.input :amount, as: :string, wrapper: 'vertical', label: false, hint: "#{@discount.errors[:amount].join('')}", hint_html: {class: 'red'}, error: false, input_html: {class: 'w90 center'}
+  = d.submit "Save"

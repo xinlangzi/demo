@@ -1,0 +1,12 @@
+- location = shipment.location
+- if location
+  table.shipment-location width="100%" cellpadding=10 cellspacing=0
+    tr
+      td
+        - url = GoogleMap.image_url(location.lat_lng, width: 500, height: 300)
+        img width="500px" style="display:block;margin:auto;border:3px solid #CCC;" src=url
+      td
+        br
+        .driver = location.company.name
+        .time #{location.timestamp.us_datetime} EST
+        .address = location.address

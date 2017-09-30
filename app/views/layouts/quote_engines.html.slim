@@ -1,0 +1,46 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"
+    meta http-equiv="X-UA-Compatible" content="IE=Edge"
+    meta name="turbolinks-cache-control" content="no-cache"
+    link rel="shortcut icon" href="/favicon.ico"
+    script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&region=US&key=#{GoogleMap.api_key(:frontend)}" type="text/javascript" data-turbolinks-track="true"
+    = stylesheet_link_tag "application", :media => "all", 'data-turbolinks-track' => true
+    = javascript_include_tag "application", 'data-turbolinks-track' => true
+    = javascript_include_tag "graphic", 'data-turbolinks-track' => true, :debug => false
+    title Quote Engine
+    = csrf_meta_tags
+  body.engine[class="#{@extra_bg} #{Settings.version}" style="#{params[:style]}"]
+    .header
+      .hcenter.quote_engine_logo
+    - if current_user
+      .head
+        .menu
+          ul
+            - links = []
+            - links << link_to("Customer Quote", new_quote_engine_path) if current_user.nil? || !current_user.is_trucker?
+            - if current_user
+              - links << link_to("Bulk Quotes", bulk_quotes_path) if current_user.has_access?('bulk_quotes', 'index')
+              - links << link_to("Trucker Quote", search_quote_engines_path) if current_user.has_access?('quote_engines', 'search')
+              - links << link_to("Quote History", spot_quotes_path) if current_user.has_access?('spot_quotes', 'index')
+              - links << link_to("Fuel Fee", fuels_path) if current_user.has_access?('fuels', 'index')
+              - links << link_to("Base Rates", base_rates_path) if current_user.has_access?('base_rates', 'index')
+              - links << link_to("Discounts", discounts_path) if current_user.has_access?('discounts', 'index')
+              - links << link_to("Rail Roads", rail_roads_path) if current_user.has_access?('rail_roads', 'index')
+              - links << link_to("Extra Drayages", extra_drayages_path) if current_user.has_access?('extra_drayages', 'index')
+              - links << link_to("US States", states_path) if current_user.has_access?('states', 'index')
+            - last = links.pop
+            - links.each do |link|
+              li = link
+            li.last = last
+    javascript:
+      $('li:contains("#{@tab_name}")').addClass('active')
+    .main_part
+      = yield
+    #dialog
+    #loading.hidden
+      span.mr5 Loading...
+      span.small_loading
+    = render 'shared/siteseal' if current_user

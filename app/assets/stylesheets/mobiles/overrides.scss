@@ -1,0 +1,18 @@
+.fc-scroller{
+  overflow-y: hidden !important;
+}
+.fc-row .fc-content-skeleton td,
+.fc-row .fc-helper-skeleton td {
+  /* see-through to the background below */
+  background: none;
+  /* in case <td>s are globally styled */
+  border-color: #DDD;
+  /* don't put a border between events and/or the day number */
+  border-bottom: 0;
+}
+.fc-row table{
+  margin: 0;
+}
+.fc-title{
+  font-size: 10px;
+}

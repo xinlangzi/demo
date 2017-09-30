@@ -1,0 +1,11 @@
+<%case params[:changed]%>
+<%when /daily_mileage_trucker_id/%>
+<%@daily_mileage.set_trucker(@daily_mileage.trucker_id)%>
+$('#daily_mileage_truck_id').html('<%=j options_from_collection_for_select(@daily_mileage.related_trucks, :id, :number, @daily_mileage.truck_id)%>')
+$('#daily_mileage_start').val('<%= @daily_mileage.start %>')
+<%when /daily_mileage_truck_id/%>
+<%@daily_mileage.set_start_mileage(@daily_mileage.truck)%>
+$('#daily_mileage_start').val('<%= @daily_mileage.start %>')
+<%else%>
+<%end%>
+$('#diff').html('<%=@daily_mileage.mileage%>')

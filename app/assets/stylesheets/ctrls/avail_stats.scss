@@ -1,0 +1,92 @@
+table.tiny-avail-stats{
+  position: absolute;
+  right: 10px;
+  width: 800px;
+  z-index: 10;
+  margin: 4px 0;
+  td{
+    @include box-sizing(border-box);
+    padding: 1px !important;
+    font-style: italic;
+    .info{
+      @include border-radius(10px);
+      background: #EEE;
+      font-size: 11px;
+      sup{
+        font-size: 8px !important;
+      }
+      &:hover{
+        background: #FFF;
+      }
+      .date{
+        color: #444;
+        padding: 0px 2px;
+        font-weight: bold;
+      }
+      .red-label{
+        color: #FFF;
+        padding: 1px 4px;
+        background: red;
+        @include border-radius(8px);
+      }
+      .yellow-label{
+        color: #000;
+        padding: 1px 4px;
+        background: #FF0;
+        @include border-radius(8px);
+      }
+      .green-label{
+        color: #FFF;
+        padding: 1px 4px;
+        background: #80c113;
+        @include border-radius(8px);
+      }
+    }
+  }
+}
+.avail-stats{
+  width: 600px;
+  margin: auto;
+  h1{
+    font-size: 20px;
+    margin: 10px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .date{
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+  }
+  .wday{
+    font-size: 14px;
+    color: #555;
+  }
+  .day-cell{
+    @include border-radius(32px);
+    width: 64px;
+    height: 64px;
+    margin:auto;
+    text-align: center;
+    color: white;
+    font-size: 11px;
+    .count{
+      padding-top: 10px;
+      font-size: 20px;
+      line-height: 20px;
+      font-weight: bold;
+    }
+    .info{
+      width: 40px;
+      margin: auto;
+      line-height: 11px;
+    }
+  }
+
+  .red-cell{
+    background: $red;
+  }
+  .green-cell{
+    background: #80c113;
+  }
+}

@@ -1,0 +1,67 @@
+= simple_form_for(@system_setting, url: system_setting_path, html: { class: 'rows'} ) do |f|
+  = f.error_messages
+  fieldset
+    legend Twilio Information
+    = f.input :account_sid, label: 'Account SID', input_html: {class: 'w400'}
+    = f.input :auth_token, label: 'Auth Token', input_html: {class: 'w400'}
+  fieldset
+    legend Phone&Email
+    = f.input :caller_id_phone, label: 'Caller Phone', input_html: {class: 'w400'}
+    = f.input :dispatch_email, as: :string, label: 'Dispatch Email', input_html: {class: 'w400'}
+    = f.input :default_bcc_email, as: :string, label: 'Default Bcc Email', input_html: {class: 'w400'}
+    = f.input :quote_email_from, as: :string, label: "QE Email Address", input_html: {class: 'w400'}
+    = f.input :quote_bcc_to, as: :email, label: "Customer Quote Bcc", hint: EMAIL_FORMAT_TIP, input_html: { multiple: 'multiple', class: 'w400' }
+    = f.input :driver_quote_bcc_to, as: :email, label: "Driver Quote Bcc", hint: EMAIL_FORMAT_TIP, input_html: { multiple: 'multiple', class: 'w400'}
+    = f.input :incomplete_address_email_to, as: :email, label: "Incomplete Address Bcc", hint: EMAIL_FORMAT_TIP, input_html: { multiple: 'multiple', class: 'w400' }
+  fieldset
+    legend Quote Engine Disclaimer
+    = f.input :default_fine_print, as: :text, label: "Default Fine Print", input_html: { rows: 4, cols: 60, class: 'w600'}
+    = f.input :two_day_accrual_drop_fine_print, as: :text, label: "2 Day Accrual Drop", input_html: {rows: 4, cols: 60, class: 'w600'}
+    = f.input :three_day_accrual_drop_fine_print, as: :text, label: "3 Day Accrual Drop", input_html: { rows: 4, cols: 60, class: 'w600'}
+    = f.input :unsure_of_ssl_chassis_fine_print, as: :text, label: "Unsure of SSL", input_html: { rows: 4, cols: 60, class: 'w600'}
+    = f.input :additional_drayage, as: :text, label: "Additional Drayage", input_html: { rows: 4, cols: 60, class: 'w600'}
+  fieldset
+    legend Receivable Invoice Statement
+    = f.input :invoice_statement_subject, label: 'Subject', input_html: {class: 'w400'}
+    = f.input :invoice_statement_body, label: 'Content', input_html: { rows: 4, cols: 60, class: 'w600'}
+    = f.input :invoice_statement_from, label: 'From', hint: EMAIL_FORMAT_TIP, input_html: {class: 'w400'}
+    = f.input :invoice_statement_bcc, label: 'Bcc', hint: EMAIL_FORMAT_TIP, input_html: {class: 'w400'}
+  fieldset
+    legend Driver HR
+    = f.input :driver_hr_manager, label: 'Manager', input_html: { class: 'w400'}
+    = f.input :driver_hr_phone, label: 'Phone', input_html: {class: 'w400'}
+    = f.input :driver_hr_email, label: 'Email', hint: EMAIL_FORMAT_TIP, input_html: {class: 'w400'}
+  fieldset
+    legend Tasks for Hired/Terminated Driver
+    = f.input :tasks_for_hired_driver, label: 'For Hired Driver', input_html: { class: 'tagsInput' }
+    = f.input :tasks_for_terminated_driver, label: 'For Terminated', input_html: {class: 'tagsInput' }
+  fieldset
+    legend Driver Performance
+    = f.input :inspection_reward, as: :string, label: 'Inspection Reward'
+  fieldset
+    legend Google Map
+    = f.input :google_map_api_key_frontend, as: :string, label: 'API Key1', hint: 'HTTP referrers (web sites)', input_html: { class: 'w400' }
+    = f.input :google_map_api_key_backend, as: :string, label: 'API Key2', hint: 'IP addresses (web servers, cron jobs, etc.)', input_html: { class: 'w400' }
+  fieldset
+    legend Docusign Configuration
+    = f.input :ds_username, label: 'Username', input_html: { class: 'w400' }
+    = f.input :ds_password, as: :string, label: 'Password', input_html: { class: 'w400' }
+    = f.input :ds_integrator_key, label: 'Integrator Key', input_html: { class: 'w400' }
+    = f.input :ds_account_id, label: 'Account ID', input_html: { class: 'w400' }
+    = f.input :ds_endpoint, label: 'End Point', input_html: { class: 'w400' }
+    = f.input :ds_api_version, label: 'Api Version', input_html: { class: 'w400' }, hint: 'Default is v2'
+    = f.input :ds_psp_template_id, label: 'PSP TMPL', input_html: { class: 'w400' }
+    = f.input :ds_contract_driver_template_id, label: 'Contract Driver TMPL', input_html: { class: 'w400' }
+    = f.input :ds_owner_operator_template_id, label: 'Owner Operator TMPL', input_html: { class: 'w400' }
+    = f.input :ds_admin_name, label: 'Admin Name', input_html: { class: 'w400' }
+    = f.input :ds_admin_email, label: 'Admin Email', input_html: { class: 'w400' }
+  fieldset
+    legend Others
+    = f.association :state, label: 'Default State'
+    = f.input :godaddy_seal_url, label: 'Godaddy Seal Url', input_html: { class: 'w800' }
+    = f.input :facebook_url, label: 'Facebook Url', input_html: { class: 'w800' }
+    = f.input :twitter_url, label: 'Twitter Url', input_html: { class: 'w800' }
+    = f.input :google_plus_url, label: 'Google+ Url', input_html: { class: 'w800' }
+    = f.input :fuel_zone, label: "Fuel Zone", hint: "You can get the code from #{link_to('here', Fuel::FUEL_URL, target: '_blank')}. (ex. `Midwest (PADD 2)' )".html_safe
+
+  = f.submit 'Update System Setting'

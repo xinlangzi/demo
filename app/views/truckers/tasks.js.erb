@@ -1,0 +1,5 @@
+<%if @done%>
+$('#<%=dom_id(@company, params[:type])%>').removeClass('red').addClass('green')
+<%else%>
+$('#<%=dom_id(@company, params[:type])%>').removeClass('green').addClass('red')
+<%end%>

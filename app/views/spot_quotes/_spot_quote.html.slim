@@ -1,0 +1,60 @@
+- rowspan = spot_quote.overwritten ? 2 : 1
+- klass = spot_quote.overrided? ? 'pinkBg' : nil
+tr
+  td rowspan=rowspan
+    = link_to spot_quote.id, [:override, spot_quote], remote: true, class: 'dialog'
+  td rowspan=rowspan
+    = spot_quote.created_at.try(:ymdhm)
+    hr
+    = spot_quote.expired_date
+  td rowspan=rowspan
+    div = spot_quote.user
+    .f90 = mail_to spot_quote.email_to, spot_quote.email_to
+  td rowspan=rowspan
+    = spot_quote.customer
+  td rowspan=rowspan
+    = spot_quote.ssline.name rescue 'N/A'
+  td rowspan=rowspan
+    = spot_quote.rail_road.name rescue 'N/A'
+  td rowspan=rowspan
+    = spot_quote.dest_address
+  td rowspan=rowspan
+    = spot_quote.miles.precision2
+  td rowspan=rowspan
+    = "#{spot_quote.csize} #{spot_quote.ctype}(#{spot_quote.cweight})"
+  td
+    div = number_to_currency spot_quote.over1.precision2
+    div = number_to_currency spot_quote.over2.precision2
+  td = number_to_currency spot_quote.reefer_fee.precision2
+  td = number_to_currency spot_quote.base_rate_fee.precision2
+  td = number_to_currency spot_quote.drop_rate_fee.precision2
+  td = number_to_currency spot_quote.chassis_fee.precision2
+  td = number_to_currency spot_quote.chassis_dray.precision2
+  td = number_to_currency spot_quote.gallon_price.precision2
+  td = number_to_currency spot_quote.fuel_amount.precision2
+  td
+    div = "#{spot_quote.free_text1}(#{number_to_currency spot_quote.q_free_text1})" if spot_quote.q_free_text1.to_f != 0
+    div = "#{spot_quote.free_text2}(#{number_to_currency spot_quote.q_free_text2})" if spot_quote.q_free_text2.to_f != 0
+  td.bold.green = number_to_currency spot_quote.total_without_drop_pull
+  td.bold.red = number_to_currency(spot_quote.total) if spot_quote.drop_rate_fee
+  td.text-left rowspan=rowspan
+    = spot_quote.comment
+    hr
+    .italic.red = spot_quote.overwritten.private_comment rescue nil
+- if overwritten = spot_quote.overwritten
+  tr class=klass
+    td.italic
+      div = number_to_currency overwritten.over1.precision2
+      div = number_to_currency overwritten.over2.precision2
+    td.italic = number_to_currency overwritten.reefer_fee.precision2
+    td.italic = number_to_currency overwritten.base_rate_fee.precision2
+    td.italic = number_to_currency overwritten.drop_rate_fee.precision2
+    td.italic = number_to_currency overwritten.chassis_fee.precision2
+    td.italic = number_to_currency overwritten.chassis_dray.precision2
+    td.italic = number_to_currency overwritten.gallon_price.precision2
+    td.italic = number_to_currency overwritten.fuel_amount.precision2
+    td.italic
+      div = "#{overwritten.free_text1}(#{number_to_currency overwritten.q_free_text1})" if overwritten.q_free_text1.to_f > 0
+      div = "#{overwritten.free_text2}(#{number_to_currency overwritten.q_free_text2})" if overwritten.q_free_text2.to_f > 0
+    td.italic.bold.green = number_to_currency overwritten.total_without_drop_pull
+    td.italic.bold.red = number_to_currency(overwritten.total)

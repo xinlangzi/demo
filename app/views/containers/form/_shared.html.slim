@@ -1,0 +1,88 @@
+tr
+  td.bold Commodity
+  td
+    = c.text_field :commodity
+    br
+    = c.check_box :haz_cargo
+    = c.label :haz_cargo, 'Hazardous Cargo', class: 'inline'
+  td.bold Weight
+  td
+    = c.text_field :weight_decimal_humanized, class: 'w100'
+
+    label.inline
+      = c.radio_button :weight_is_metric, false, :checked=>true
+      | lbs
+    label.inline
+      = c.radio_button :weight_is_metric, true
+      | kg
+
+- if current_user.is_admin?
+  - if container.persisted?
+    tr
+      td.bold Operation Tasks
+      td[colspan=3]
+        .inline-tasks
+          = render partial: "container_tasks/check_list", locals: { type: container._type, account: 'others', container: container }
+  - unless driver_mode?
+    tr
+      td.receivableCharges colspan=4
+        = render('container_charges/form/container_charges', type: 'ReceivableContainerCharges', container: container)
+        - if container.persisted?
+          .inline-tasks
+            = render partial: "container_tasks/check_list", locals: { type: container._type, account: 'receivable', container: container }
+  tr
+    td.payableCharges colspan=4
+      = render('container_charges/form/container_charges', type: 'PayableContainerCharges', container: container)
+      - if container.persisted?
+        .inline-tasks
+          = render partial: "container_tasks/check_list", locals: { type: container._type, account: 'payable', container: container }
+
+- if container.truckers_active
+  tr
+    td.operations-panel colspan=4
+      - if container.operations_editable?
+        .title Container Operations
+        #operation-ctrl
+          - operation_types = container.is_export? ? OperationType.export : OperationType.import
+          = hidden_field_tag :container_type, container.class.to_s
+          = hidden_field_tag :container_id, container.id
+          - if current_user.is_admin?
+            .rfloat#once-trucker
+              label.inline.ml15.mr5 Only Trucker
+              = select_tag :once_trucker, options_from_collection_for_select(current_hub.truckers.active, :id, :name), { include_blank: true, class: 'chosen-select' }
+          = select_tag :add_operation, options_from_collection_for_select(operation_types, :id, :name), {include_blank: true}
+          a.add-operation.btn.ml5 Add Operation
+
+        .center.red.bold You can drag to sort the operations.
+      = render 'containers/form/chassis_pickup', c: c
+      ul#operations class="#{container.operations_editable? ? 'sortable' : ''}"
+        = c.fields_for :operations, c.object.operations.sort_by(&:pos) do |operation_field|
+          = render "operations/operation_field", operation_field: operation_field, container: container
+      = render 'containers/form/chassis_return', c: c
+- else
+  tr
+    td[colspan=4]
+      .bold.center Container Operations
+  = render partial: "containers/operation", collection: container.viewable_operations(current_user)
+
+- if current_user.is_admin?
+  tr
+    td colspan=2
+      label.bold for='container_admin_comment' Admin Comments:
+      = c.text_area :admin_comment, rows: 5, cols: 30, class: 'full-width'
+    td colspan=2
+      label.bold for='container_customer_comment' Customer Comments:
+      = c.text_area :customer_comment, rows: 5, cols: 30, class: 'full-width', disabled: true
+  tr
+    td colspan=2
+      label.bold for='container_chassis_comment' Chassis Comments:
+      = c.text_area :chassis_comment, rows: 5, cols: 30, class: 'full-width'
+    td colspan=2
+      label.bold for='container_public_comment' Public Comments:
+      = c.text_area :public_comment, rows: 5, cols: 30, class: 'full-width'
+      
+- if current_user.is_customer?
+  tr
+    td colspan=4
+      label.bold for='container_customer_comment' Comments:
+      = c.text_area :customer_comment, rows: 5, cols: 30, class: 'full-width'

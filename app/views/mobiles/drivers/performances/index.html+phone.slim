@@ -1,0 +1,31 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding My Performance
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.list-block.narrow-block
+  ul
+    - astats = @move_stats[current_user.id] || {}
+    - wstats = @work_stats[current_user.id] || {}
+    = f7_label_text('Date Range', "#{Date.today.beginning_of_year} to Today")  
+    = f7_label_text('Violation Points', nil) do 
+      = link_to wstats[:points], '/mobiles/drivers/inspections', method: :get
+    = f7_label_text('Moves', astats[:moves])
+    = f7_label_text('Lates', nil) do 
+      = link_to astats[:lates], '/mobiles/drivers/appointments/late', method: :get
+    = f7_label_text('Lates%', number_to_percentage(astats[:late_ratio].to_f*100, precision: 2))
+    = f7_label_text('Appt Cancelled', nil) do 
+      = link_to @cancelled_count, '/mobiles/drivers/appointments/cancelled', method: :get
+    = f7_label_text('Weekdays', wstats[:weekdays])
+    = f7_label_text('Dispatched Days', wstats[:dispatched])
+    = f7_label_text('Undispatched Days', wstats[:undispatched])
+    = f7_label_text('Vacation Days', nil) do
+      = link_to wstats[:vacations], '/mobiles/drivers/vacations'
+    = f7_label_text('%Days Worked', number_to_percentage(wstats[:worked_ratio]*100, precision: 2))
+    

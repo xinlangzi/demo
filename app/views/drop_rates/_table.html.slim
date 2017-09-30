@@ -1,0 +1,19 @@
+div class=ctrl
+  = form_for :drop_rates, url: [:save, hub, ctrl], method: :put, remote: true do |f|
+    table.gray.hcenter
+      caption
+        ul
+          li.title = ctrl.to_s.split('_').map(&:capitalize).join(' ')
+      thead
+        tr
+          th
+          th Miles
+          th Base Rate
+          th Percent
+      tbody
+        = render partial: 'drop_rates/drop_rate', collection: drop_rates
+      tfoot
+        tr
+          th.text-right[colspan=4]
+            = link_to 'New Rate', [:new, hub, ctrl.to_s.singularize.to_sym], remote: true, class: 'btn'
+            = f.submit 'Save'

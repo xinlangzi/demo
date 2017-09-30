@@ -1,0 +1,11 @@
+= simple_form_for [@trucker, @drug_test], as: :drug_test, html: {class: 'rows'}  do |f|
+  = f.error_messages
+  = f.input :date, as: :datepicker, required: true
+  = f.input :test_type, as: :select, collection: DrugTest::TYPES, include_blank: true
+  = f.input :comments, as: :text, input_html: {rows: 6, class: 'w400'}
+  - value = @drug_test.passed.nil? ? 'unknown' : (@drug_test.passed ? 'passed' : 'failed')
+  .group-radios
+    = f.input :passed, label: '&nbsp;', collection: [['passed', 'Passed'], ['failed', 'Failed'], ['unknown', 'Unknown']], label_method: :last, value_method: :first, as: :radio_buttons, checked: value
+  .clear
+  .mt5
+  = f.submit

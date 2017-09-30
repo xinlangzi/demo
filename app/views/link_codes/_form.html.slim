@@ -1,0 +1,7 @@
+= simple_form_for @link_code||=LinkCode.new, html: { class: 'horiz', remote: true} do |s|
+  = hidden_field_tag :bulk_quote_id, @bulk_quote.id
+  = s.error_notification
+  = s.input :name, as: :select, label: 'Link Code', collection: @bulk_quote.link_codes, include_blank: false, wrapper: 'vertical', input_html: {class: 'w120'},wrapper_html: {class: 'offset06'}
+  = s.input :rail_road_id, as: :grouped_select, collection: Port.for_driver_quote, group_method: :rail_roads, label_method: :name, label: 'Rail Road', wrapper: 'vertical'
+  = s.input :additional_fee,as: :string,label: 'Additional Fee', required: false, wrapper: 'vertical'
+  = s.submit "Add Mapping"

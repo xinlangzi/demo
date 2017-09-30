@@ -1,0 +1,59 @@
+- payments = @by_companies[type]
+table.gray.pw100
+  caption
+    ul
+      li.title = "#{type.to_s.capitalize} Payments"
+  thead
+    tr
+      th Company Display Name
+      th Company Name
+      th Amount
+      th.w500
+        span Detail
+        span.f95.green.ml10 [click icon to expand or collapse]
+  tbody
+    - payments.group_by(&:company).each do |company, pays|
+      - total = pays.map(&:amount).sum
+      - overpaid = pays.map(&:balance).sum
+      tr
+        td = link_to company.name, company, target: '_blank'
+        td = company.print_name
+        td.number[rel="#{total}"]
+          span = number_to_currency(total)
+          - if overpaid > 0
+            .overpaid = number_to_currency(overpaid)
+        td.text-right
+          a.fa.fa-list-ul.show-hide[rel="payments#{company.id}"]
+          .hidden id="payments#{company.id}"
+            table.payments-by-company
+              thead
+                tr
+                  th Type
+                  th No.
+                  th Payment Date
+                  th Amount
+                  th Cleared Date
+              tbody
+                - pays.each do |payment|
+                  tr
+                    td = payment.payment_method.name
+                    td = link_to "#{payment.number}", payment, target: '_blank'
+                    td = payment.issue_date.blank? ? 'N/A' : payment.issue_date.to_date
+                    td.number[rel="#{payment.amount}"]
+                      span = number_to_currency payment.amount
+                      - if payment.overpaid?
+                        .overpaid = number_to_currency(payment.balance)
+                    td = payment.cleared_date.blank? ? 'N/A' : payment.cleared_date
+  tfoot
+    tr
+      th.text-right colspan=2 Total Amount
+      th.f120.number[id="#{type}_all_amount" v="0"] = number_to_currency(payments.map(&:amount).sum)
+      th.text-left
+        - if (total_overpaid = payments.map(&:balance).sum) > 0
+          .overpaid Total Overpaid: #{number_to_currency(total_overpaid)}
+.hidden.datatable-config
+  | {
+      "bPaginate": false,
+      "aaSorting": [[ 0, "asc" ]],
+      "aoColumns": [null, null, {"sSortDataType": "cell", "sType": "numric"}, {"bSortable": false}]
+    }

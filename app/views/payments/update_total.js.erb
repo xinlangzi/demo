@@ -1,0 +1,36 @@
+<% is_payable = @payment.is_a?(PayablePayment)%>
+$("#payment_subtotal").html('<%= number_to_currency(@payment.compute_posted_amount)%>')
+<%if @payment.needs_adjustments?%>
+$("#payment_total_adjustments").html('<%=number_to_currency(@payment.total_adjustments)%>')
+<%end%>
+$("#payment_total_credits").html('<%=number_to_currency(@payment.total_credits)%>')
+$("#payment_total_amount").html('<%= number_to_currency(@payment.amount)%>')
+$("#payment_posted_amount").html('<%= number_to_currency(@payment.posted_amount)%>')
+$("#payment_balance").html('<%= number_to_currency(@payment.balance)%>')
+$("#payment_total_amount_box").html('<%= number_to_currency(@payment.amount)%>')
+$("#payment_posted_amount_box").html('<%= number_to_currency(@payment.posted_amount)%>')
+$("#payment_balance_box").html('<%= number_to_currency(@payment.balance)%>')
+//payment: check method limit 20 containers
+<%@payment.check_containers if is_payable%>
+<%['warning', 'remaining', 'ok', 'check_amount_warning','check_remaining_balance', 'validate_errors'].each do |w|%>
+$('#<%=w%>').hide()
+<%end%>
+<%if is_payable%>
+$('#payment_amount').val('<%=@payment.amount%>')
+<%end%>
+<%unless @payment.errors[:base].empty?%>
+$('#validate_errors').html('<%=@payment.errors[:base].join('')%>').show()
+<%end%>
+<%if @payment.amount <= 0&&is_payable%>
+$('#check_amount_warning').show()
+<%elsif is_payable && !@payment.check_remaining_balance%>
+$('#check_remaining_balance').show()
+<%elsif @payment.balance == 0.0%>
+$('#ok').show()
+<%elsif @payment.balance < 0.0%>
+$('#warning').show()
+$('#payment_balance').effect("highlight", {}, 3000)
+$('#payment_balance_box').effect("highlight", {}, 3000)
+<%else%>
+$('#remaining').show()
+<%end%>

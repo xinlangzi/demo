@@ -1,0 +1,19 @@
+table.gray
+  thead
+    tr
+      - for column in column_list.keys
+        th = column.html_safe
+      th
+      th
+      th
+  tbody
+    - text_left_columns = ['display name']
+    - for company in companies
+      tr
+        - column_list.each do |name, proc|
+          - klass = text_left_columns.include?(name.downcase) ? 'text-left' : ''
+          td[class="#{klass}"] = proc.call(company)
+        - actions_list.each do |name, proc|
+          - if action = proc.call(company)
+            td = action
+= paginate companies

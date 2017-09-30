@@ -1,0 +1,13 @@
+.title-bar
+  h1 Listing #{@status.to_s.humanize} TP Companies
+  ul
+    li = link_to "New #{@tp_type}", new_polymorphic_path(crud_class.new)
+    li = link_to "#{@tp_type.pluralize}", polymorphic_path(crud_class.new)
+    li = link_to "Inactive #{@tp_type.pluralize}", polymorphic_path([:inactive, crud_class.new])
+    li = link_to "Deleted #{@tp_type.pluralize}", polymorphic_path([:deleted, crud_class.new])
+
+.full-page
+  = render 'companies/filter'
+  = render partial: 'accounting/tp_companies/companies', object: @companies if @companies
+
+

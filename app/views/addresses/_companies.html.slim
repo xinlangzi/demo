@@ -1,0 +1,15 @@
+- unless companies.empty?
+  table.gray
+    thead
+      tr
+        th Name
+        th Address
+        th Latitude, Longitude
+    tbody
+      - companies.each do |company|
+        tr
+          td.text-left = link_to company.name, [:edit, company], :target=>"_blank"
+          td = company.address
+          td = "(#{company.lat || 0}, #{company.lng || 0 })"
+  .hidden.datatable-config
+    | {"bPaginate": false, "aaSorting": [[ 0, "asc" ]]}

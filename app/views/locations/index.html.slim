@@ -1,0 +1,19 @@
+.title-bar
+  h1 Track History
+  ul
+    li
+      a.fit-map Fit Map to all Trucks
+
+.full-page.full-height
+  .ui-container#track-location-layout
+    .pane.ui-layout-west
+      = render 'filter'
+      ul.timestamps.trigger-marker
+    .pane.ui-layout-center
+      #map style="width:100%;height:100%"
+
+javascript:
+  function callback(){
+    new TrackTruck().history();
+  }
+  GoogleMap.loadScript('#{GoogleMap.api_key(:frontend)}', 'callback')

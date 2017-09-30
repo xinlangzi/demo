@@ -1,0 +1,12 @@
+- if current_user.is_admin?
+  .ui-container#calendar-layout
+    .pane.ui-layout-center.calendar-center
+      .ui-layout-north
+        = yield :title_bar
+      .ui-layout-center
+        = yield
+    .pane.ui-layout-west#driver-panel
+      = yield :west
+- else
+  = yield :title_bar
+  = yield

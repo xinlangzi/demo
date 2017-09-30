@@ -1,0 +1,128 @@
+- if @quote_engine.respond_to?(:comment)&&@quote_engine.comment.present?
+  .bold Comment:
+  p #{@quote_engine.comment}
+- @spot_quotes.each do |sq|
+  table.spot-quote class="#{sq.is_triaxle? ? 'triaxle' : ''}"
+    caption style=outlook_font Spot Quote
+    - colspan = sq.drop_pull&&sq.live_load ? 2 : 1
+    tbody
+      tr
+        td colspan=3
+      tr style=outlook_font
+        td width="35%"
+          .bold From/To Railroad:
+          .data = sq.rail_road.name
+        td width="30%"
+          .bold SSLine:
+          .data = sq.ssline.name rescue 'Unsure'
+        td width="35%" style="border-bottom: 1px solid #999;" align="right"
+          table width="100%"
+            tr style=outlook_font
+              - if sq.live_load
+                td.live-load width="160" style="padding: 0"
+                  .bold Live load:
+                  .data #{number_to_currency(sq.total_without_drop_pull.precision2)}
+              - if sq.drop_pull
+                td.drop-pull width="160" style="padding: 0"
+                  .bold Drop and Pull:
+                  .data #{number_to_currency(sq.total.precision2)}
+      tr style=outlook_font
+        td
+          .bold Load/Unload at:
+          .data = sq.dest_address
+        td
+          .bold  Refrigerated:
+          .data = sq.reefer_info.try(:capitalize)
+        td rowspan=3
+          table.breakdown width="100%" cellpadding="1" cellspacing="2"
+            tr style=outlook_font
+              td.text-right
+                em Base Rate
+              td.text-left width="40"
+                strong = number_to_currency(sq.base_rate_fee.precision2)
+            tr style=outlook_font
+              td.text-right
+                em Fuel Amount
+              td
+                strong = number_to_currency(sq.fuel_amount.precision2)
+            tr style=outlook_font
+              td.text-right
+                em Fuel Percent
+              td
+                strong = "#{sq.percent_fuel.precision2}%"
+            - if sq.drop_pull
+              tr style=outlook_font
+                td.text-right.red
+                  em Drop Rate
+                td.red
+                  strong = number_to_currency(sq.drop_rate_fee)
+            tr style=outlook_font
+              td.text-right
+                em
+                  - if sq.ssline_id.nil?
+                    span.hl2 &nbsp;**&nbsp;
+                  span Chassis Fee
+              td
+                strong = number_to_currency(sq.chassis_fee.precision2)
+            tr style=outlook_font
+              td.text-right
+                em Rail Lift Fee
+              td
+                strong = number_to_currency(sq.over2.precision2)
+            tr style=outlook_font
+              td.text-right
+                em Triaxle Fee
+              td
+                strong = number_to_currency(sq.over1.precision2)
+            - unless sq.drop_pull
+              tr style=outlook_font
+                td.text-right
+                  em Reefer Monitoring
+                td
+                  strong = number_to_currency(sq.reefer_fee.precision2)
+            tr style=outlook_font
+              td.text-right
+                em
+                  span.hl1 &nbsp;*&nbsp;
+                  span Chassis Split
+              td
+                strong = number_to_currency(sq.chassis_dray.precision2)
+
+            - unless sq.free_text1.blank? || sq.q_free_text1.blank?
+              tr style=outlook_font
+                td.text-right
+                  em = sq.free_text1
+                td
+                  strong = number_to_currency(sq.q_free_text1.precision2)
+            - unless sq.free_text2.blank? || sq.q_free_text2.blank?
+              tr style=outlook_font
+                td.text-right
+                  em = sq.free_text2
+                td
+                  strong = number_to_currency(sq.q_free_text2.precision2)
+      tr style=outlook_font
+        td
+          .bold Round Trip Miles:
+          .data = sq.miles.precision2
+        td
+          .bold  Hazardous:
+          .data = sq.hazardous_info.try(:capitalize)
+      tr style=outlook_font
+        td
+          .bold  Container Size/Type:
+          .data = "#{sq.csize} #{sq.ctype}"
+        td
+      tr style=outlook_font
+        td
+          .bold Cargo Weight:
+          .data = sq.cweight
+        td
+        td.fine-print colspan=colspan
+          - if sq.fine_print.present?
+            span.hl2 &nbsp;**&nbsp;
+            span = sq.fine_print
+      tr
+        td colspan=3
+.disclaimer style=outlook_font
+  = FinePrint.default.try(:html_safe)
+/!#{@quote_engine.http_user_agent}

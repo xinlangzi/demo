@@ -1,0 +1,34 @@
+#quick-search
+  .tableless
+    - if current_user.is_admin?
+      .table-cell
+        ul.horiz
+          li
+            a.show-hide.white-btn rel="quick-rate"
+              i.fa.fa-calculator.mt5
+              | Quick Rate
+            .plate.w280.hidden id="quick-rate"
+              = render 'shared/quick_rate'
+              a.rfloat.cancel.show-hide rel="quick-rate" Close
+    - if current_user.is_admin? || current_user.is_customer?
+      .table-cell
+        form
+          ul.horiz
+            li
+              i.fa.fa-search.mt5.f120
+            li = text_field_tag :keyword, nil, title: 'Company/User by name/email', class: 'f90 w180 autocomplete placeholder', data: { url: companies_searches_path, term: 'name'}
+    - if current_user.is_admin?
+      .table-cell
+        form
+          ul.horiz
+            li = text_field_tag :keyword, nil, title: 'Invoice No.', class: 'f90 w100 autocomplete placeholder', data: { url: invoices_searches_path, term: 'number'}
+    .table-cell
+      = form_for :wild_search, url: wild_search_containers_path, html: { method: :get } do |s|
+        ul.horiz
+          li
+            i.fa.fa-truck.mt5.f120
+          li = s.text_field :keyword_cont, title: 'Cont./SS Line BL/Refer./Chasiss No.', class: 'f90 w220 placeholder clearable nospace'
+          li = s.text_field :id_eq,  title: 'By ID', class: 'f90 w60 placeholder clearable'
+          li = s.submit "Go"
+          li
+            a.clear_button.btn Clear

@@ -1,0 +1,23 @@
+.title-bar
+  h1 Edi Log No. #{@edi_log.id}
+  ul
+    li
+      = link_to "Back to List", edi_logs_path
+
+.content
+  fieldset.border
+    legend.title Related Containers
+    - unless @edi_log.containers.empty?
+      - @edi_log.containers.each do |container|
+        pre = link_to(container, container)
+        span &nbsp;&nbsp;&nbsp;
+    - else
+      pre N/A
+  fieldset.border
+    legend.title Raw Message
+    pre = @message
+
+  fieldset.border
+    legend.title Error
+    pre = @error
+

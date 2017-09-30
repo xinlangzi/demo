@@ -1,0 +1,8 @@
+= simple_form_for @rq, remote: true, html: { id: 'calculate-receivables-form'} do |f|
+  = f.error_messages
+  = hidden_field_tag :auto_save, params[:auto_save]
+  = hidden_field_tag :container_id, @rq.container.id
+  = render 'receivable_quotes/customer_quotes', quotes: @customer_quotes if @customer_quotes
+  = render 'receivable_quotes/stack_quotes', quotes: @stack_quotes if @stack_quotes
+  - unless params[:preview]
+    = f.submit "Save as Accts. Receivables" if @rq.valid?

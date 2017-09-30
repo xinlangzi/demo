@@ -1,0 +1,49 @@
+#invoiceHeader
+  i Bill to:
+  .bold = @company.print_name
+  br
+  div = @company.phone + (" / " + @company.phone_extension) if !@company.phone_extension.blank?
+  div = @company.address_street
+  div = "#{@company.address_city}, #{@company.address_state.abbrev} #{@company.zip_code}"
+- InvoiceSearch::PERIODS.reverse.each do |time|
+  - invoices = @invoices[time]
+  - unless invoices[:invoices].to_a.empty?
+    table.gray.center.small
+      caption
+        ul
+          li.rfloat
+            span Total Amount:&nbsp;
+            span.bold = number_to_currency invoices[:total_amount]
+            | &nbsp;&nbsp;
+            span Credit:&nbsp;
+            span.bold = number_to_currency invoices[:total_credit]
+            | &nbsp;&nbsp;
+            span Adjustment:&nbsp;
+            span.bold = number_to_currency invoices[:total_adjustment]
+            | &nbsp;&nbsp;
+            span Paid:&nbsp;
+            span.bold = number_to_currency invoices[:total_paid]
+            | &nbsp;&nbsp;
+            span Balance:&nbsp;
+            span.bold = number_to_currency invoices[:total_balance]
+            | &nbsp;&nbsp;
+            span Inovices:&nbsp;
+            span.bold = invoices[:invoices].size
+          li.title = InvoiceSearch::AGING_DETAILS[time]
+      thead
+        tr
+          th.pw10 Number
+          th.pw20 Reference No.
+          th.pw30 Company
+          th.pw20 Invoice Date
+          th.pw10 Amount
+          th.pw10 Balance
+      tbody
+        - invoices[:invoices].each do |invoice|
+          tr
+            td = invoice.number
+            td = invoice.containers.map(&:reference_no).join("<br/>").html_safe rescue nil
+            td = invoice.company.name
+            td = invoice.issue_date.us_date
+            td.number = number_to_currency(invoice.amount)
+            td.number = number_to_currency(invoice.amount - invoice.paid - (invoice.credit - invoice.credited) + (invoice.adjustment - invoice.adjusted))

@@ -1,0 +1,238 @@
+// For r2r marketing website
+/*
+ *= require jquery-ui
+ */
+@import "constant";
+@import "compass";
+@import "ionicons";
+@import "jquery.multiselect";
+@import "ctrls/customer_quote";
+@import "ctrls/shipments";
+
+form{
+  label{
+    line-height: 28px;
+  }
+}
+input.text, textarea, select {
+  border-radius: 4px;
+  font-size: 13px;
+  background: #F6F6F6;
+  padding: 5px;
+  height: 28px;
+  border: 1px solid #CCC;
+  @include border-radius(4px);
+  @include box-sizing(border-box);
+}
+
+.ui-multiselect{
+  height: 28px;
+  @include box-sizing(border-box);
+}
+.ui-multiselect-checkboxes{
+  label input {
+    margin-right: 2px;
+    height: auto;
+  }
+  .ui-state-hover{
+    background: #E8FBFF;
+    border: none;
+    @include border-radius(0);
+  }
+}
+
+.ui-multiselect-menu {
+  .ui-widget-header{
+    background: #DDD;
+  }
+  .ui-corner-all{
+    @include border-radius(0);
+  }
+}
+
+.helvetica{
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.shipment-form {
+  width: 100%;
+  textarea{
+    width: 100%;
+    font-size: 18px;
+    text-transform: uppercase;
+    height: 100px;
+  }
+  #track{
+    margin-top: 10px;
+  }
+}
+
+#quote-form{
+  background: #FFF;
+  form#customer-quote{
+    padding: 15px;
+    #transport-mode{
+      input{
+        margin-right: 4px;
+      }
+    }
+  }
+  #map{
+    border: 5px solid #FFF;
+    @include box-sizing(border-box);
+  }
+}
+
+.truck-avail{
+  padding: 15px;
+  .row{
+    .col{
+      padding: 10px;
+      background: #F9F9F9;
+      border: 1px solid #FFF;
+      @include box-sizing(border-box);
+    }
+  }
+  .label1 {
+    float: left;
+    min-width: 75px;
+    vertical-align: top;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    font-size: 16px;
+    padding: 5px 0px;
+  }
+  .wday{
+    font-size: 13px;
+  }
+
+  .lblred {
+    float: left;
+    display: block;
+    text-align: right;
+    min-width: 60px;
+    vertical-align: top;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    font-size: 30px;
+    color: #DE0A19;
+  }
+
+  .lblgreen {
+    float: left;
+    display: block;
+    text-align: right;
+    min-width: 60px;
+    vertical-align: top;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    font-size: 28px;
+    color: #14971B;
+  }
+
+  .icongreen {
+    float: left;
+    min-width: 60px;
+    height: 40px;
+    vertical-align: top;
+    background: asset-data-url('icons/truck_green.png') no-repeat center;
+    margin: 0px 5px;
+  }
+
+  .iconred {
+    float: left;
+    min-width: 60px;
+    height: 40px;
+    vertical-align: top;
+    background: asset-data-url('icons/truck_red.png') no-repeat center;
+    margin: 0px 5px;
+  }
+}
+@media (max-width: 720px){
+  .truck-avail{
+    .col{
+      text-align: center;
+    }
+    .label1, .lblgreen, .lblred, .icongreen, .iconred{
+      float: none !important;
+      display: block;
+      text-align: center;
+    }
+    .icongreen, .iconred{
+      width: 60px;
+      margin: auto;
+    }
+  }
+}
+
+.driver-quotes{
+  .forms{
+    .row{
+      position: relative;
+      margin-bottom: 5px;
+      padding: 5px;
+      background: #EEE;
+    }
+    input, select{
+      width: 100%;
+    }
+    .remove{
+      position: absolute;
+      font-size: 20px;
+      top: 8px;
+      left: -18px;
+      color: #333;
+    }
+    .rates{
+      padding: 0px 5px;
+      font-size: 13px;
+      color: #666;
+      .row{
+        background: #F9F9F9;
+        .num, .sum{
+          color: green;
+          font-weight: bold;
+        }
+        .miles{
+          color: #000;
+          font-weight:bold;
+        }
+      }
+    }
+  }
+  .summary{
+    float: right;
+    text-align: right;
+    .total{
+      @extend .helvetica;
+      background: #52C1B8;
+      color: #FFF;
+      line-height: 36px;
+      padding: 0px 10px;
+      .amount{
+        font-weight: 900;
+      }
+    }
+  }
+  ul.fine-print{
+    @extend .helvetica;
+    clear: both;
+    color: #A61E1E;
+    font-size: 12px;
+    padding: 2px 13px;
+  }
+  ul.find-more{
+    @extend .helvetica;
+    list-style: none;
+    clear: both;
+    font-size: 14px;
+    padding: 2px 0px 2px 13px;
+    margin: 0px;
+    a{
+      color: red;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+}
+
+input.geo-address{
+  font-size: 12px !important;
+}

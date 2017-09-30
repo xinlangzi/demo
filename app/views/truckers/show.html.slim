@@ -1,0 +1,5 @@
+- if current_user.is_admin? || current_user.is_trucker?
+  = content_for :others do
+    = render partial: 'trucks/trucks', object: @trucks
+    = render partial: 'drug_tests/drug_tests', object: @drug_tests
+= render partial: 'companies/company', object: @company

@@ -1,0 +1,26 @@
+.title-bar
+  h1
+    span Edit #{controller.crud_class.to_s.titleize} ID #{@container.try(:id)}
+    - if accessible?('containers', 'lock')
+      = lock_checkbox(@container, ajax: false)
+- warnings = @container.check_statuses
+- if warnings.empty?
+  - if @container.container_edi_detail.nil?
+    .content
+      .w850.hcenter
+        = render 'containers/form/container', container: @container
+  - else
+    .full-page
+      .tableless.ml200
+        .table-cell.w850
+          = render 'containers/form/container', container: @container
+        .table-cell.stickbox.w500
+          = render 'containers/edi_detail'
+- else
+  .content
+    .w850.hcenter
+      ul.error-recap
+        li.title-error Please contact your admin to edit the order.
+        - warnings.each do |warning|
+          li.red = warning
+      = render :partial => 'containers/container', :object => @container

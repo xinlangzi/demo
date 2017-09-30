@@ -1,0 +1,5 @@
+.search-box
+  .search-inner
+    = simple_form_for @search, url: fuel_purchases_path, html: { method: :get , class: 'horiz' } do |f|
+      = f.input :trucker_id_eq, as: :select, collection: current_hub.truckers.joins(:fuel_purchases).uniq, include_blank: true, required: false, label: 'Trucker', wrapper: 'vertical'
+      = f.submit 'Search'

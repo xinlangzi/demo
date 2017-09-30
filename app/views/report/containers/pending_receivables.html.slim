@@ -1,0 +1,36 @@
+.title-bar
+  h1 Pending Accts. Receivables
+  ul
+    li = link_to 'Back to Reports', '/reports'
+.content
+  table.gray.vmiddle
+    thead
+      tr
+        th.pw10 rowspan=2 Cont ID
+        th.pw10 rowspan=2 Date
+        th.pw10 rowspan=2 Container No
+        th.pw20 rowspan=2 Customer
+        th.pw40[colspan="3"] Consignee/Shipper
+      tr
+        th Name
+        th.w150 City
+        th State
+      tbody
+        = render partial: 'pending_receivable', collection: @containers, as: :container
+  .hidden.datatable-config
+      | {
+          "bInfo": false,
+          "bPaginate": false,
+          "aaSorting": [[0, "asc" ]],
+          "aoColumns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+  = paginate @containers
+

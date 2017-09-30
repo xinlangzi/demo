@@ -1,0 +1,26 @@
+- invoice      = payment.invoices.first
+- to_pay       = invoice.ready_to_pay?
+- j1s_done     = !invoice.pending_j1s?
+- good_day_log = invoice.good_day_log?
+- good_expn_dates = !company.has_expiration_date?
+- full_pay     = to_pay && j1s_done && good_day_log && good_expn_dates
+- if to_pay
+  tr
+    td 
+      a.fa.fa-id-card-o class="#{company.has_expiration_date? ? 'red' : 'green'}" rel='facebox' href="/drivers/#{company.id}/info"
+    td = link_to company.name, new_payable_payment_path(filter: { company_id: company.id }), target: '_blank' if payment_counter == 0
+    td = link_to invoice.number, invoice
+    td class="#{to_pay ? 'green bold' : ''}" = invoice.issue_date.ymd
+    td = "#{company.week_pay} week" if company.week_pay
+    td = checkmark(good_expn_dates)
+    td = checkmark(j1s_done)
+    td = checkmark(good_day_log)
+    td.text-right = number_to_currency(payment.amount - payment.total_adjustments - payment.total_credits)
+    td.text-right = number_to_currency(payment.total_adjustments)
+    td.text-right = number_to_currency(payment.total_credits)
+    td.text-right = number_to_currency(payment.amount)
+    td.text-right.bold = number_to_currency(payment.posted_amount)
+    td.text-right = number_to_currency(payment.balance)
+    td id=dom_id(invoice) class="#{full_pay ? 'greenBg' : (to_pay ? 'pinkBg' : '')}"
+      = render 'payment', payment: payment
+    td.f90 = company.hub.name if payment_counter == 0

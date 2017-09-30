@@ -1,0 +1,5 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div Dear Dispatcher,
+      p An EDI 997 message arrived that unexpectedly matches #{@empty ? 'no' : 'more than one' } 210 (invoice) messages. Please click #{link_to('here', edi_log_url(@edi_log_id))} to review.

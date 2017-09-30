@@ -1,0 +1,22 @@
+li
+  - state_id = f.object.state_id || SystemSetting.default.state_id
+  .state-mileage
+    .row
+      .col-50
+        a.item-link.smart-select href="#" data-page-title="States" data-back-on-select="true"
+          = f.input_field :state_id, as: :select, collection: State.driving.get_states_and_ids, selected: state_id
+          .item-content.small
+            .item-inner
+              .item-after.small = State.find(state_id).try(:name)
+      .col-25
+        .item-content
+          .item-inner
+            .item-input
+              = f.input_field :miles, placeholder: 'Miles'
+      .col-25.text-right
+        .item-content
+          .item-inner
+            .item-input
+              label.icon-checkbox
+                = f.check_box :_destroy
+                span

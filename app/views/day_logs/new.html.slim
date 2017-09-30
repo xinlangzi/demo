@@ -1,0 +1,9 @@
+.title-bar
+  h1 Upload Daily Log for #{@trucker} on #{@day_log.issue_date} 
+.full-page
+  fieldset.form
+    = simple_form_for [@trucker, @day_log] do |f|
+      = f.input :issue_date, as: :hidden
+      = f.input :file, as: :file, wrapper: 'vertical'
+      = f.submit "- Upload -", disable_with: PLEASE_WAIT
+      = link_to "Cancel", "#", onClick: "window.close();return false;", class: 'cancel'

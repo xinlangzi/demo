@@ -1,0 +1,33 @@
+.title-bar
+  h1 Driver Maintenance Records
+  ul
+    li = link_to 'Back to Reports', '/reports'
+    
+.content
+  = render 'report/maintenances/forms/search'
+  table.gray.vmiddle
+    thead
+      tr
+        th Driver
+        th Issue Date
+        th width=400 Services Performed
+        th Receipts
+        th Status
+        th width=300 Comment
+        th
+    tbody
+      - @maintenances.each do |m|
+        tr
+          td = m.trucker.name
+          td = m.issue_date
+          td.text-left 
+            .h100 = simple_format(m.services)
+          td = attachments_for(m, nil, uploader: false)
+          td
+            = fields_for :maintenance, m do |f|
+              = f.select :status, enum_options(Maintenance.statuses), { include_blank: false }, { class: 'auto-save', ref: "Maintenance:#{m.id}:status", id: dom_id(m, 'status') }
+          td
+            = fields_for :maintenance, m do |f|
+              = f.text_area :comment, rows: 5, class: 'auto-save', ref: "Maintenance:#{m.id}:comment", id: dom_id(m, 'comment')
+          td = link_to '', [:report, m], method: :delete, remote: true, data: { confirm: 'Are you sure to delete this maintenance record?'}, class: 'fa fa-times-circle'
+    center = paginate @maintenances

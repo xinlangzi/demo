@@ -1,0 +1,9 @@
+- cache ['profile', current_user] do
+
+  .profile
+    .user = fa_icon('user', text: current_user.name)
+    ul.options
+      li
+        a.fa.fa-cog href="/profile" &nbsp;&nbsp;My Profile
+      li
+        a.fa.fa-sign-out href="/logout" data-confirm="Are you sure to logout?" data-method="delete" rel="nofollow" &nbsp;&nbsp;Logout

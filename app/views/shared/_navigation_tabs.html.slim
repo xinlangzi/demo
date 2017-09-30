@@ -1,0 +1,90 @@
+- if current_user.is_admin?    
+  - if driver_mode?
+    .driver-mode = link_to 'Driver Mode On', driver_modes_path, remote: true
+  - else
+    .driver-mode.off = link_to 'Driver Mode Off', driver_modes_path, remote: true
+- link_to_quote_engine = link_to "Quote Engine", "#", onclick: "javascript:App.newPopup('#{new_quote_engine_path}', 'QuoteEngine', 700, 1250, 300, 200)"
+- link_to_track_trucks = link_to "Track Trucks", "#", onclick: "javascript:App.newPopup('#{track_locations_path}', 'Track Trucks', 700, 1250, 300, 200)"
+.menu data-active=tab_abbrev
+  - if current_user.is_admin?
+    - cache 'admin-menu' do
+      ul
+        li.cal
+          = link_to 'Calendar', calendar_containers_path
+          ul
+            li = link_to 'Multi-Calendar', multi_calendar_containers_path
+        li.ctn.edi.pa.ct
+          a Orders
+          ul
+            li = link_to 'Order Stack', containers_path
+            li = link_to 'Place an Order', new_container_path
+            li = link_to 'EDI Order', edi_containers_path
+            li = link_to 'Pre Alerts', pre_alerts_containers_path
+            li = link_to 'J1s & PODs Pictures', driver_docs_path(0)
+            li = link_to 'Chassis Charges', charges_chassises_path
+        li.mv.fin.inv.pym.rpt
+          a Data & Analytics
+          ul
+            li = link_to 'Statistics', monthly_volume_containers_path
+            li = link_to 'Financials', financials_path
+            li = link_to 'Reports', reports_path
+        li.msg = link_to 'Messaging', '/messaging'
+        li.sp = link_to 'Support', new_support_path
+        li.dma = link_to 'Daily Mileage', daily_mileages_path
+        li.trc = link_to_track_trucks
+        li = link_to_quote_engine
+        li.last.settings.set.sip.con.com.dep
+          = link_to 'Settings', settings_path
+          ul
+            li = link_to 'Mobiles', '/mobiles'
+            li = link_to 'Admins', admins_path
+            li = link_to 'Operation Types', operation_types_path
+            li = link_to 'Hubs', hubs_path
+            li.sub = link_to 'Owner Operators', truckers_path
+            li.sub = link_to 'Consignees', consignees_path
+            li.sub = link_to 'Depots', depots_path
+            li.sub = link_to 'Shippers', shippers_path
+            li.sub = link_to 'Terminals', terminals_path
+            li.sub = link_to 'Yards', yards_path
+            li = link_to 'Customers', customers_path
+            li = link_to 'TP Customers', accounting_tp_customers_path
+            li = link_to 'TP Vendors', accounting_tp_vendors_path
+            li = link_to 'SSLines', sslines_path
+            li = link_to 'Users', customers_employees_path
+            li = link_to 'Roles and Rights', roles_path
+            li = link_to 'Container Tasks', container_tasks_path
+            li = link_to 'Holidays', holidays_path
+            li = link_to 'System Settings', system_setting_path
+            li = link_to 'Track Changes', paper_trails_path
+            li = link_to 'System Logs', system_logs_path
+            li = link_to 'Incomplete Addresses', incomplete_addresses_path
+  - elsif current_user.is_customer?
+    - cache 'customer-menu' do
+      ul
+        li.ctn = link_to 'Place an Order', new_container_path
+        li.cto = link_to 'Open Orders', open_containers_path
+        li.pa  = link_to 'Pre Alerts', pre_alerts_containers_path
+        li.ct  = link_to 'Order Stack', containers_path
+        li.cal = link_to 'Calendar', calendar_containers_path
+        li.sip.con.com
+          a Company
+          ul
+            li = link_to 'Information', my_company_path
+            li = link_to 'Shippers', shippers_path
+            li = link_to 'Consignees', consignees_path
+        li.inv = link_to 'Invoices', receivable_invoices_path(filter: {outstanding: '1'})
+        li.pym = link_to 'Payments', receivable_payments_path
+        li.last = link_to_quote_engine
+  - elsif current_user.is_trucker?
+    - cache 'trucker-menu' do
+      ul
+        li.cto = link_to 'Open Orders', open_containers_path
+        li.ct  = link_to 'Order Stack', containers_path
+        li.cal = link_to 'Calendar', calendar_containers_path
+        li.com = link_to 'My Company Info', my_company_path
+        li.inv = link_to 'Invoices', payable_invoices_path
+        li.pym = link_to 'Payments', payable_payments_path
+        li.dep = link_to 'Depot Info', depots_path
+        li.dma = link_to 'Daily Mileage', daily_mileages_path
+        li.vac = link_to 'Vacations', vacations_path
+        li.last = link_to_quote_engine

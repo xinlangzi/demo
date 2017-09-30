@@ -1,0 +1,20 @@
+tr id="#{dom_id(bulk_quote)}"
+  td = bulk_quote.csv_identifier rescue 'N/A'
+  td = bulk_quote.base_ratio
+  td
+    = link_to "Buid", link_codes_path(bulk_quote_id: bulk_quote.id), remote: true
+  td
+    = link_to "Delete", bulk_quote, method: :delete, remote: true unless bulk_quote.done.is_a?(FalseClass)
+  td
+    - if bulk_quote.done.is_a?(FalseClass)
+
+      .bold.green.f90 = bulk_quote.updated_at.us_datetime
+    - else
+      = link_to "Run", [:run, bulk_quote], method: :get
+  td
+    - if bulk_quote.done?
+      = link_to "Download", bulk_quote.csv.url
+    - elsif bulk_quote.done.is_a?(FalseClass)
+      span.bold.green On Quoting
+    - else
+      span

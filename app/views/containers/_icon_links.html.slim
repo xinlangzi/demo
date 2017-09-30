@@ -1,0 +1,8 @@
+- if current_user.is_admin?
+  - unless container.lock?
+    .clear
+    a.fa.fa-edit.invisible href="/#{container.type.tableize}/#{container.id}/edit"
+    | &nbsp;
+    a.fa.fa-trash.invisible href="/#{container.type.tableize}/#{container.id}" data-method="delete" data-confirm="Are you sure you want to delete this container?"
+    | &nbsp;
+  a.dialog.fa.fa-eye.invisible href="/#{container.type.tableize}/#{container.id}/preview" data-remote=true

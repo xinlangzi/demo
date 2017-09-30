@@ -1,0 +1,48 @@
+.title-bar
+  h1 Drops awaiting Pick Up
+  ul
+    li = link_to 'Back to Reports', '/reports'
+    li = link_to 'Export to Excel', drops_awaiting_pick_up_report_containers_path(format: 'csv')
+.full-page
+  - { "Import Containers" => @imports, "Export Containers" => @exports }.each do |title, containers|
+    - unless containers.empty?
+      table.gray.vmiddle
+        caption
+          ul
+            li.title = title
+        thead
+          tr
+            th.w60 rowspan=2 Container ID
+            th.pw10 rowspan=2 Date
+            th.pw10 rowspan=2 Container No
+            th.pw20 rowspan=2 Customer
+            th.pw25[colspan="3"] Consignee/Shipper
+            th.pw10 rowspan=2 Drop Date
+            th.pw10 rowspan=2
+              = title =~/import/i ? 'Rail Last Free Date' : 'Rail Cut Off Date'
+          tr
+            th Name
+            th.w150 City
+            th State
+        tbody
+          = render partial: 'await_pick_up', collection: containers, as: :container
+
+      .hidden.datatable-config
+        | {
+            "bInfo": false,
+            "bPaginate": false,
+            "aaSorting": [[7, "desc" ]],
+            "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ]
+          }
+
+

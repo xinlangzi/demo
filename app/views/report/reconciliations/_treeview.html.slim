@@ -1,0 +1,50 @@
+- fcolor = type == :receivable ? "green" : "red"
+.lfloat.mr20.pw45.classify
+  h2.center class=fcolor
+    span Total Amount:
+    span.summary.ml5
+  .pl10
+    - ids = for_third_parties.delete(:ids)
+    - roots = Accounting::Category.roots(ids).sort_by(&:name)
+    h2
+      .bold.fa.fa-dot-circle-o = type == :receivable ? "Revenue" : "Cost"
+    - if for_containers.present? || for_third_parties.present?
+      .tree
+        ul
+          = render 'report/reconciliations/nodes', nodes: roots, ids: ids, by_categories: for_third_parties
+          - for_containers.each do |charge_info, companies_invoices|
+            - charge_info =~/^(.*)-(\d+)$/
+            li.category
+              a
+                span = $1
+                span.ml5.green.total
+              = render partial: 'report/reconciliations/companies_invoices', object: companies_invoices
+
+          - if type == Accounting::Category::REVENUE && !@reconciliation.overpay_by_companies.empty?
+            = render :partial=>"report/reconciliations/overpay_by_companies"
+
+    - if for_credits.present?
+      h2
+        .bold.fa.fa-dot-circle-o = type == :receivable ? "Customer Credits" : "Vendor Credits"
+      .tree
+        ul
+          - for_credits.each do |charge_info, companies_invoices|
+            - charge_info =~/^(.*)-(\d+)$/
+            li.category
+              a
+                span = $1
+                span.red.ml5.total
+              = render partial: 'report/reconciliations/companies_invoices', object: companies_invoices
+
+    - if defined?(for_adjustments)
+      h2
+        .bold.fa.fa-dot-circle-o Truckers Adjustments
+      .tree
+        ul
+          - for_adjustments.each do |charge_info, companies_invoices|
+            - charge_info =~/^(.*)-(\d+)$/
+            li.category
+              a
+                span = $1
+                span.red.ml5.total
+              = render partial: 'report/reconciliations/companies_invoices', object: companies_invoices

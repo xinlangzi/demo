@@ -1,0 +1,47 @@
+- if @containers.empty?
+  .red No container found. Try again.
+- else
+  center = paginate @containers, remote: true
+  table.gray.f90.vmiddle
+    caption Containers Found
+    thead
+      tr
+        th ID
+        th Appt Date
+        th Customer
+        th Container No.
+        th Chassis No.
+        th Operations
+    tbody
+      - @containers.each do |container|
+        tr
+          td = link_to container.id, [:preview, container], remote: true
+          td = appt_range(container, true)
+          td = container.customer.name
+          td = container.container_no
+          td = container.chassis_no
+          td.w500
+            table.full-width
+              - if container.chassis_pickup_company
+                tr
+                  td.text-left.w120 Chassis Pickup
+                  td.text-left
+                    a.choose-action data-confirm="Are you sure to assign to this operation?" data-imagable-type="Container" data-imagable-id=container.id data-column-name='chassis_pickup' = container.chassis_pickup_company.name
+                  td
+                  td = attachments_for(container, :chassis_pickup)
+              - container.operations.each do |operation|
+                tr
+                  td.text-left.w120 = operation.operation_type.name
+                  td.text-left
+                    a.choose-action data-confirm="Are you sure to assign to this operation?" data-imagable-type="Operation" data-imagable-id=operation.id = operation.company.name
+                  td.w120 = operation.trucker.try(:name)
+                  td.w80 = attachments_for(operation)
+
+              - if container.chassis_return_company
+                tr
+                  td.text-left.w120 Chassis Return
+                  td.text-left
+                    a.choose-action data-confirm="Are you sure to assign to this operation?" data-imagable-type="Container" data-imagable-id=container.id data-column-name='chassis_return' = container.chassis_return_company.name
+                  td
+                  td = attachments_for(container, :chassis_pickup)
+  center = paginate @containers, remote: true

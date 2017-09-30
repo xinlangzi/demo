@@ -1,0 +1,17 @@
+.title-bar
+  h1 System Logs
+
+.full-page
+  table.gray.vmiddle
+    tr
+      th width=200 Issued At
+      th width=200 Name
+      th Description
+    tbody
+      - @system_logs.each do |log|
+        tr
+          td = log.created_at.us_datetime
+          td = log.name
+          td
+            textarea rows=4 = log.description
+  = paginate @system_logs

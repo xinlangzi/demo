@@ -1,0 +1,40 @@
+.title-bar
+  h1 RailRoads
+  - if current_user.is_admin?
+    ul
+      li = link_to "New Port", new_port_path
+      li = link_to "New Rail Road", new_rail_road_path
+#flash-notice
+  - if flash[:notice]
+    p #{flash[:notice]}
+.content.w900
+  table.gray
+    tr
+      th Port
+      th Name
+      th Lon
+      th Lan
+      th Chassis Dray
+      th Weight Rank2 Fee
+      th
+      th
+    - @ports.each do |port|
+      tr
+        td rowspan="#{port.rail_roads.size+1}"
+          .bold = port.name
+          i = h "(#{port.hub.try(:name)})"
+          div
+            = link_to '', edit_port_path(port), class: 'fa fa-edit'
+            = link_to '', port, confirm: "Are you sure?", :method =>:delete, class: 'fa fa-trash'
+        - unless port.rail_roads.present?
+          td[colspan=7] No rail roads
+      - if port.rail_roads.present?
+        - port.rail_roads.each_with_index do |rail_road, index|
+          tr
+            td = rail_road.name
+            td = rail_road.lon
+            td = rail_road.lan
+            td = rail_road.chassis_dray
+            td = rail_road.weight_rank2_fee
+            td = link_to '', rail_road, confirm: "Are you sure?", :method =>:delete, class: 'fa fa-trash'
+            td = link_to '', edit_rail_road_path(rail_road), class: 'fa fa-edit'

@@ -1,0 +1,19 @@
+.title-bar
+  h1 Export to QuickBook
+.content
+  = render 'invoices/form/search', url: polymorphic_path(crud_class.new, action: :quick_book)
+  table.gray.shadow
+    legend
+      = link_to 'Export to QuickBooks', '#', data: { behavior: 'export-to-quickbooks' }
+    thead
+      tr
+        th
+        th Number
+        th Reference No.
+        th Company
+        th Invoice Date
+        th Amount
+        th Balance
+    tbody
+      = render partial: 'invoice_quickbooks', collection: @invoices, as: 'invoice'
+  = paginate @invoices

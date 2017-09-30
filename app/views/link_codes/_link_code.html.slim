@@ -1,0 +1,5 @@
+tr[id="#{dom_id(link_code)}"]
+  td = link_code.name
+  td = link_code.rail_road.name
+  td = link_code.additional_fee
+  td = link_to 'Delete', link_code, method: :delete, remote: true

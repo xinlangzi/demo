@@ -1,0 +1,97 @@
+.sections.container
+  .row
+    .col-md-4
+      .block
+        .label Customer
+        .h3 = container.customer
+        em = container.customers_employee
+      .block
+        .label Order ID
+        .h2 = link_to container.id, container
+      .block
+        .label Container No.
+        .h2 = container.container_no
+      .block
+        .label Container Size/Type
+        .h2 = container.size
+      .block
+        .label Reference No.
+        .h2 = container.reference_no
+    .col-md-4
+      .block
+        .label Commodity
+        .h3 = container.commodity
+      .block
+        .label Weight
+        .h3 #{container.weight_decimal_humanized} LBS
+      .block
+        .label Seal No.
+        .h3 = container.seal_no
+      - if container.is_a?(ImportContainer)
+        .block
+          .row.container-fluid
+            .col-xs-5
+              .label Rail Last Free Day
+              - if container.rail_lfd.blank?
+                .h3.red N/A
+              - else
+                .h3 = container.rail_lfd
+            .col-xs-2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            .col-xs-5
+              .label Terminal/Rail ETA
+              .h3 = container.terminal_eta
+        .block
+          .label SS Line B/L No.*
+          .h3 = container.ssline_bl_no
+        .block
+          .label Pickup No.
+          - if container.pickup_no.blank?
+            .h3.red N/A
+          - else
+            .h3 = container.pickup_no
+        = link_to 'Enter Pickup Information', pickup_web_container_path(id: container.uuid) unless container.pick_up_date.present?
+      - else
+        .block
+          .row.container-fluid
+            .col-xs-5
+              .label Early Receiving Date
+              .h3 = container.early_receiving_date
+            .col-xs-2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            .col-xs-5
+              .label Rail Cutoff Date
+              .h3 = container.rail_cutoff_date
+        .block
+          .label SS Line Booking No.*
+          .h3 = container.ssline_booking_no
+        .block
+          .label Empty Release No.
+          .h3 = container.empty_release_no
+    .col-md-4.text-right
+      .block.pod
+        .h2 
+          span POD:
+          - if container.pod_docs.empty?
+            em.red.f80 &nbsp;Pending
+          - else
+            - container.pod_docs.each_with_index do |doc, index|
+              = link_to index + 1, doc.file.url, target: '_blank'
+      .clearfix
+      - container_charges = container.receivable_container_charges.charges(container.customer)
+      - if container_charges.present?  
+        - container_charges.each do |cc|
+          .block
+            .label = cc.chargable.name
+            .h3.green = number_to_currency(cc.amount)
+        .block
+          .h2.pull-left Total: &nbsp;
+          .h2.green = number_to_currency(container_charges.sum(:amount))
+        hr
+        .block
+          - if container.done_tasks?(:receivable)
+            .h2.green These charges are final
+          - else
+            .h4.red Additional charges might accrue based on factors affecting completion of the order
+    .col-md-12.gray
+      = render 'containers/progress', container: container
+      .clearfix
+      center.f80 = link_to 'View Tracking Details', web_shipments_path(id: container.uuid)

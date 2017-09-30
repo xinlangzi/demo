@@ -1,0 +1,18 @@
+.title-bar
+  h1 Open Orders
+
+.full-page
+
+  - if !@import_containers.empty?
+    = content_for :import_caption do
+      li.title Import Containers
+    = render :partial => 'containers/containers_brief', :object => @import_containers, locals: { caption: :import_caption}
+  - else
+    .border-info There are no open import orders.
+
+  - if !@export_containers.empty?
+    = content_for :export_caption do
+      li.title Export Containers
+    = render :partial => 'containers/containers_brief', :object => @export_containers, locals: { caption: :export_caption}
+  - else
+    .border-info There are no open export orders.

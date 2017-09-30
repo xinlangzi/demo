@@ -1,0 +1,2 @@
+class AdjustmentCategoriesController < CategoriesController
+end

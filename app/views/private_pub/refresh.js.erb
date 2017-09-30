@@ -1,0 +1,12 @@
+//<%publish_to "/containers/refresh_on_calendar" do%>
+//ContainerCtrl.refreshOnCalendar(<%=@container.id%>)
+//<%end if @container%>
+//<%publish_to "/containers/refresh_on_order_stack" do%>
+//ContainerCtrl.refreshOnOrderStack(<%=@container.id%>)
+//<%end if @container%>
+//<%if params[:reload]%>
+//window.location.reload()
+//<%end%>
+//<%publish_to "/drivers/pane" do%>
+//DriverPane.load('<%=params[:date]%>')
+//<%end%>

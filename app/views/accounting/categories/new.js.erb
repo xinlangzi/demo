@@ -1,0 +1,5 @@
+<%if params[:popup].present?%>
+App.showDialog({ minHeight: 400, title: 'New Category' }).html('<%=j render("new_popup")%>')
+<%else%>
+$('#category_form').html('<%=j render(partial: "form")%>')
+<%end%>

@@ -1,0 +1,14 @@
+- mobile_message = MobileMessage.for_hub(current_hub)
+- unless mobile_message.content.blank?
+  li.accordion-item
+    a.item-content.item-link href="#" 
+      .item-inner
+        .item-title Message
+    .accordion-item-content
+      .card
+        .card-content
+          .content-block
+            .content-block-inner
+              i = simple_format(mobile_message.content)
+              small
+                .text-right = mobile_message.updated_at.us_datetime

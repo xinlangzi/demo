@@ -1,0 +1,10 @@
+.inline, .inline-block{
+  .row{
+    &.nofirst{
+      label{
+        margin-left: 15px;
+        width: auto !important;
+      }
+    }
+  }
+}

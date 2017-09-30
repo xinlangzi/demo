@@ -1,0 +1,28 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding My Performance
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+.content-block-title 
+  center Lates Appointment 
+.list-block.media-list
+  ul
+    - @lates.each do |operation|
+      li
+        a.item-link.item-content href="/containers/#{operation.container_id}"
+          .item-inner
+            .item-title-row
+              .item-title = operation.container_id
+            .item-subtitle 
+              span Scheduled: 
+              .pull-right = operation.container.appointment
+            .item-subtitle 
+              span Actual: 
+              .pull-right.red = operation.after.view_operated_at
+            
+              

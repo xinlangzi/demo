@@ -1,0 +1,38 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.search-docs
+  center.content-block-title Search Your Uploaded Docs
+  .card.container-card
+    .card-header By Date
+    .card-content
+      .list-block
+        ul
+          li
+            .item-content
+              .item-media
+                i.icon24.ion-ios-calendar
+              .item-inner
+                .item-input
+                  input.date_picker name='date' type="text" placeholder="Enter Date"
+
+  .card.container-card
+    .card-header By Container ID or No.
+    .card-content
+      .list-block
+        ul
+          li
+            .item-content
+              .item-media
+                i.icon24.ion-cube
+              .item-inner
+                .item-input
+                  input type="text" name='container' placeholder="Enter Container ID or No."

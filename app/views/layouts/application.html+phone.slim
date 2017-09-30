@@ -1,0 +1,40 @@
+doctype html
+html
+  head
+    /! Required meta tags
+    meta charset="utf-8"
+    / meta http-equiv="refresh" content="5"
+    meta content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" name="viewport"
+    meta content="yes" name="apple-mobile-web-app-capable"
+    meta content="black" name="apple-mobile-web-app-status-bar-style"
+    meta name="HandheldFriendly" content="true"
+    title TruckerZoom
+    = stylesheet_link_tag "mobiles", :media => "all", 'data-turbolinks-track' => true, :debug => false
+  body
+    /! Status bar overlay for full screen mode (PhoneGap)
+    .statusbar-overlay
+    /! Panels overlay
+    .panel-overlay
+    /! Left panel with reveal effect
+    = render '/mobiles/shared/panel_left'
+    /! Views
+    .views
+      /! Your main view, should have "view-main" class
+      .view.view-main
+        /! Top Navbar
+        = yield(:top_navbar)
+        /! Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes
+        .pages
+          /! Page, "data-page" contains page name
+          .page.navbar-fixed data-page="index"
+            /! Scrollable page content
+            .page-content
+              = yield
+        / /! Bottom Toolbar
+        / = yield(:bottom_toolbar)
+    /! Path to Framework7 Library JS
+    = render 'mobiles/shared/popups'
+    = render 'mobiles/shared/modals'
+    = javascript_include_tag "mobiles", 'data-turbolinks-track' => true, :debug => false
+    / javascript:
+    /   webkitRequestFullscreen()

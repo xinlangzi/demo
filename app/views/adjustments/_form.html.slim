@@ -1,0 +1,29 @@
+tr id=dom_id(adjustment, 'form')
+  td
+    = form_for adjustment, html: { class: 'observe-form' } do |f|
+      .red.bold = adjustment.errors.full_messages.join("; ")
+      table.borderless
+        tr
+          td.text-left.w250 
+            - unless print_status?
+              = f.select :category_id, objects_for_select(AdjustmentCategory.all), { include_blank: true }, { class: 'chosen-select', disabled: adjustment.inspection.present? }
+            - else
+              = adjustment.category.try(:name)
+          td.w80 = adjustment.deduct_at
+          td.w80 
+            - unless print_status?
+              = f.text_field :amount, class: 'number w80', placeholder: '- Amount - ', disabled: adjustment.inspection.present?
+            - else 
+              = number_to_currency(adjustment.amount)
+          td.w250 
+            - unless print_status?
+              = f.text_field :comment, class: 'full-width', placeholder: '- Comment- ', disabled: adjustment.inspection.present?
+            - else 
+              = adjustment.comment
+          td.w100 = link_to adjustment.payment.number, adjustment.payment if adjustment.payment
+          - unless print_status?
+            td.w100 = attachments_for(adjustment) 
+            td.w20.text-center 
+              - unless adjustment.payment_id
+                = link_to adjustment, method: :delete, remote: true, data: { confirm: "Are you sure to delete this adjustment?" } do
+                  i.fa.fa-times-circle-o.f120.red 

@@ -1,0 +1,52 @@
+- if imagable = @image.imagable
+  .box
+    .box-title
+      - case imagable
+      - when Operation
+        = imagable.to_s
+        - company = imagable.company
+      - when Container
+        span #{@image.column_name.titleize} for #{imagable.to_s}
+        - case @image.column_name
+        - when /chassis_pickup/
+          - company = imagable.chassis_pickup_company
+        - when /chassis_pickup/
+          - company = imagable.chassis_return_company
+      - if imagable.respond_to?(:chassis_no)
+        sup = imagable.chassis_no
+      - if defined?(nav)
+        .pull-right
+          a.prev-j1s data-id=@image.uuid href="javascript:void(0)"
+            i.fa.fa-arrow-left
+          | &nbsp;
+          a.next-j1s data-id=@image.uuid href="javascript:void(0)"
+            i.fa.fa-arrow-right
+          | &nbsp;
+    .box-content
+      - if company
+        fieldset.border
+          .icon-text
+            i.fa.fa-building-o
+            span.bold = company.name
+            | :&nbsp;
+            = company.address_street
+            = "#{company.address_city}, #{company.state} #{company.zip_code}"
+          .icon-text
+            i.fa.fa-clock-o
+            span Operated: #{@image.operation_time}
+            span &nbsp;
+            span Uploaded: #{@image.created_at.ymdhm}
+      - if @image.file_exists?
+        .row        
+          .col-md-6
+            = render 'docs/audit', image: @image
+          .col-md-6
+            fieldset.form
+              legend Add Tags
+              = simple_form_for @image, url: doc_path(@image), remote: true, html: { class: 'horiz' } do |s|
+                = s.input :tag_list, label: false, placeholder: 'Tags', wrapper: 'vertical', wrapper_html: { class: 'full-width' }, input_html: { class: 'full-width tagsInput' }
+                = s.submit 'Save'
+      = render 'images/display', imagable: @image
+
+javascript:
+  setTimeout(function(){ PendingDoc.focusOnTagsInput(); }, 500);

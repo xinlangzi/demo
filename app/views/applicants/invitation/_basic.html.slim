@@ -1,0 +1,98 @@
+= render 'applicants/invitation/steps', step: 1
+= simple_form_for @trucker, url: invitation_applicants_path, method: :put, html: { novalidate: true } do |c|
+  center.red = c.error_notification
+  fieldset
+    legend Driver Basic Information
+    = c.input :name, label: 'Name', wrapper: :vertical, input_html: { class: 'itext' }
+    = c.input :email, label: 'Email', wrapper: :vertical, input_html: { type: 'email', class: 'itext' }
+    .inline
+      = c.input :phone_mobile, label: 'Mobile', wrapper: :vertical, input_html: { type: 'phone', class: 'itext' }
+      = c.input :date_of_birth, as: :datepicker, label: 'Date of Birth', required: false, wrapper: :vertical, input_html: { class: 'itext', data: { year_range: '-60:-15' } }
+    .address-entry#address1
+      = c.input :address_street, label: 'Street Address', wrapper: :vertical, input_html: { class: 'geocode itext street', autocomplete: "off"}
+      .inline
+        = c.input :address_street_2, label: 'Street Address Line 2', wrapper: :vertical, input_html: { class: 'geocode itext street2', autocomplete: "off"}
+        = c.input :address_city, label: 'City', wrapper: :vertical, input_html: { class: 'geocode itext city', autocomplete: "off" }
+      .inline
+        = c.input :address_state_id, as: :select, collection: State.get_states_and_ids, include_blank: true, label: 'State', include_blank: true, wrapper: :vertical, input_html: { class: 'geocode state' }
+        = c.input :zip_code, as: :string, label: 'Zip Code', wrapper: :vertical, input_html: { size: 7, class: 'geocode w100 zipcode', autocomplete: "off" }
+      .clear
+        a.f80.clear-address Clear Address
+        | &nbsp;&nbsp;
+        a.f80.validate-address Validate by Google Map
+      .geocoded style='margin-left:0;'
+    = c.input :residence_years, as: :string, label: "How many years at this address?", wrapper: :vertical, input_html: { class: 'itext' }
+    br
+    = c.input :dl_no, label: "Driver License No.", required: false, wrapper: :vertical, input_html: { class: 'itext' }
+    .inline
+      = c.input :dl_state_id, as: :select, collection: State.get_states_and_ids, include_blank: true, label: 'DL Issued In', required: false, wrapper: :vertical, input_html: { class: 'itext' }
+      = c.input :dl_haz_endorsement, as: :boolean, label: "CDL Haz Endorsement", required: false, wrapper: :default, input_html: { class: 'itext' }, wrapper_html: { style: 'margin-top: 25px'}
+  fieldset
+    legend Payable Party    
+    = c.input :onfile1099, label: '1099 Independent Driver', wrapper: :default, input_html: { class: 'itext' }, label_html: { style: 'margin-left: 0px'}
+    = c.input :driver_type, label: 'Driver Type', as: :radio_buttons, collection: enum_options(Trucker.driver_types), wrapper: :vertical, required: true
+    hr
+    .inline
+      = c.input :print_name, label: 'Print Name', hint:  "Print on check as", wrapper: :vertical, input_html: { class: 'itext' }
+      = c.input :contact_person, label: 'Contact Person', wrapper: :vertical, input_html: { class: 'itext' }
+    .inline
+      = c.input :ssn, label: "Social Security No.", hint: "e.g. 123-45-6789", required: false, wrapper: :vertical, input_html: { class: 'itext' }
+      = c.input :fein, label: "FEIN", wrapper: :vertical, input_html: { class: 'itext' }
+    .address-entry#address2
+      = c.input :billing_street, label: 'Street Address', wrapper: :vertical, input_html: { class: 'geocode itext street', autocomplete: "off"}
+      = c.input :billing_street_2, label: 'Street Address Line 2', wrapper: :vertical, input_html: { class: 'geocode itext street2', autocomplete: "off"}
+      = c.input :billing_city, label: 'City', wrapper: :vertical, input_html: { class: 'geocode itext city', autocomplete: "off" }
+      .inline
+        = c.input :billing_state_id, as: :select, collection: State.get_states_and_ids, include_blank: true, label: 'State', include_blank: true, wrapper: :vertical, input_html: { class: 'geocode state' }
+        = c.input :billing_zip_code, as: :string, label: 'Zip Code', wrapper: :vertical, input_html: { size: 7, class: 'geocode w100 zipcode', autocomplete: "off" }
+      .clear
+        a.f80.clear-address Clear Address
+        | &nbsp;&nbsp;
+        a.f80.validate-address Validate by Google Map
+      .geocoded style='margin-left:0;'
+  fieldset
+    legend Truck Information
+    = c.fields_for :trucks do |t|
+      .inline
+        = t.input :number, as: :string, wrapper: :vertical, input_html: { class: 'itext' }
+        = t.input :license_plate_no, label: 'License Plate No.', input_html: { size: 20, class: 'itext' }, wrapper: :vertical
+      = t.input :vin, label: 'VIN', hint: 'Vehicle Identification No.', input_html: { size: 20, class: 'itext' }, wrapper: :vertical
+      .inline
+        = t.input :gvwr, as: :string, label: 'GVWR', hint: 'Gross Vehicle Weight Rating', input_html: { size: 15 }, wrapper: :vertical
+        = t.input :tire_size, label: 'Tire Size', input_html: { size: 10 }, wrapper: :vertical
+      .clear
+      .inline
+        = t.input :make, input_html: { size: 15, class: 'w100' }, wrapper: :vertical
+        = t.input :model, input_html: { size: 15, class: 'w100' }, wrapper: :vertical
+        = t.input :year, input_html: { size: 6, class: 'w100' }, wrapper: :vertical
+      .registered_in
+        ul.select-widget
+          li.title Registered In
+          li Select:
+          li
+            a onclick="App.checkAll('state', true)" All
+          li
+            a onclick="App.checkAll('state', false)" None
+        .group-checkboxs
+          = t.association :states, collection: Truck.states, label: false, label_method: :abbrev, as: :check_boxes, input_html: { class: 'state' }
+
+  = c.fields_for :applicant, @trucker.applicant do |a|
+    = a.fields_for :others, OpenStruct.new(a.object.others) do |b|
+      - Applicant::CUSTOMIZED_FIELDS_GROUPS.each do |name, groups|
+        fieldset
+          legend = name.to_s.titleize
+          - with_tab = groups.size > 1
+          div class="#{with_tab ? 'tabs' : 'no-tabs'}"
+            - if with_tab
+              ul
+                - groups.each do |group|
+                  li
+                    a href="##{group.to_s}" = group.to_s.titleize
+            - groups.each do |group|
+              div id=group.to_s
+                .inline
+                  = b.fields_for group, OpenStruct.new(b.object.send(group)) do |c|
+                    - Applicant::CUSTOMIZED_FIELDS[group].each do |field, attrs|
+                      = c.input field, customized_field_options(field, attrs)
+  .text-right
+    = c.submit 'Next', class: 'w100 green-btn'

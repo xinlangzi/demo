@@ -1,0 +1,6 @@
+<%case params[:changed]%>
+<%when /fuel_purchase_trucker_id/%>
+<%@fp.set_trucker(@fp.trucker_id)%>
+$('#fuel_purchase_truck_id').html('<%=j options_from_collection_for_select(@fp.related_trucks, :id, :number, @fp.truck_id)%>')
+<%else%>
+<%end%>

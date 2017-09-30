@@ -1,0 +1,40 @@
+.title-bar
+  h1 Unemailed Receivable Invoices
+  ul
+    li #{link_to 'Back', :back}
+.content
+  - allow_bulk = true
+  - if @invoices
+    div.mb5
+      .f120.bold Total number of unsent invoices: #{@count}
+    table.gray
+      thead
+        tr
+          th Inv #
+          th Recipient
+          th Amount
+          th Balance
+          th.w100 Operation
+          th.w400 Status
+      tbody
+        - for invoice in @invoices
+          tr
+            td = link_to invoice.number, invoice.number
+            td = link_to invoice.company, invoice.company
+            td.number #{number_to_currency invoice.amount}
+            td.number #{number_to_currency invoice.amount}
+            td
+              - if invoice.transmission_pending?
+                - allow_bulk = false
+              - else
+                - if invoice.company.try(:edi_provider).try(:send_invoice_by_edi?)
+                  = button_to("Transmit by EDI", transmit_by_edi_receivable_invoice_path(invoice), :method => :put)
+                - else
+                  = button_to 'Email', email_receivable_invoice_path(invoice.id), :method => :put
+            td
+              = invoice.transmission_status
+    = button_to 'E-mail/Transmit All', email_all_receivable_invoices_path, class: 'rfloat' if allow_bulk
+    = paginate @invoices
+    br
+  - else
+    span There are no invoices to be emailed.

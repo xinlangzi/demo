@@ -1,0 +1,5 @@
+<%if @container%>
+window.location = '<%= pickup_web_container_path(id: @container.uuid)%>'
+<%else%>
+$('#pickup-search').html("Can't find matched container. Try again!").addClass('red')
+<%end%>

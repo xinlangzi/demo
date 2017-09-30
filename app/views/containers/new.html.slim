@@ -1,0 +1,5 @@
+.title-bar
+  h1 New #{controller.crud_class.to_s.titleize}
+.content
+  .w850.hcenter
+    = render 'containers/form/container', container: @container

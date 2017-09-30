@@ -1,0 +1,12 @@
+.title-bar
+  h1 New Reconciliation Report
+
+.content
+  #search-box.search-box
+    fieldset.search-inner
+      legend.bold Cleared Date
+      = simple_form_for @search, as: :search, url: new_report_reconciliation_path, remote: true, html: {method: :get, class: 'horiz'} do |f|
+        = f.input :cleared_date_gteq, as: :datepicker, label: 'From', required: false, wrapper: 'vertical', input_html: { minDate: 1.year.ago.beginning_of_year.ymd, maxDate: Time.now.next_year.end_of_year.ymd }
+        = f.input :cleared_date_lteq, as: :datepicker, label: 'To', required: false, wrapper: 'vertical', input_html: { minDate: 1.year.ago.beginning_of_year.ymd, maxDate: Time.now.next_year.end_of_year.ymd }
+        = f.submit "Search"
+  #list

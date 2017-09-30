@@ -1,0 +1,7 @@
+= f.error_notification
+= f.input :port_id, as: :select, collection: Port.options, include_blank: true, label: 'Port'
+= f.input :name, as: :string ,label: 'Name'
+= f.input :lon, as: :string ,label: 'Longitude'
+= f.input :lan, as: :string ,label: 'Latitude'
+= f.input :chassis_dray, as: :string, label: 'Chassis Dray'
+= f.input :weight_rank2_fee, as: :string ,label: 'Weight Rank2 Fee'

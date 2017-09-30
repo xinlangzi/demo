@@ -1,0 +1,14 @@
+$('#invoice_total_amount').html('<%=number_to_currency(@invoice.computed_amount)%>').effect("highlight", {color:"#84E002"}, 2000 )
+<%if @state == "Update" && @invoice.computed_amount <=0 && !@invoice.invalid_line_item_amount%>
+$('#delete_invoice').show()
+$('#invoice_submit').val('Delete Invoice')
+$('#invoice_submit').attr('disabled', false)
+<%elsif @invoice.invalid_line_item_amount%>
+$('#invalid_line_item_amount').show()
+$('#invoice_submit').attr('disabled', true)
+<%else%>
+$('#invalid_line_item_amount').hide()
+$('#delete_invoice').hide()
+$('#invoice_submit').val('<%=@state%>')
+$('#invoice_submit').attr('disabled', false)
+<%end%>

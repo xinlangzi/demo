@@ -1,0 +1,2 @@
+class PayableLineItemsController < LineItemsController
+end

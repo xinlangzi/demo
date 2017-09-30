@@ -1,0 +1,21 @@
+tr
+  td.bold Container No.
+  td
+    .rfloat = approve_alter_request_link(container, :container_no)
+    .check-dups#container_no data-val=container.container_no data-url=Attr.check_dups_url(container, :container_no) = container.container_no
+    .red.bold
+  td.bold Chassis No.
+  td
+    .rfloat = approve_alter_request_link(container, :chassis_no)
+    - if container.lock?
+      = container.chassis_no
+    - else
+      = fields_for :container, container do |c|
+        = c.text_field :chassis_no, class: "auto-save nospace", id: "chassis_no_#{container.id}", ref: "#{container.class.to_s}:#{container.id}:chassis_no", readonly: true
+tr
+  td.bold Container Size/Type
+  td
+    = container.size
+    div = checkmark(container.triaxle, " Require Triaxle")
+  td.bold Seal No.
+  td = container.seal_no

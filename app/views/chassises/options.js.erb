@@ -1,0 +1,3 @@
+$(".chassis-options").html("<%=j grouped_options_for_select(@options.insert(0, ['', [[]]]))%>")
+$(".chassis-options").nextAll('.company-info').html('')
+App.refreshChosenSelect()

@@ -1,0 +1,12 @@
+tr[id="invoice_#{invoice.id}"]
+  td
+    = check_box_tag 'invoice_ids[]', invoice.id, true, class: 'invoice-ids'
+  td
+    = link_to invoice.number, invoice, :class=>(invoice.class.to_s=~/Accounting/ ? 'tp' : 'no-tp')
+  td
+    - if show_reference_no
+      = invoice.containers.map(&:reference_no).join("<br/>").html_safe rescue nil
+  td = invoice.company.name
+  td = invoice.issue_date.us_date
+  td.number = number_to_currency invoice.amount
+  td.number = number_to_currency invoice.balance

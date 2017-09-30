@@ -1,0 +1,19 @@
+tr
+  td
+    - if current_user.is_admin?
+      label.lock-checkbox
+        = fields_for fuel_purchase do |f|
+          = f.check_box :locked, class: 'auto-save', id: dom_id(fuel_purchase, 'locked'), ref: "FuelPurchase:#{fuel_purchase.id}:locked"
+        span
+    - else
+      = fuel_purchase.id
+  td = fuel_purchase.day
+  td = fuel_purchase.trucker.name
+  td = fuel_purchase.truck.number
+  td = fuel_purchase.gallons
+  td = number_to_currency(fuel_purchase.price)
+  td = number_to_currency(fuel_purchase.amount)
+  td = fuel_purchase.purchase_state.abbrev
+  td = attachments_for(fuel_purchase, :id)
+  td = link_to '', edit_fuel_purchase_path(fuel_purchase), class: 'fa fa-edit' unless fuel_purchase.locked?
+  td = link_to '', fuel_purchase, :confirm => "Are you sure you want to delete this fuel purchase?", method: :delete, class: 'fa fa-trash' unless fuel_purchase.locked?

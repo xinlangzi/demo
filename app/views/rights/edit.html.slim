@@ -1,0 +1,15 @@
+.title-bar
+  h1 Editing Right #{@right.name } 
+  ul 
+    li = link_to "Back",roles_path
+
+.content
+  - role_ids = @right.roles.map(&:id)
+  = simple_form_for @right, html: {class: 'rows'} do |r|
+    = r.input :name, input_html: {class: 'w500'}
+    .inline
+      - @roles.each do |role|
+        .row
+          = label_tag "role_#{role.id}", role.name.titleize
+          = check_box_tag "right[role_ids][]", role.id, role_ids.include?(role.id), id: "role_#{role.id}"
+    = r.submit 'Save'

@@ -1,0 +1,5 @@
+<%if @error%>
+  alert('<%=@error%>')
+<%else%>
+  $('li[data-id=<%=@image.uuid%>]').fadeOut(1000)
+<%end%>

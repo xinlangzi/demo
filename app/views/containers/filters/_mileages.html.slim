@@ -1,0 +1,7 @@
+.search-box
+  .search-inner
+    = simple_form_for @search, url: mileages_containers_path, html: { method: :get , class: 'horiz' } do |f|
+      = f.input :hub_id_eq, as: :select, collection: Hub.with_default, include_blank: true, required: false, label: 'Hub', wrapper: 'vertical'
+      = f.input :created_at_from, as: :datepicker, label: "Created from", required: false, wrapper: 'vertical', input_html: { class: 'clearable', dateFormat: 'yy-mm-dd' }
+      = f.input :created_at_to, as: :datepicker, label: "To", required: false, wrapper: 'vertical', input_html: {class: 'clearable', dateFormat: 'yy-mm-dd' }
+      = f.submit 'Search'

@@ -1,0 +1,12 @@
+- if current_user.is_admin? || current_user.is_customer?
+  - options = Hub.with_default.for_user(current_user).map{|h| [h.name, h.name] }
+  - if options.empty?
+    .hub-switcher
+      i.fa.fa-map-marker
+        select
+          option No Hub
+  - else
+    .hub-switcher
+      i.fa.fa-map-marker
+      - options.insert(0, ['All Hubs', 'All']) if defined?(all)
+      = select_tag :hub, options_for_select(options, session[:all_hubs] || session[:hub]), autocomplete: "off"

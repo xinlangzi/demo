@@ -1,0 +1,9 @@
+.search-box
+  .search-inner
+    = form_for :report, html: { method: :get } do |r|
+      - quarter = params[:quarter] || {}
+      = fields_for :quarter do |q|
+        = q.select :trucker_id, @truckers.map{|trucker| [trucker.name, trucker.id] }, selected: quarter[:trucker_id], include_blank: true if current_user.is_admin?
+        = q.select :year, @years, selected: quarter[:year]
+        = q.select :quarter, DailyMileage::QUARTERS.map{|id, q| [q.join(' through '), id.to_i]}, selected: quarter[:quarter]
+      = r.submit 'Generate'

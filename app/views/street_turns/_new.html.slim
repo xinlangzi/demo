@@ -1,0 +1,27 @@
+fieldset.form
+  = simple_form_for @street_turn, remote: true, html: { class: 'rows observe-form' } do |f|
+    = f.error_messages
+    = f.input :source_id, as: :hidden
+    = f.input :type, collection: enum_options(@street_turn.street_turn_types), label: 'Street Turn', include_blank: false, input_html: { class: 'w250' }
+    = f.input :dest_id, label: 'Container ID', required: true, input_html: { class: 'w250 unobservable' }, hint: "No support Container No. because of existing duplicated No."
+    = render 'yard', f: f
+    = f.submit "Save Street Turn"
+fieldset.border.f90
+  ul
+    li.bold
+      = fa_icon("star", text: "Steet turn chassis with container(Only for import)")
+    li &nbsp; 1. Enter export container ID and street turn yard, then save to connect.
+    li &nbsp; 2. Last operation of import container will be street turn with yard location.
+    li &nbsp; 3. First operation of export container will be street turn with yard location.
+    li &nbsp; 4. The container No. of import container will be inherited into export container.
+    li
+      hr
+    li.bold
+      = fa_icon("star", text: "Steet turn only chassis(Support import and export)")
+    li &nbsp; 1. Enter import or export container ID, then save to connect.
+    li &nbsp; 2. The chassis return for import container is not required.
+    li &nbsp; 3. The chassis pickup for connected container is not required.
+    li
+      hr
+    li.red.bold Note: Circle streen turn is disallowed. (e.g. Container A street turn to B, then B street turn to A again.)
+

@@ -1,0 +1,20 @@
+- if TextMessage.configured?
+  fieldset.form.section
+    = form_for(@text_message, remote: true) do |f|
+      = f.error_messages
+      = hidden_field_tag :operation_id, params[:operation_id]
+      = f.hidden_field :company_id
+      = f.hidden_field :container_id
+      = f.label :phone_number
+      = f.text_field :phone_number, size: 13, required: true
+      = f.label :message
+      = f.text_area :message, rows: 4, cols: 20, class: 'sms-driver-message', onkeyup: "App.countTextMessage(this);", onchange: "App.countTextMessage(this);"
+      .lfloat
+        = f.submit 'Send'
+        a.cancel Cancel
+      .bold.text-right.mr15
+        span MSG length:&nbsp;
+        span.green#char_count = @text_message.message.length
+        span &nbsp;of 140
+- else
+  .red Text Messages are not configured. Contact your administrator.

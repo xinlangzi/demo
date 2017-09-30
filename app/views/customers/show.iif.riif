@@ -1,0 +1,11 @@
+customer = @company
+
+iif.cust do
+  row do
+    name customer.name
+    baddr1 customer.address_street
+    baddr2 customer.address_city
+    baddr3 customer.address_state.name
+    baddr4 customer.zip_code
+  end
+end

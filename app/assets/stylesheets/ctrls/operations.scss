@@ -1,0 +1,58 @@
+.operations-panel{
+  .title{
+    text-align: center;
+    font-size: 18px;
+    border-bottom: 1px solid $gray-10;
+    margin-bottom: 15px;
+  }
+}
+#operation-ctrl{
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid $gray-10;
+  background: lighten($gray, 22%) !important;
+}
+
+.new-operation-detail{
+  border: 2px solid lighten($green, 5%) !important;
+}
+
+.operation-detail{
+  min-height: 120px;
+  margin: 8px 3px;
+  padding: 2px 0px 2px 5px;
+  border: 1px solid $gray;
+  background: lighten(#FAEDD1, 5%) !important;
+  position: relative;
+  .right-control{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    ul{
+      @include inline-block-list;
+      background: #FFF;
+      border-width: 0px 0px 1px 1px;
+      border-style: solid;
+      border-color: $gray;
+      li{
+        border-right: 1px solid $gray-10;
+        &:hover{
+          background: #EEE;
+        }
+        a{
+          text-decoration: none;
+          margin: 0px 4px;
+          font-size: 75% !important;
+        }
+      }
+    }
+  }
+  .add-company{
+    position: absolute;
+    bottom: 0px;
+    width: 150px;
+  }
+}
+.sortable .operation-detail{
+  cursor: pointer;
+}

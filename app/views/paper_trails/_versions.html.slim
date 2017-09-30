@@ -1,0 +1,33 @@
+table.gray.vmiddle.f90
+  thead
+    tr
+      th ID
+      th Name
+      th Who
+      th When
+      th Action
+      th.text-left width=400
+        .row.container-fluid
+          .col-md-4 Changes
+          .col-md-4 Before
+          .col-md-4 After
+  tbody
+    - vid = 0 unless defined?(vid)
+    - highlight = Proc.new{|vid, cid| (vid > 0)&&(cid > vid) ? 'highlight' : ''}
+    - PaperTrail::Version.desc.for_item(item).each do |version|
+      tr.vmiddle class=highlight.call(vid.to_i, version.id)
+        td = version.id
+        td
+          b = version.item_type
+          .hidden = version.item_id
+        td = version.who
+        td = version.created_at.us_datetime
+        td class=version.event = version.event.titleize
+        td
+          table.full-width
+            - item = version.item
+            - version.dataset.each do |key, changes|
+              tr.text-left
+                th.pw20 = key.humanize
+                td.pw40 = changes[0]
+                td.pw40 = changes[1]

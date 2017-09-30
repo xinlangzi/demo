@@ -1,0 +1,7 @@
+tr
+  th colspan=9
+    a.show-hide.bold rel=dom_id(invoice, 'credits') Credits
+    = render 'credits/forms', invoice: invoice
+  th.number id=dom_id(invoice, 'sum_credits') = number_to_currency(invoice.sum_credits)
+  th.number id=dom_id(invoice, 'sum_remaining_credits') = number_to_currency(invoice.sum_remaining_credits)
+  th

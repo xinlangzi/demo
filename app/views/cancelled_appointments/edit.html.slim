@@ -1,0 +1,10 @@
+.title-bar
+  h1 Editing #{crud_class.to_s.titleize}
+  ul
+    li = link_to 'Cancel', [:cancelled, :report, :appointments]
+.content
+  = simple_form_for @cancelled_appointment, html: { class: 'rows' } do |f|
+    = f.input :trucker_id, as: :select, collection: @container.hub.truckers.get_names_and_ids, input_html: { class: 'chosen-select'}
+    = f.input :issue_date, as: :datepicker, label: 'Issue Date'
+    = f.input :reason, input_html: { class: 'w500', rows: 5 }
+    = f.submit

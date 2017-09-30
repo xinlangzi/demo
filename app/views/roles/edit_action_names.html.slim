@@ -1,0 +1,24 @@
+.title-bar
+  h1 Editing Action Names
+  ul
+    li = link_to 'Back to List', roles_path
+
+.content
+  = form_for :right, :url => update_action_names_roles_path, :html => {:method => :put} do |rc|
+    - @rights.each do |controller, rights_list|
+      table.gray
+        caption
+          ul
+            li.title = controller.humanize.titleize
+        tr
+          th Action
+          th Name
+        - for @right in rights_list
+          = fields_for "right[]" do |f|
+            tr
+              td
+                = f.label :action, @right.action, class: 'bold'
+                = errors_for @right
+              td
+                = f.text_field :name, class: 'w400'
+    = rc.submit 'Save'

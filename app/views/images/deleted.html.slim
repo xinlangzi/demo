@@ -1,0 +1,7 @@
+- imagable = @image.imagable
+- column_name = @image.column_name.split('_').map(&:capitalize).join(' ') rescue ''
+.title-bar
+  h1 Document was deleted: #{imagable.class.to_s} #{imagable.name} #{column_name}
+  ul
+    li
+      = link_to "Close", "#", onClick: 'window.opener.location.reload();window.close();return false;'

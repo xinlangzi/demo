@@ -1,0 +1,4 @@
+- dest = container.consignees_or_shippers_info.first
+li id=dom_id(container, 'selector')
+  a.fa.fa-times-circle href="/container_selectors/#{container.id}" data-method="delete" data-remote="true"
+  span #{container.id}: #{dest.address_city}, #{dest.abbrev} (#{container.terminals_info.map(&:name).join('|')})

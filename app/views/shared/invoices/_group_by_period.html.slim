@@ -1,0 +1,7 @@
+- if @time
+  h3 = InvoiceSearch::AGING_DETAILS[@time]
+  = render 'shared/invoices/period', invoices: @invoices[@time], time: @time, showall: true
+- else
+  - periods = @outstanding ? InvoiceSearch::PERIODS.reverse : InvoiceSearch::PERIODS
+  - periods.each do |time|
+    = render 'shared/invoices/period', invoices: @invoices[time], time: time, showall: false

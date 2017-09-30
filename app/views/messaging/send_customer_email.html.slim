@@ -1,0 +1,26 @@
+.title-bar
+  h1 Send email to customers
+
+.content
+  = form_tag '/messaging/send_customer_email', method: :post, id: "send_form", :multipart => true do
+    fieldset.form.pb10
+      = label_tag :subject, "Subject"
+      = text_field_tag "subject", params[:subject], class: 'w300'
+      = label_tag :message, "Message"
+      = text_area_tag "message", params[:message], :size=>"50x4", class: 'w400'
+      = label_tag :attachment, "Attachment"
+      = file_field_tag 'attachment', :multiple => true
+      .clear
+      br
+      = submit_tag "Send", :id=>"send", disable_with: PLEASE_WAIT
+      a.btn onclick="App.checkAll('customer', true)" Check All
+      a.btn onclick="App.checkAll('customer', false)" Uncheck All
+    table.w600.gray
+      tr
+        th Select
+        th Customer Name
+      - Customer.active.each do |customer|
+        tr
+          td.w30.center = check_box_tag "customers[]", customer.id, (params[:customers]||[]).include?(customer.id.to_s), :id=>"customer_#{customer.id}_selected", class: 'customer'
+          td.text-left
+            label[for="customer_#{customer.id}_selected"] = link_to customer.name, customer, target: '_blank'

@@ -1,0 +1,18 @@
+.has-tip{
+  display: inline-block;
+  .tip{
+    padding: 1px;
+    z-index: 99999;
+    background: #FFF;
+    visibility: hidden;
+    position: absolute;
+    font-weight: normal;
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    @include border-radius(2px);
+    @include box-shadow(rgba(0, 0, 0, 0.4) 0 0 18px);
+  }
+
+  &:hover .tip{
+    visibility: visible;
+  }
+}

@@ -1,0 +1,11 @@
+//= require ./mobiscroll.core
+//= require ./mobiscroll.widget
+//= require ./mobiscroll.scroller
+//= require ./mobiscroll.util.datetime
+//= require ./mobiscroll.datetimebase
+//= require ./mobiscroll.datetime
+//= require ./mobiscroll.select
+//= require ./mobiscroll.listbase
+//= require ./mobiscroll.image
+//= require ./mobiscroll.treelist
+//= require ./mobiscroll.widget.ios

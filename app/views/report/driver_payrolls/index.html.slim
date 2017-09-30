@@ -1,0 +1,49 @@
+.title-bar
+  h1 Driver Payrolls Summary
+.full-page
+  table.gray.f90.vmiddle
+    thead
+      tr
+        th.w30
+        th.w120 Driver
+        th.w80 Invoice No.
+        th.w80 Issue Date
+        th.w80 EXPN Dates
+        th.w60 J1s
+        th.w80 Daily Log
+        th Missing/Pending/Rejected J1s
+    tbody
+      - @invoices.each do |invoice|
+        - driver = invoice.company
+        - j1s_done = !invoice.pending_j1s?
+        - good_day_log = invoice.good_day_log?
+        - good_expn_dates = !driver.has_expiration_date?
+        - full_pay     = j1s_done && good_day_log && good_expn_dates
+        tr class="#{full_pay ? 'greenBg' : ''}"
+          td 
+            a.fa.fa-id-card-o class="#{driver.has_expiration_date? ? 'red' : 'green'}" rel='facebox' href="/drivers/#{driver.id}/info"
+          td = link_to driver.name, driver_docs_path(driver), target: '_blank'
+          td = link_to invoice.number, invoice
+          td = invoice.issue_date
+          td = checkmark(good_expn_dates)
+          td = checkmark(j1s_done)
+          td = checkmark(good_day_log)
+          td
+            - unless j1s_done
+              table.gray.vmiddle
+                tbody
+                  - container_ids = invoice.container_ids
+                  - J1s.pending(driver).select{|j1| container_ids.include?(j1.container_id)}.group_by(&:container_id).each do |container_id, j1s|
+                    - container = Container.find(container_id)
+                    tr
+                      td.w30 = link_to container.id, container, target: '_blank'
+                      td.w150 = appt_range(container, true)
+                      td.w150 = container.customer.name
+                      td.w80 = container.container_no
+                      td.w80 = container.chassis_no
+                      td
+                        table.full-width
+                          - j1s.each do |j1|
+                            tr
+                              td.text-left.w120 = j1.action_name
+                              td.text-left = j1.company.try(:name)

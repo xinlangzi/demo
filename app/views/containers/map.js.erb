@@ -1,0 +1,4 @@
+<%=raw GoogleMap.clear_directions%>
+<%@trips.each do |trip|%>
+<%=raw GoogleMap.request_directions(trip.first.address, trip.last.address, '1')%>
+<%end%>

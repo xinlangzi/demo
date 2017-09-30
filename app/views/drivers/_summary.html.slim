@@ -1,0 +1,7 @@
+.driver-pane
+  center.green.bold.f80 Total Drivers: #{@driver_statuses.size}
+  .tip.red.f75.toggle-vacation-tip
+    span Click icon to set partial/full day vacation
+    a.fa.fa-times-circle.f90
+  = render partial: 'drivers/driver_status', collection: @driver_statuses
+/ - cache [current_hub, params[:date]], expires_in: 2.minutes, skip_digest: true do

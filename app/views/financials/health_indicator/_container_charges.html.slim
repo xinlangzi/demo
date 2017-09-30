@@ -1,0 +1,14 @@
+table.gray.shadow
+  thead
+    tr
+      th Container ID
+      th Company
+      th Type
+      th Amount
+  tbody
+    - container_charges.each do |charge|
+      tr
+        td = link_to charge.container_id, container_path(charge.container_id), target: "_blank"
+        td = charge.company_name
+        td = charge.chargable_type.constantize.find(charge.chargable_id).name rescue 'N/A'
+        td.number = number_to_currency(charge.amount)

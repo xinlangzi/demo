@@ -1,0 +1,13 @@
+@import "../modules/fieldset";
+
+fieldset {
+	border: 1px solid $gray !important;
+  &.form, &.border {
+    @include filter-gradient($white, $gray-20);
+    legend{
+      &.title{
+        @include filter-gradient($white, $gray-20);
+      }
+    }
+  }
+}

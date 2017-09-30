@@ -1,0 +1,25 @@
+.address-entry{
+  .geocoded{
+    margin-left: 155px;
+    color: green;
+    fieldset{
+      background: $white;
+      border-width: 1px !important;
+      max-width: 500px;
+      legend{
+        font-size: 100%;
+        color: green;
+        font-weight: normal;
+      }
+    }
+  }
+  ul{
+    li{
+      list-style-type: circle;
+      margin-left: 40px;
+      a{
+        font-weight: normal !important;
+      }
+    }
+  }
+}

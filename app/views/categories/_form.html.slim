@@ -1,0 +1,6 @@
+= simple_form_for @category, as: :category, html: { class: 'rows' } do |f|
+  = f.error_messages
+  = f.input :name
+  = f.input :number, collection: enum_options(Category.numbers)
+  = f.input :description, input_html: {rows: 5, cols: 40, class: 'w500'}
+  = f.submit

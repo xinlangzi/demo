@@ -1,0 +1,5 @@
+<%if @success%>
+window.location = '<%=report_reconciliation_path(@reconciliation)%>'
+<%else%>
+$('#dymanic_part').html('<%=j render("form")%>')
+<%end%>

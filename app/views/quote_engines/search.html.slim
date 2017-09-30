@@ -1,0 +1,30 @@
+.title-bar
+  h1 Trucker Quote
+.full-page
+  .search-box
+    .search-inner
+      h3.bold.gray30.mb10 Find Container By ID
+      = simple_form_for @search, as: :search, :url => search_quote_engines_path, html: {id: 'search_by_id', method: :get, class: 'horiz'} do |s|
+        = s.input :id_eq, label: "Container ID", wrapper: 'vertical', required: false
+        = s.submit "Find Container"
+
+      - unless current_user.is_trucker?
+        hr.clear
+        h3.bold.gray30.mb10 Find Delivered Containers By Date
+        = simple_form_for @search, as: :search, :url => search_quote_engines_path, html: {id: 'search_by_date', method: :get, class: 'horiz'}  do |s|
+          = s.input :delivered_at_from, as: :datepicker, label: 'Start Date', dateFormat: 'yy-mm-dd', wrapper: 'vertical', required: false
+          = s.input :delivered_at_to, as: :datepicker, label: 'End Date', dateFormat: 'yy-mm-dd', wrapper: 'vertical', required: false
+          = s.submit "Find Containers"
+
+  - @savable = current_user.has_access?('quote_engines', 'save_charges')
+  - unless @container_quotes.blank?
+    - if @savable
+      = form_for :quote, url: save_charges_quote_engines_path, method: :post, remote: true do |s|
+        = s.submit "Save All to Acct. Payable Charges", class: "save_all mb5", disable_with: PLEASE_WAIT
+        = render 'container_quotes'
+        = s.submit "Save All to Acct. Payable Charges", class: "save_all", disable_with: PLEASE_WAIT
+    - else
+      = render 'container_quotes'
+    br
+    #map[style="width:100%;height:450px"]
+    = GoogleMap.show.html_safe

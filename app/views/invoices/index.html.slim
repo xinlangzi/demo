@@ -1,0 +1,18 @@
+.title-bar
+  h1
+    span Invoices -&nbsp;
+    - if current_user.is_admin?
+      span Accounts #{@accounts_type}
+    - elsif @accounts_type == 'Receivable'
+      span Accounts Payable
+    - else
+      span Accounts Receivable
+  - if current_user.is_admin?
+    ul
+      li = link_to "New #{@accounts_type} Invoice", new_polymorphic_path(crud_class.new)
+
+.content
+  = render 'invoices/form/search'
+  = render 'receivable_invoices/statement'
+  = link_to 'Export Outstanding Invoices to Excel', polymorphic_path(crud_class.new, q: params[:q].to_h, name: "Outstanding_#{@accounts_type}_Invoices", format: 'csv') if @search.outstanding_true
+  = render 'shared/invoices/group_by_period'

@@ -1,0 +1,11 @@
+.hidden id=id
+  table.gray
+    tr
+      th Con ID
+      th Miles
+      th Factors
+    - containers_by_date.to_a.each do |item|
+      tr
+        td = link_to item["container_id"], container_path(item["container_id"]), target: '_blank'
+        td = item["miles"]
+        td = item["miles"].weight_factor

@@ -1,0 +1,1 @@
+$('#<%=dom_id(@object, "#{@method.to_s}-data-picker")%>').replaceWith('<%=j calendar_for(@object, @method, { "embed-ajax-url" => params["embed-ajax-url"]})%>')

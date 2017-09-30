@@ -1,0 +1,52 @@
+.title-bar
+  h1 J1s & PODs Pictures
+  ul
+    li
+      a.show-hide rel='instruction' Show/Hide Instructions
+.full-page
+  .ui-container.default-ui-layout
+    .pane.ui-layout-west data-width=225
+      - @truckers.each do |trucker|
+        = link_to driver_docs_path(trucker), class: "#{@trucker == trucker ? 'active' : ''}" do
+          i = trucker.name
+          .num
+            .missing-num = @missings[trucker.id].to_i
+            .pending-num = @pendings[trucker.id].to_i
+    .pane.ui-layout-center
+      fieldset.border.hidden.f90#instruction
+        ul
+          li 1. On the left panel, the red num means missing docs, and green num means pending audit docs.
+          li 2. Click the driver on the left pane to show all pending/rejected docs.
+          li 3. Click#{link_to(fa_icon("arrows-alt"), '#').html_safe} to magnify image, manage tags, approve or reject doc.
+          li 4. Click the image section to select/unselect image.(Selected: blue border)
+          li 5. Query the container then click one operation for selected image.
+          li
+            ul.docs.lfloat
+              li 6. Colors:
+              li.pending &nbsp;Orange: Pending&nbsp;
+              li.rejected &nbsp;Black: Rejected&nbsp;
+              li.approved &nbsp;Green: Approved&nbsp;
+              li.active &nbsp;Blue: Selected&nbsp;
+      - if @trucker
+        .tabs
+          ul
+            li
+              a href="#assign-docs" Review J1s
+            li
+              a href="#day-logs" onclick="DayLog.renderCalender()" Daily Logs
+            li
+              a href="#search-docs" Search J1s
+          #assign-docs
+            = render 'pending'
+            .clear
+            = render 'assignment'
+          #day-logs
+            #day-log-calendar data-id=@trucker.id            
+          #search-docs
+            = render 'search'
+            .searched
+    - if @trucker
+      .pane.ui-layout-east data-width=380
+        a.red-btn.block.mb5 href="javascript:MobileMirror.reload()" Refresh Mobile Mirror
+        .mobile-mirror
+          iframe#mobile-mirror src="/mobiles/home?user_proxy=#{@trucker.id}" height="600" width="360"

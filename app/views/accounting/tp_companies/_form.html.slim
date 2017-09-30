@@ -1,0 +1,37 @@
+fieldset
+  legend Basic Information
+  = c.input :name, label: "#{@tp_type} Display Name", label_html: {class: 'f90'}
+  = c.input :print_name, label: "Name", hint: "Print on Check As"
+  = c.input :fein, label: "FEIN"
+  - if %w{accounting::tpvendor}.include?(@company.class.to_s.downcase)
+    = c.input :ssn, label: "Social Security No.", label_html: {class: 'f90'}, hint: "e.g. 123-45-6789"
+    = c.input :onfile1099, as: :boolean, label: '1099'
+  - if current_user.is_superadmin?
+    = c.input :for_container, as: :boolean, label: 'For Container'
+    = c.input :acct_only, as: :boolean, label: 'Only for Accounting'
+fieldset.address-entry#address1
+  legend Address Information
+  = c.input :address_street, label: 'Street Address', input_html: { size: 60, class: 'geocode w300 street', autocomplete: "off" }
+  = c.input :address_street_2, label: 'Street Address Line 2', input_html: { size: 60, class: 'geocode w300 street2', autocomplete: "off" }
+  = c.input :address_city,  label: 'City', input_html: { class: 'geocode city', autocomplete: "off" }
+
+  .inline
+    = c.input :address_state_id, as: :select, collection: State.get_states_and_ids, include_blank: true, label: 'State', input_html: { class: 'geocode state' }
+    = c.input :zip_code, as: :string, label: 'Zip Code', input_html: { size: 7, class: 'geocode w60 zipcode', autocomplete: "off" }, wrapper_html: {class: 'nofirst'}
+    a.f80.clear-address Clear Address
+    | &nbsp;&nbsp;
+    a.f80.validate-address Validate by Google Map
+  .clear
+  .inline
+    = c.input :lat, as: :string, label: 'Latitude', input_html: { size: 10, class: 'w100 lat' }
+    = c.input :lng, as: :string, label: 'Longitude', input_html: { size: 10, class: 'w100 lng' }, wrapper_html: { class: 'nofirst' }
+  .geocoded
+fieldset
+  legend Contact Information
+  = c.input :email, hint: EMAIL_FORMAT_TIP, input_html: { multiple: 'multiple' }
+  .inline
+    = c.input :phone , input_html: {size: 12, class: 'w100'}
+    = c.input :phone_extension, label: 'ext', input_html: {size: 3, class: 'w50'}, wrapper_html: {class: 'nofirst'}
+  = c.input :phone_mobile, label: 'Phone Mobile'
+  = c.input :fax
+  = c.input :web

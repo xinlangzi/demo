@@ -1,0 +1,19 @@
+- cache("financials") do
+  .title-bar
+    h1 Financials
+  .content
+    ul.tiles
+      li.tile5.offset
+        = link_to "Accounts Receivable", accounts_receivable_path
+      li.tile3
+        = link_to "Accounts Payable", accounts_payable_path
+      li.tile7
+        = link_to "Performance Dashboard", performance_dashboard_path
+      li.tile2
+        = link_to "Health Indicator", health_indicator_path
+      li.tile6
+        = link_to "Reconciliation Report", report_reconciliations_path
+      / li.tile1
+      /   = link_to "Balance Sheet", balance_sheet_path
+      / li.tile4
+      /   = link_to "Profit&Loss", profit_loss_path

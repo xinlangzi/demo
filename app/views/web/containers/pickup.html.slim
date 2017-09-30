@@ -1,0 +1,104 @@
+h1 Enter Pickup Information
+- picked_up = @container.is_import? && @container.pick_up_date.present?
+center.notice
+  .green = flash[:notice]
+  .red = flash[:error]
+.sections.container
+  .row
+    - if @container.is_import? 
+      .col-md-12.gray
+        - if picked_up
+          center.green This container is already picked up!
+        - else
+          = simple_form_for @container, as: :container, url: pickup_web_container_path(id: @container.uuid), method: :patch, html: { class: 'horiz full-width'} do |f|
+            = f.input :pickup_no, label: 'Pickup No.',  wrapper: :vertical, input_html: { class: 'w100' }
+            = f.input :rail_lfd, label: 'Last Free Day', as: :datepicker, wrapper: :vertical
+            = f.input :email_to, label: 'Recipients', required: true, wrapper: :vertical, input_html: { class: 'w300' }
+            .vertical
+              label &nbsp;
+              = f.submit 'Save/Email Confirmation'
+            .clearfix
+    .col-md-4
+      .block
+        .label Customer
+        .h3 = @container.customer
+        em = @container.customers_employee
+      .block
+        .label Order ID
+        .h2 = link_to @container.id, @container
+      .block
+        .label Container No.
+        .h2 = @container.container_no
+      .block
+        .label Container Size/Type
+        .h2 = @container.size
+      .block
+        .label Reference No.
+        .h2 = @container.reference_no
+    .col-md-4
+      .block
+        .label Commodity
+        .h3 = @container.commodity
+      .block
+        .label Weight
+        .h3 #{@container.weight_decimal_humanized} LBS
+      - if @container.is_a?(ImportContainer)
+        .block
+          .row.container-fluid
+            - if picked_up
+              .col-xs-5
+                .label Rail Last Free Day
+                .h3 = @container.rail_lfd
+              .col-xs-2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            .col-xs-5
+              .label Terminal/Rail ETA
+              .h3 = @container.terminal_eta
+        .block
+          .label SS Line B/L No.*
+          .h3 = @container.ssline_bl_no
+        - if picked_up
+          .block
+            .label Pickup No.
+            .h3 = @container.pickup_no
+      - else
+        .block
+          .row.container-fluid
+            .col-xs-5
+              .label Early Receiving Date
+              .h3 = container.early_receiving_date
+            .col-xs-2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            .col-xs-5
+              .label Rail Cutoff Date
+              .h3 = container.rail_cutoff_date
+        .block
+          .label SS Line Booking No.*
+          .h3 = container.ssline_booking_no
+        .block
+          .label Empty Release No.
+          .h3 = container.empty_release_no
+    .col-md-4.text-right.w250
+      - container_charges = @container.receivable_container_charges.charges(@container.customer)
+      - if container_charges.present?
+        - container_charges.each do |cc|
+          .block
+            .label = cc.chargable.name
+            .h3.green = number_to_currency(cc.amount)
+        .block
+          .h2.pull-left Total: &nbsp;
+          .h2.green = number_to_currency(container_charges.sum(:amount))
+        hr
+        .block
+          - if @container.done_tasks?(:receivable)
+            .h2.green These charges are final
+          - else
+            .h4.red Additional charges might accrue based on factors affecting completion of the order
+            = link_to 'Get Updated Charges', charges_web_container_path(id: @container.uuid)
+    
+    .col-md-12.gray
+      = simple_form_for Container.new, as: :container, url: pickup_web_container_path(id: @container.uuid), method: :get, remote: true, html: { class: 'horiz full-width'} do |f|
+        label for='container_container_no' Do you need to provide us more Pick up information on other loads? Please search here:
+        = f.input :container_no, required: true, label: false, wrapper: :vertical, input_html: { name: 'container_no', class: 'w300', placeholder: 'Enter Container No.' }
+        .vertical
+          = f.submit 'Search'
+          span#pickup-search
+        

@@ -1,0 +1,29 @@
+.title-bar
+  h1 Order Creation Report
+  ul
+    li = link_to 'Back to Reports', '/reports'
+
+.content
+  #search-box.search-box
+    .search-inner
+      = simple_form_for @search, as: :search, url: [:order_creation, :report, :containers], html: {method: :get, class: 'horiz'}  do |s|
+        = s.input :created_at_from, as: :datepicker, label: "Created from", required: false, wrapper: 'vertical', input_html: {class: 'clearable', dateFormat: 'yy-mm-dd' }
+        = s.input :created_at_to, as: :datepicker, label: "To", required: false, wrapper: 'vertical', input_html: {class: 'clearable', dateFormat: 'yy-mm-dd' }
+        = s.submit "Search"
+        a.clear_button.btn Clear
+  - if @total_count > 0
+    #tabs
+      ul
+        - %w{import_confirmed export_confirmed import_unconfirmed export_unconfirmed pending_receivables}.each do |label|
+          - total = instance_variable_get("@#{label}").count
+          - if total > 0
+            li
+              a[href="##{label}"] = label.split('_').map(&:capitalize).join(' ') + " (#{total})"
+        li.rfloat
+          .green = "Total: #{@total_count}"
+
+      - %w{import_confirmed export_confirmed import_unconfirmed export_unconfirmed pending_receivables}.each do |label|
+        - containers = instance_variable_get("@#{label}")
+        - if containers.count > 0
+          div[id="#{label}"]
+            = render partial: 'report/containers/creations', object: containers.page(params[:page]), locals: { label: label}

@@ -1,0 +1,17 @@
+- for li in existing_line_items
+  tr.marked
+    td
+      = fields_for "line_items[#{li.id}]", li do |l|
+        - disabled = li.payments.blank? ? false : true
+        = l.check_box :selected_for_invoice, :checked => true, :disabled => disabled, :onclick => "App.markSelection($(this))"
+        = l.hidden_field :id
+        = l.hidden_field :amount
+        - if disabled
+          = l.hidden_field :selected_for_invoice, value: 1, id: dom_id(li, "select")
+    td = link_to li.id, [li.invoice, li]
+    td = link_to li.container.id, li.container
+    td = li.container.container_no
+    td = li.container.customer.name
+    td = li.container.trucker_names.join("\n")
+    td = li.container.delivered_date.to_date rescue nil
+    td.number = number_to_currency(li.container.amount(@accounts_type, li.invoice.company_id))

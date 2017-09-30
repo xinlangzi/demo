@@ -1,0 +1,18 @@
+= form_tag copy_base_rates_path, method: :post, remote: true, onSubmit: "if(!confirm('ATTN: Are you sure to migrate base rates?')){return false;}" do
+  table.gray.hcenter
+    caption
+      ul
+        li.title Migrate Base Rates
+    thead
+      tr
+        th From
+        th To
+    tbody
+      tr
+        td = select_tag :from, options_from_collection_for_select(Hub.all, :id, :name)
+        td = select_tag :to, options_from_collection_for_select(Hub.all, :id, :name)
+    tfoot
+      tr
+        th.text-right colspan=2
+          = submit_tag 'Save'
+br

@@ -1,0 +1,63 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.list-block.narrow-block
+  = simple_form_for @search, url: search_payable_invoices_path, method: :get, html: { class: 'load-page'} do |s|
+    ul
+      li
+        .item-content
+          .item-inner
+            .item-input
+              = s.input_field :id_eq, required: false, placeholder: 'Invoice ID'
+      li
+        .item-content
+          .item-inner
+            .item-input
+              = s.input_field :number_eq, required: false, placeholder: 'Invoice No.'
+      li
+        .item-content
+          .item-inner
+            .item-input
+              = s.input_field :issue_date_gteq, required: false, placeholder: 'Date From', class: 'date_picker invoice-from'
+            .item-after
+              .button.button-fill.color-gray.clear.clear-date data-target='invoice-from' Clear
+      li
+        .item-content
+          .item-inner
+            .item-input
+              = s.input_field :issue_date_lteq, required: false, placeholder: 'Date To', class: 'date_picker invoice-to'
+            .item-after
+              .button.button-fill.color-gray.clear.clear-date data-target='invoice-to' Clear
+      li
+        .item-content
+          .item-inner
+            = s.submit 'Search', class: 'button button-big active'
+
+.toolbar
+  .toolbar-inner
+    = link_to_previous_page @invoices, content_tag(:i, nil, class: 'icon ion-arrow-left-a') + content_tag(:i, 'Prev'), params: { q: params[:q].to_h }, class: 'link'
+    a.link href="#"
+    = link_to_next_page @invoices, content_tag(:i, 'Next') + content_tag(:i, nil, class: 'icon ion-arrow-right-a'), params: { q: params[:q].to_h }, class: 'link'
+.list-block.narrow-block
+  - if @invoices.empty?
+    center
+      .red No invoice was found.
+  - else
+    ul
+      - @invoices.each do |invoice|
+        li
+          = link_to invoice, class: 'item-link' do
+
+            .item-content
+              .item-inner
+                .item-title.color-blue = invoice.id
+                .item-title = invoice.issue_date.try(:us_date)
+                .item-after = invoice.number

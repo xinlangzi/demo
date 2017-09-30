@@ -1,0 +1,33 @@
+.title-bar
+  h1
+    span #{@container.class.to_s.titleize} #{@container.id}
+    = lock_checkbox(@container, ajax: false)
+    - if @container.require_prepull_trucker?&&current_user.is_admin?
+      span.red &nbsp;Prepull w/o Driver
+  = render 'menu'
+.content
+  .w900.hcenter
+    - if current_user.is_admin?
+      .stickbox.w0
+        .actions
+          - if @container.confirmed
+            = link_to [:notify_truckers, @container], class: 'btn' do
+              = fa_icon("envelope-o", text: "Email Truckers")
+            - if @container.to_equipment_release?
+              = link_to new_equipment_release_path(container_id: @container.id), remote: true, class: 'btn lblue-btn' do
+                span Equipment Release
+                - unless @container.equipment_releases.empty?
+                  sup = @container.equipment_releases.size
+            - if @container.to_rail_bill?
+              = link_to 'Rail Billing', new_rail_bill_path(container_id: @container.id), remote: true, class: 'btn red-btn'
+            hr
+          = link_to 'Preview Quote', [:preview_quote, @container], class: 'btn lblue-btn'
+          - confirm = @container.quoted? ? "Are you sure to reconstruct payable charges?" : "Are you sure to construct payable charges from quote engine?"
+          = link_to 'Calculate Payables', [:calculate_payables, @container], data: {confirm: confirm}, class: 'btn lblue-btn'
+          = link_to 'Calculate Receivables', query_receivable_quotes_path(container_id: @container.id, auto_save: true), remote: true, class: 'btn lblue-btn'
+          = link_to 'Calculate Mileages', [:calculate_mileages, @container], class: 'btn lblue-btn'
+    .paper-trails.hidden#track-changes
+    = render 'containers/warnings'
+    = render partial: 'containers/siblings',  object: @container.siblings
+    = render partial: 'containers/container', object: @container
+    = render 'containers/equipment_releases' if current_user.is_admin?

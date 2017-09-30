@@ -1,0 +1,5 @@
+.title-bar
+  h1 Third Party #{@accounts_type} Invoice
+  = render 'accounting/invoices/invoice_ctrls', invoice: @invoice, show: 'single'
+.content
+  = render 'accounting/invoices/invoice_info', invoice: @invoice

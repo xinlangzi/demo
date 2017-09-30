@@ -1,0 +1,53 @@
+.bold.red id="payment_delete_#{payment.id}"
+div id="payment_action_#{payment.id}"
+div id="payment_info_#{payment.id}"
+  #invoiceHeader
+    #invoiceHeaderCompany
+      .italic.pull-right Created By #{payment.admin.try(:name) || 'N/A' } at #{payment.created_at.us_datetime}
+      .bold Company:
+      .company.bold &nbsp;&nbsp;#{link_to payment.company.name, payment.company}
+      div = "#{payment.company.address_city}, #{payment.company.address_state.abbrev}"
+      - if !payment.number
+        - info = "This check doesn't have a number yet. Please print it, then introduce the number when prompted."
+        .red #{info}
+      - if @accounts_type =~ /payable/i && payment.payment_method.is_check?
+        #invoiceHeaderPrint
+          - if current_user.is_admin?
+            = link_to 'Print Check', edit_number_accounting_payable_payment_path(payment)
+    .bold Payment Method: #{h payment.payment_method.name}
+    .bold No. #{payment.number ? payment.number : (link_to 'N/A', edit_number_payable_payment_path(payment))} / #{payment.issue_date.try(:us_date)}
+
+
+  table.gray
+    thead
+      tr
+        th.w150 Line Item Payment ID
+        th Invoice
+        th.w150 Payment Amount
+        th.w150 Line Item Amount
+        th.w150 Line Item Balance
+    tfoot
+      tr
+        th colspan=2 Subtotal
+        th.number = number_to_currency(payment.amount + payment.total_credits_amount)
+        th colspan=2
+      tr
+        th colspan=2 Total Credit Amount
+        th.red.number = number_to_currency(payment.total_credits_amount)
+        th colspan=2
+      tr
+        th colspan=2 = "#{payment.payment_method.name} Amount"
+        th.number = number_to_currency(payment.amount)
+        th colspan=2
+    tbody
+      - for lip in payment.line_item_payments
+        tr
+          td = lip.id
+          td = link_to lip.line_item.invoice.number, lip.line_item.invoice
+          td.number = number_to_currency lip.line_item.amount
+          td.number = number_to_currency lip.amount
+          td.number = number_to_currency lip.line_item.balance
+  - if in_receivable?
+    .bold Received Date: #{payment.date_received.try(:us_date)}
+  .bold Cleared at Bank on: #{calendar_for(payment, :cleared_date)}
+  .bold Comments: #{payment.comments}

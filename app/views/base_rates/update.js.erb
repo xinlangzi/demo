@@ -1,0 +1,9 @@
+<% if false%>
+<%if @base_rate.valid?%>
+$('.tip').html('Save successfully!').addClass('green')
+BaseRate.loadChartData()
+<%else%>
+$('.tip').html('<%=@base_rate.errors[:base].join('')%>').removeClass('green').addClass('red')
+$('#<%=dom_id(@base_rate)%>').effect( "highlight", {color:"#FEB"}, 3000 )
+<%end%>
+<%end%>

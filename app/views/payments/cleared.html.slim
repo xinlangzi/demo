@@ -1,0 +1,5 @@
+.title-bar
+  h1 Search for cleared #{@accounts_type.downcase} payments
+.content
+  = render 'payments/cleared_filter', accounts: @accounts_type
+  = render 'payments/payments', payments: @payments if @payments

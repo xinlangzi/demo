@@ -1,0 +1,11 @@
+span.bold Hrs. of Operation:&nbsp;
+- if controller.action_name == 'create'
+  = ophours.ophours.blank? ? "N/A" : ophours.ophours
+- elsif !%w(show print linkable).include?(controller.action_name)
+  - if ophours.ophours.blank?
+    span.ml5 = current_user.is_admin? ? link_to("Add", edit_company_path(ophours, type: 'ophours_popup'), method: :get, remote: true, class: 'dialog f90') : 'N/A'
+  - else
+    span.ml5 = ophours.ophours
+    span.ml5 = link_to "Change", edit_company_path(ophours, type: 'ophours_popup'), method: :get, remote: true, class: 'dialog f90' if current_user.is_admin?
+- else
+  span.f90 = ophours.ophours.blank? ? "N/A" : ophours.ophours

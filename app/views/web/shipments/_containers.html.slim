@@ -1,0 +1,4 @@
+- if @containers.empty?
+  .red &nbsp;No container is found. Please try again.
+- else
+  = render partial: 'web/shipments/container', collection: @containers

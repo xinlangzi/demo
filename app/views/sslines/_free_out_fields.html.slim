@@ -1,0 +1,5 @@
+tr.fields.size-type
+  td = f.input :_destroy, as: :boolean, label: false, wrapper: false
+  td = f.input :container_size_id, as: :select, label: false, collection: ContainerSize.all, include_blank: false, input_html: { class: 'w80 container-size'}, wrapper: false
+  td = f.input :container_type_id, as: :select, label: false, collection: ContainerType.all, include_blank: false, input_html: { class: 'container-type' },wrapper: false
+  td = f.input :days, as: :string, label: false, input_html: { class: 'w80'}, wrapper: false

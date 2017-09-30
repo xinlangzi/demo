@@ -1,0 +1,62 @@
+.title-bar
+  h1 Late Appointments
+  ul
+    li = link_to 'Back to Reports', '/reports'
+    - if params[:q][:trucker_id_eq].present?
+      li = link_to 'Summary All', '/report/appointments/late'
+    li = link_to 'Export to Excel', late_report_appointments_path(q: params[:q].to_h, format: 'csv')
+
+.full-page
+  = render 'report/appointments/forms/late_filter'
+  table.gray
+    thead
+      tr
+        th Driver
+        th width=100 Moves#
+        th width=100 <50 miles
+        th width=100 >=50 miles
+        th width=100 Lates#
+        th width=100 %
+        th width=100 Delay Mins
+    tbody
+      - @summary.each do |trucker_id, summary|
+        tr
+          td = link_to summary[:trucker_name], late_report_appointments_path(q: params[:q].to_h.merge(trucker_id_eq: trucker_id))
+          td.total-moves = summary[:moves]
+          td = summary[:under50mi]
+          td = summary[:over50mi]
+          td.total-lates = summary[:lates]
+          td.late-ratio = number_to_percentage(summary[:late_ratio]*100, precision: 2)
+          td = summary[:delay_mins]
+  - if params[:q][:trucker_id_eq].blank?
+    .hidden.datatable-config
+      | {
+          "bStateSave": true,
+          "bPaginate": false,
+          "bInfo": false,
+          "aaSorting": [[ 0, "asc" ]]
+        }
+
+  - if params[:q][:trucker_id_eq].present?
+    table.gray.vmiddle
+      thead
+        tr
+          th width=80 #ID
+          th width=250 Scheduled Time
+          th width=150 Actual Time
+          th width=120
+            | Driver's Fault?
+          th Description
+      tbody
+        - @lates.each do |operation|
+          - container = operation.container
+          tr
+            td = link_to operation.container_id, operation.container, target: '_blank'
+            td = container.appointment
+            td = operation.after.view_operated_at
+            td
+              = fields_for :operation, operation do |c|
+                = c.check_box :delay_by_trucker, class: "auto-save delay-by-trucker", id: dom_id(operation, 'delay_by_trucker'), ref: "Operation:#{operation.id}:delay_by_trucker"
+            td
+              = fields_for :operation, operation do |c|
+                = c.text_field :delay_reason, class: "auto-save w500", id: dom_id(operation, 'delay_reason'), ref: "Operation:#{operation.id}:delay_reason"

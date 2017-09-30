@@ -1,0 +1,31 @@
+.applicant{
+  form, .form{
+    width: 95%;
+    max-width: 500px;
+    .address-entry{
+      padding: 10px;
+      margin: 0 -10px;
+    }
+    label.boolean{
+      margin-left: 0 !important;
+    }
+    .vertical{
+      &.text{
+        width: 100% !important;
+      }
+    }
+    .radio_buttons{
+      .radio{
+        label{
+          display: inline-block;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  iframe#docusign{
+    border-top: 1px solid #EEE;
+    width: 100%;
+    height: 720px;
+  }
+}

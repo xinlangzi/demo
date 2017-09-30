@@ -1,0 +1,15 @@
+- cache message, skip_digest: true do 
+  li id=dom_id(message)
+    .action 
+      span = message.title
+      .pull-right 
+        = link_to message, method: :delete, remote: true do 
+          = fa_icon('times-circle', class: 'delete')
+    .detail = message.detail
+    .footer
+      / .user = message.user.try(:name) || 'n/a'
+      .time = message.updated_at.us_datetime
+    .clearfix
+    / = form_for message, html: { class: 'observe-form' } do |f|
+    /   = f.select :user_id, Admin.get_names_and_ids, { include_blank: true }, { class: 'chosen-select', data: { width: '200'} }
+    /   

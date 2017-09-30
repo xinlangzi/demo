@@ -1,0 +1,46 @@
+table.gray.vmiddle.f75
+  tr
+    th Customer
+    th Ssline
+    th Rail Road
+    th Destination
+    th Miles
+    th.w150 Comment
+    th Live Load Fee
+    th Drop&Pull Fee
+  tr
+    td = @spot_quote.original.customer
+    td = @spot_quote.original.ssline
+    td = @spot_quote.original.rail_road.name
+    td = @spot_quote.original.dest_address
+    td = @spot_quote.original.miles
+    td.text-left = @spot_quote.original.comment
+    td.green
+      div = number_to_currency(@spot_quote.original.total_without_drop_pull)
+      hr
+      .bold.total-live-load-fee = number_to_currency(@spot_quote.total_without_drop_pull)
+    td.red
+      div = number_to_currency(@spot_quote.original.total)
+      hr
+      .bold.total-drop-pull-fee = number_to_currency(@spot_quote.total)
+= simple_form_for @spot_quote, remote: true, html: { class: 'rows observe-form', data: { url: summary_spot_quotes_path, method: :put } } do |f|
+  = f.error_messages
+  = f.input :expired_date, label: 'Expired Date', as: :datepicker
+  = f.input :base_rate_fee, as: :string, label: "Base Rate Fee", required: true
+  = f.input :drop_rate_fee, as: :string, label: "Drop Rate Fee"
+  = f.input :reefer_fee, as: :string, label: "Reefer Fee"
+  = f.input :fuel_amount, as: :string, label: "Fuel Amount"
+  = f.input :chassis_fee, as: :string, label: "Chassis Fee"
+  = f.input :chassis_dray, as: :string, label: "Chassis Dray"
+  .inline
+    = f.input :q_free_text1, as: :string, label: "Charge Fee 1"
+    = f.input :free_text1, label: false, placeholder: 'Description', wrapper_html: { class: 'nofirst' }
+  .inline
+    = f.input :q_free_text2, as: :string, label: "Charge Fee 2"
+    = f.input :free_text2, label: false, placeholder: 'Description', wrapper_html: { class: 'nofirst' }
+  .inline
+    = f.input :over1, as: :string, label: "Over Fee 1", input_html: { class: 'w80'}
+    = f.input :over2, as: :string, label: "Over Fee 2", wrapper_html: { class: 'nofirst' }, input_html: { class: 'w80'}
+  = f.input :private_comment, label: "Internal Comment", input_html: { class: 'w400', rows: 3}
+  = f.input :original_id, as: :hidden
+  = f.submit "Override Quote"

@@ -1,0 +1,9 @@
+tr.nested-fields
+  td = f.input_field :code, class: 'full-width'
+  td = f.input_field :unit, class: 'full-width'
+  td = f.input_field :oos
+  td = f.input_field :description, as: :string, class: 'full-width f80'
+  td = f.input_field :included_in_sms
+  td = f.input_field :basic, class: 'full-width'
+  td = f.input_field :reason_not_included_in_sms, as: :string, class: 'full-width f80'
+  td = link_to_remove_association fa_icon("times-circle", class: 'red'), f, class: 'f120'

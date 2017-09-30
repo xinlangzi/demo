@@ -1,0 +1,13 @@
+- class_name = "line-item-#{company.id}"
+ul.select-widget
+  li.title Select:
+  li
+    a onclick="App.checkAll('#{class_name}', true)" All
+  li
+    a onclick="App.checkAll('#{class_name}', false)" None
+  li
+    a onclick="App.checkFirst('#{class_name}')" First
+  li
+    a onclick="App.checkLast('#{class_name}')" Last
+  li
+    a onclick="App.nextInLine('#{class_name}')" Next-in-line

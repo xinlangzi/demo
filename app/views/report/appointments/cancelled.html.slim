@@ -1,0 +1,29 @@
+.title-bar
+  h1 Cancelled Appointments
+  ul
+    li = link_to 'Back to Reports', '/reports'
+    li = link_to 'Export to Excel', cancelled_report_appointments_path(q: params[:q].to_h, format: 'csv')
+
+.full-page
+  = render 'report/appointments/forms/cancelled_filter'
+  table.gray.vmiddle
+    thead
+      tr
+        th width=100 Date
+        th width=150 Driver
+        th width=100 Container#
+        th Reason
+        th width=25
+        th width=25
+    tbody
+      - @cancelled_appointments.each do |ca|
+        tr id=dom_id(ca)
+          td = ca.issue_date
+          td = ca.trucker.name
+          td = link_to ca.container.id, ca.container
+          td.text-left = ca.reason
+          td = link_to '', [:edit, ca], class: 'fa fa-edit'
+          td
+            = link_to '', ca, method: :delete, remote: true, data: { confirm: 'Are you sure to delete this cancelled appointment?'}, class: 'fa fa-times-circle'
+
+  = paginate @cancelled_appointments

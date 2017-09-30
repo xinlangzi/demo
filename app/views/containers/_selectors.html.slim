@@ -1,0 +1,8 @@
+- plate_id = 'container-selectors'
+a.show-hide rel=plate_id
+  = fa_icon('check-square-o')
+  span.count = session[:container_selectors].size
+  span &nbsp;Selected
+.plate.w400.hidden id=plate_id
+  = render 'container_selectors/actions'
+  a.rfloat.cancel.show-hide rel=plate_id Close

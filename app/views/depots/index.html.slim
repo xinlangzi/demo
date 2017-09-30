@@ -1,0 +1,12 @@
+- humanize_name = crud_class.new.class.to_s.underscore.humanize
+.title-bar
+  h1 Listing Depots
+  ul
+    li
+      a.show-hide rel="search-box"
+        = fa_icon("search")
+    li = link_to "New #{humanize_name}", new_polymorphic_path(crud_class.new)
+    li = link_to "Deleted #{humanize_name}", polymorphic_path([:deleted, crud_class.new])
+.content
+  = render 'filter'
+  = render 'depots'

@@ -1,0 +1,30 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    meta http-equiv="X-UA-Compatible" content="IE=Edge"
+    = wisepdf_stylesheet_tag "print"
+  body
+    .wrapper
+      .infos style="position:relative;"
+        .hcenter.w400.table
+          .logo-image
+            = uploader_image_tag(@owner.logo, { size: '188x80' } ) if @owner.logo?
+          .company-info
+            h1 = @owner.name
+            div = @owner.address_street
+            div = "#{@owner.address_city}, #{@owner.address_state.abbrev} #{@owner.zip_code}"
+            div = "Phone: #{@owner.phone}"
+            div = "Fax: #{@owner.fax}" if !@owner.fax.blank?
+            div = @owner.email
+            div = @invoice.company.invoice_footer
+          div style="position:absolute;right:0px;top:40px;background:yellow;padding:10px;color:red;font-weight:bold;" 
+            | ⇦ Please note our address has changed
+      .content
+        = yield
+        div.footer
+          span Payment is due by&nbsp;
+          span.bold #{@invoice.due_date ? @invoice.due_date.to_formatted_s(:long_ordinal) : 'N/A'}
+          div Thank you for choosing our service. We appreciate your business!
+          div.bold #{@owner.name}
+          div.bold #{@owner.web}

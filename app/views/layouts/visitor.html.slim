@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"
+    meta http-equiv="X-UA-Compatible" content="IE=Edge"
+    meta name="turbolinks-cache-control" content="no-cache"
+    link[rel="shortcut icon" href="/favicon.ico"]
+    = stylesheet_link_tag "application", 'data-turbolinks-track' => true
+    = javascript_include_tag "guest", 'data-turbolinks-track' => true
+    title #{title} - #{@owner.name}
+    = csrf_meta_tags
+  body class=Settings.version
+    .visitor.full
+      = render 'shared/logo'
+      = yield
+    = render 'shared/siteseal'

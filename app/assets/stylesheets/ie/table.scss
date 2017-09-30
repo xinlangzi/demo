@@ -1,0 +1,22 @@
+@import "../modules/table";
+table {
+  &.gray {
+    th {
+      background: $gray-20;
+    }
+    tr {
+      &.odd, &.odd td{
+        background-color: $white !important;
+        &.sorting_1 {
+          background-color: #D3D6FF !important;
+        }
+      }
+      &.even, &.even td{
+        background-color: $gray-20 !important;
+        &.sorting_1{
+          background-color: #EAEBFF !important;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+#header .infos {
+  .profile {
+    display: block;
+    .who {
+      display: inline-block;
+      @include filter-gradient(#6f6f6f, #242424);
+    }
+    .config {
+      display: inline-block;
+      @include filter-gradient($base, #00000f);
+    }
+  }
+}
+#quick-search{
+  input[type='text']{
+    margin-top: 2px;
+  }
+}
+
+.border-info {
+  @include filter-gradient($white, $gray-20);
+}
+.border-title {
+  @include filter-gradient($white, $gray-20);
+}
+
+
+.account{
+  border: 10px solid #9eea1d;
+}

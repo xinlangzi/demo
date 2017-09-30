@@ -1,0 +1,85 @@
+table.gray
+  tr
+    th[colspan=4]
+      span.f120 = container.class.to_s.underscore.humanize
+      - if current_user.is_admin?
+        span.f120 for #{container.customer.name}
+        div.f120 Contact Person #{container.customers_employee ? container.customers_employee.name : 'N/A'}
+  tr
+    td.bold.pw20 SS Line:
+    td.pw30 = container.ssline.name
+    td.bold.pw20 Reference No.
+    td.pw30 = container.reference_no
+  - if container.kind_of? ImportContainer
+    = render 'containers/import_container', container: container
+  - else
+    = render 'containers/export_container', container: container
+  tr
+    td.bold Commodity
+    td
+      = container.commodity
+      div = checkmark(container.haz_cargo, " Hazardous Cargo")
+    td.bold Weight (lbs)
+    td = container.weight_decimal_humanized
+
+
+  - if current_user.is_admin?
+    - unless driver_mode?
+      tr
+        td colspan=4
+          center.bold Accts. Receivable (who pays us)
+          = render partial: 'container_charges/container_charges', object: container.receivable_container_charges, locals: { type:  'ReceivableContainerCharges'}
+    tr
+      td colspan=4
+        center.bold Accts. Payable (who we pay)
+        = render partial: 'container_charges/container_charges', object: container.payable_container_charges, locals: { type: 'PayableContainerCharges'}
+
+  tr
+    td[colspan=4]
+      .bold.center Container Operations
+  - container.viewable_operations(current_user).each do |operation|
+    tr
+      td[colspan=4]
+        .containerOperationDiv
+          .operationDetail
+            .bold = operation.operation_type.name
+            - if operation.company
+              = render partial: 'shared/print_brief_company', object: operation.company
+            .operationDate
+              = operation.view_operated_at
+            .operationMile
+              = operation.distance.miles.to_s + " miles↓" if !operation.final?&&operation.distance
+          .operationDrop
+            - if operation.is_drop?
+              .bold Home Yard:
+              = render partial: 'shared/print_brief_company', object: operation.yard
+              .operationDate
+                = operation.appt.ymd rescue 'N/A'
+              .operationMile
+                = '↔' + operation.yard_distance.miles.to_s + " miles" if operation.yard&&operation.yard_distance
+          .operationDriver
+            - unless operation.final?
+              - if current_user.is_admin?
+                span.icon-text
+                  i.fa.fa-user
+                  = operation.trucker.name rescue 'N/A'
+              br
+              span
+                - if current_user.is_admin? || (current_user.is_trucker?&&operation.trucker==current_user)
+                  .bold Instruction:&nbsp;
+                  = operation.instructions
+  - if current_user.is_admin?
+    tr
+      td colspan=2
+        .bold Admin Comments:
+        div.mb10 = simple_format(container.admin_comment)
+      td colspan=2
+        .bold Customer Comments:
+        div.mb10 = simple_format(container.customer_comment)
+    tr
+      td colspan=2 
+        .bold Chassis Comments:
+        div = simple_format(container.chassis_comment)
+      td colspan=2 
+        .bold Public Comments:
+        div = simple_format(container.public_comment)

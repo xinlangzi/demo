@@ -1,0 +1,16 @@
+center.green = @info
+center.red = @log
+= simple_form_for @rail_bill, remote: true, html: {class: 'pw100'} do |s|
+  = s.input :email, label: 'Ssline Rail Bill Email', required: 'required', wrapper: 'vertical', input_html: {class: 'pw100', multiple: 'multiple'}
+  = s.input :subject, wrapper: 'vertical', required: 'required', input_html: {class: 'pw100'}
+  = s.input :content, as: :text, wrapper: 'vertical', input_html: {class: 'pw100', rows: 3, id: 'rbfreetext'}
+  .bold Email Preview
+  fieldset.border.f85
+    = render(template: 'order_mailer/rail_bill')
+  br
+  = hidden_field_tag :container_id, @rail_bill.container.id
+  = s.submit 'Send Email', disable_with: PLEASE_WAIT
+  = link_to 'Cancel', '#', onclick: 'App.closeDialog()', class: 'cancel'
+
+javascript:
+  RailBill.init()

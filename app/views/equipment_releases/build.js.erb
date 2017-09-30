@@ -1,0 +1,6 @@
+<%if @equipment_release%>
+$('.error-recap').remove()
+App.showDialog({maxHeight: 750, title: 'Equipment Release Request Email'}).html('<%=j render("equipment_releases/new")%>')
+<%else%>
+$('#container-form').replaceWith('<%=j render(partial: "containers/form/container", object: @container)%>')
+<%end%>

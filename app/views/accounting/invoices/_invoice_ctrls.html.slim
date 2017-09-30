@@ -1,0 +1,10 @@
+ul.nav
+  li = link_to 'List Invoices', invoice.class.new
+  li = link_to 'Print Invoice', polymorphic_url([:print, invoice]), target: '_blank'
+  - if (@accounts_type == "Receivable")&&current_user.is_admin?
+    li = render :partial => 'invoices/form/email_invoice', :object => invoice
+  - if invoice.can_destroy?&&current_user.is_admin?
+    li = link_to @accounts_type == "Payable" ? "Make a Payment" : "Record Received Payment", new_polymorphic_path("#{@accounts_type}Payment".constantize.new, filter: { tp_company_id: invoice.company_id })
+  li = link_to 'New', new_polymorphic_path("#{@accounts_type}Invoice".constantize.new)
+  li = link_to "Edit", edit_polymorphic_path(invoice)
+  li = link_to "Delete", polymorphic_path(invoice, from: 'show', show: show), :method=>:delete, :confirm => "Are you sure you want to delete this invoice?", remote: true

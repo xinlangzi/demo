@@ -1,0 +1,7 @@
+.title-bar
+  h1 Accounts #{@accounts_type}
+.content
+  - if @invoices.empty?
+    .border-info There are no invoices.
+  - else
+    = render 'multiple'

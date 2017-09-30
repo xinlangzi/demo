@@ -1,0 +1,2 @@
+class ContainerAttribute < ApplicationRecord
+end

@@ -1,0 +1,48 @@
+.title-bar
+  h1 Reports
+
+.content
+  - cache :reports do 
+    ul.tiles
+      li.tile1
+        = link_to "Order Creation", [:order_creation, :report, :containers]
+      li.tile2
+        = link_to "Confirmed Without Appt Date", [:confirmed_without_appt_date, :report, :containers]
+      li.tile3
+        = link_to "Dwelling Perdiem", [:dwelling_perdiem, :report, :containers]
+      li.tile9
+        = link_to "Drops awaiting Pick Up", [:drops_awaiting_pick_up, :report, :containers]
+      li.tile9
+        = link_to "Pending Empties", [:pending_empties, :report, :containers]
+      li.tile9
+        = link_to "Pending Loads", [:pending_loads, :report, :containers]
+      li.tile6
+        = link_to "Operations Without Mark Delivery", [:operations_without_mark_delivery, :report, :containers]
+      li.tile7
+        = link_to "Quotes to Review", [:review, :spot_quotes]
+      li.tile8
+        = link_to "Pending Tasks", [:pending_tasks, :report, :containers]
+      li.tile9
+        = link_to "Pending Accts. Receivables", [:pending_receivables, :report, :containers]
+      li.tile6
+        = link_to "Postal Mailing Addresses", [:postal_mailing, :report, :bases]
+      li.tile4
+        = link_to "Truck Availability Detail", [:detail, :avail_stats]
+      li.tile7
+        = link_to "Chassis Invoices", [:chassis_invoices, :report, :containers]
+      li.tile10
+        = link_to "Audit Charges", [:audit_charges, :report, :containers]
+      li.tile3
+        = link_to "Driver Inspections", inspections_path
+      li.tile8
+        = link_to "Late Appointments", [:late, :report, :appointments]
+      li.tile4
+        = link_to "Cancelled Appointments", [:cancelled, :report, :appointments]
+      li.tile7
+        = link_to "Vacations", [:report, :vacations]
+      li.tile3
+        = link_to "Driver Payrolls", [:report, :driver_payrolls]
+      li.tile5
+        = link_to "Driver Performance", [:performance, :report, :truckers]
+      li.tile10
+        = link_to "Maintenance Records", [:report, :maintenances]

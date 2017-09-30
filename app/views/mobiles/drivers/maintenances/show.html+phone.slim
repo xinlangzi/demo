@@ -1,0 +1,38 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.card#maintenance
+  .card-header 
+    span = @maintenance.issue_date
+    .pull-right = @maintenance.status.titleize
+  .card-content
+    .card-content-inner
+      h3 Comment
+      = simple_format(@maintenance.comment || 'N/A')
+      hr
+      h3 Services Performed
+      = simple_format(@maintenance.services)
+      hr
+      h3 Receipts
+      .swiper-container
+        .swiper-wrapper
+          - @maintenance.images.each do |image|
+            .swiper-slide
+              = image_tag(image.file.url(:thumb), width: '100%', height: '100%')
+        br
+        br
+        .swiper-pagination
+  - unless @maintenance.approved?      
+    .card-footer 
+      a.delete data-id=@maintenance.id Delete this Maintenance Record
+      
+    
+    

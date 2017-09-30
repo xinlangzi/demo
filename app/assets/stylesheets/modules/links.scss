@@ -1,0 +1,190 @@
+@import "icons/*.png";
+@include all-icons-sprites(true);
+
+.fa{
+  text-decoration: none !important;
+}
+
+a.fa{
+  color: #888 !important;
+  font-size: 14px;
+  font-weight: normal !important;
+  &.red{
+    color: red !important;
+  }
+  &.green{
+    color: green !important;
+  }
+}
+
+.icon-text .fa{
+  margin: 0px 3px;
+}
+
+.fa{
+  margin: 0px 3px;
+}
+
+a.fa-plus-circle{
+  color: #12A636 !important;
+}
+
+a.fa-times-circle, a.fa-times-circle-o{
+  color: red !important;
+}
+a.fa-check-circle, a.fa-check-circle-o{
+  color: green !important;
+}
+a.alter-request{
+  @extend .fa;
+  @extend .fa-check-circle;
+  color: orange !important;
+}
+
+.icon10{
+  display: inline-table;
+  width: 10px;
+  height: 10px;
+  margin: auto;
+  padding: 0px !important;
+}
+.icon12{
+  display: inline-table;
+  width: 12px;
+  height: 12px;
+  margin: auto;
+  padding: 0px !important;
+}
+.icon16{
+  display: inline-table;
+  width: 16px;
+  height: 16px;
+  margin: auto;
+  padding: 0px !important;
+}
+a{
+  color: $base;
+  font-weight: bold !important;
+  text-decoration: underline;
+  &:hover{
+    cursor: pointer;
+  }
+  &.loading{
+    @include gif-icon("img/loading", 2px, 0px, 15px, 30px);
+  }
+  &.lock{
+    background-image: asset-data-url("img/lock.png");
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+  }
+  &.unlock{
+    background-image: asset-data-url("img/lock.png");
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-position: 20px 0px;
+  }
+  &.cancel{
+    font-size: 90%;
+    color: red !important;
+    background: transparent !important;
+    border: none !important;
+    text-decoration: underline !important;
+  }
+}
+.xbtn{
+  @include color_btn($base);
+}
+
+.btn{
+  @include color-btn(lighten($base, 3%));
+}
+.white-btn{
+  @include color-btn($white, $gray50);
+}
+.gray-btn{
+  @include color-btn($gray30);
+}
+.lblue-btn, .lblue-btn[type=submit]{
+  @include color-btn($lblue);
+}
+.green-btn, .green-btn[type=submit]{
+  @include color-btn($green);
+}
+.dgreen-btn, .dgreen-btn[type=submit]{
+  @include color-btn($dark-green);
+}
+.red-btn, .red-btn[type=submit]{
+  @include color-btn(#d9534f);
+}
+.brown-btn, .brown-btn[type=submit]{
+  @include color-btn($brown);
+}
+.black-btn, .black-btn[type=submit]{
+  @include color-btn($black);
+}
+
+.small_loading{
+ @include gif-icon("img/small_loading");
+}
+
+.right-close {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+}
+
+.digg_pagination {
+  background: white;
+  padding: 1em 0.3em;
+  text-align: center;
+  a, span, em{
+    padding: .2em .5em;
+    margin-right: 1px;
+    font-weight: bold;
+    font-size: 90%;
+  }
+  a{
+    text-decoration: none;
+    color: darken($base, 5%);
+    border: 1px solid $gray;
+    &:hover, &:focus{
+      color: #003;
+      border-color: $gray20;
+    }
+  }
+  span{
+    &.disabled{
+      color: #999;
+      border: 1px solid $gray-10;
+    }
+  }
+  .current{
+    font-weight: bold;
+    background: darken($base, 5%);
+    color: white;
+    border: 1px solid $gray10;
+  }
+  .page_info {
+    background: #2E6AB1;
+    color: white;
+    padding: .4em .6em;
+    width: 22em;
+    margin-bottom: .3em;
+    text-align: center;
+  }
+  &:after{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+  * html & {
+    height: 1%;
+  }
+  *:first-child+html &{
+    overflow: hidden;
+  }
+}

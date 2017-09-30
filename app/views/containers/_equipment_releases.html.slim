@@ -1,0 +1,13 @@
+- if @container.equipment_releases.present?
+  table.gray
+    caption.bold
+      center Equipment Release Request History
+    tr
+      th Sender
+      th Recipients
+      th Sent at
+    - @container.equipment_releases.each do |er|
+      tr
+        td = er.user.name
+        td = er.email
+        td = er.created_at.us_datetime

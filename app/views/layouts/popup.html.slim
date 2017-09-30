@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    meta http-equiv="X-UA-Compatible" content="IE=Edge"
+    meta name="turbolinks-cache-control" content="no-cache"
+    link[rel="shortcut icon" href="/favicon.ico"]
+    = stylesheet_link_tag "application", 'data-turbolinks-track' => true
+    = javascript_include_tag "application", 'data-turbolinks-track' => true
+    title = title
+  body
+    #flash-notice = flash[:notice]
+    = yield
+    #loading.hidden
+      span Loading...
+      span.small_loading

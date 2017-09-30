@@ -1,0 +1,9 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      h4 The following address could not be validated by Google Maps:
+      p #{@company.class.to_s}: #{@company.name}
+      p
+        span Address:&nbsp;
+        span.red = @company.address
+      p Please click #{link_to "here", edit_company_url(@company)} to update the information.

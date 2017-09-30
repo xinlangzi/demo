@@ -1,0 +1,15 @@
+#reconciliation {
+  tr {
+    &.highlight {
+      td {
+        background-color: rgb(138, 248, 165) !important;
+      }
+    }
+
+    &.reconciled {
+      td {
+        background-color: rgb(218, 236, 255) !important;
+      }
+    }
+  }
+}

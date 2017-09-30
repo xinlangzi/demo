@@ -1,0 +1,5 @@
+<%if @spot_quote.valid?%>
+window.location.reload()
+<%else%>
+$('#dialog').html('<%=j render("spot_quotes/override")%>')
+<%end%>

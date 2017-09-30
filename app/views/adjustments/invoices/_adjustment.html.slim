@@ -1,0 +1,20 @@
+- if print_status?
+  tr.f90
+    td = number_to_currency adjustment.amount
+    td.text-left = adjustment.comment
+    td
+- else
+  - id = "adjustment_#{adjustment.key}"
+  tr id=id
+    = fields_for "adjustments[#{adjustment.key}]", adjustment  do |d|
+      td
+        = d.text_field :amount, :size=>10
+        .red.w250.hcenter[id="#{id}_amount"]
+      td = d.text_area :comment, :cols => 45, :rows => 2
+      td
+        - if adjustment.payment
+          = link_to adjustment.payment.number, adjustment.payment
+      td
+        = link_to '', payable_invoice_adjustment_path(adjustment.invoice_id, adjustment.key), method: :delete, remote: true, confirm: "Are you sure to delete this adjustment?", class: 'fa fa-times-circle' if adjustment.can_destroy?
+        = d.hidden_field :key
+        = d.hidden_field :invoice_id

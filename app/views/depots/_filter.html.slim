@@ -1,0 +1,9 @@
+#search-box.search-box
+  .search-inner
+    = simple_form_for(@search, url: depots_path, html: {method: :get, class: 'horiz observe-form'}) do|f|
+      = f.input :hub_id_eq, collection: Hub.for_user(current_user), label: 'Hub', required: false, wrapper: 'vertical', include_blank: "- All Hubs -" if @search.klass.new.respond_to?(:hub)
+      = f.input :ssline_id_eq, as: :select, collection: Ssline.active.get_names_and_ids, include_blank: true, label: "Steamship Line", wrapper: 'vertical', required: false
+      = f.input :address_state_id_eq, as: :select, collection: Depot.states(@search.ssline_id_eq), include_blank: true, label: 'State', wrapper: 'vertical', required: false
+      = f.input :address_city_eq, as: :select, collection: Depot.cities(@search.address_state_id_eq, @search.ssline_id_eq), include_blank: true, label: 'City', wrapper: 'vertical', required: false
+      = f.input :name_cont, label: 'Name', required: false, wrapper: 'vertical', input_html: { data: { url: request.fullpath, term: 'name' }, class: 'w200 autocomplete unobservable'}
+      = f.submit "Search"

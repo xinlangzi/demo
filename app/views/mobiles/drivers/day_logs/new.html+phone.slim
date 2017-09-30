@@ -1,0 +1,16 @@
+.card.container-card
+  .card-header Upload Daily Log On #{@day_log.issue_date}
+  .card-content
+    .list-block.narrow-block
+      = simple_form_for @day_log, url: mobiles_drivers_day_logs_path, html: { multipart: true, id: 'image-form' }  do |s|
+        = s.input :issue_date, as: :hidden
+        .row#captured
+          .col-33.add-image
+            .icon.ion-ios-plus-outline
+            input.camera-input type="file" accept="image/*" capture="camera"
+        ul
+          li
+            .item-content.small
+              .item-inner
+                = s.submit 'Upload', class: 'button button-big active'
+      .error-messages

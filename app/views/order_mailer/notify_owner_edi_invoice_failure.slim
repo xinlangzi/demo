@@ -1,0 +1,5 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div Dear Accounting,
+      p An unsuccessful attempt was made to send invoice #{link_to(@invoice.id, receivable_invoice_url(@invoice))} by EDI. It likely references a container created manually rather than through EDI and thus cannot be sent by EDI. Please send the invoice by email.

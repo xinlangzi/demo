@@ -1,0 +1,96 @@
+- if current_user
+  .panel.panel-left.panel-reveal
+    .list-block
+      .list-group
+        ul
+          li
+            a.item-link href="/profile" rel="nofollow"
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title My Account
+                  .item-media
+                    i.icon24.ion-android-person
+          - if current_user.is_trucker?
+            li
+              a.item-link href="/mobiles/drivers/performances.html" rel="nofollow"
+                .item-content.list-panel-all.close-panel
+                  .item-inner
+                    .item-title My Performance
+
+          li
+            a.item-link href=url_for("/mobiles/home.html") rel="nofollow"
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title Home
+          li
+            a.item-link href="/containers/calendar.html" rel="nofollow"
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title Calendar
+          - if current_user.is_admin?
+            li
+              a.item-link href="/drivers/search.html" rel="nofollow"
+                .item-content.list-panel-all.close-panel
+                    .item-inner
+                      .item-title Track Drivers
+          - if current_user.is_trucker?
+            li
+              a.item-link href="/docs/search.html" rel="nofollow"
+                .item-content.list-panel-all.close-panel
+                  .item-inner
+                    .item-title Search J1s
+          li
+            a.item-link href="/containers/search.html" rel="nofollow"
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title Search Containers
+
+          li
+            a.item-link href="/payable_invoices/search.html" rel="nofollow"
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title Search Invoices
+
+          li
+            a.item-link href="/payable_payments/search.html" rel="nofollow"
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title Search Payments
+
+          li
+            a.item-link href="/daily_mileages.html" rel="nofollow"
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title Daily Mileages
+          li
+            a.item-link href="/fuel_purchases.html" rel="nofollow"
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title Fuel Purchases
+
+          li
+            a.item-link href="/quote_engines/search.html" rel="nofollow"
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title Quote Engine
+          li
+            a.item-link href="/mobiles/drivers/maintenances.html" rel="nofollow"
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title Maintenance Records
+          li
+            a.item-link href="/mobiles/drivers/inspections.html" rel="nofollow"
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title Roadside Inspections
+          - unless params[:user_proxy].present?
+            li
+              a.item-link.external href="/logout.html" rel="nofollow"
+                .item-content.list-panel-all.close-panel
+                  .item-inner
+                    .item-title Logout
+          li
+            a.item-link.close-panel
+              .item-content.list-panel-all.close-panel
+                .item-inner
+                  .item-title Close Menu

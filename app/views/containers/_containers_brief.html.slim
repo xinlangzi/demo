@@ -1,0 +1,87 @@
+- first = containers_brief.first
+- is_import = first.is_a?(ImportContainer)
+table.gray[id="OrderStack#{first.class}"]
+  - if defined?(caption)
+    caption
+      ul
+        = yield caption
+  thead
+    tr
+      th.w60 Cont ID
+      - if current_user.is_admin?
+        - if ctrl_in?('containers')
+          th Chassis No.
+          - if is_import
+            th Pickup No.
+        th Customer
+      - if ctrl_in?('containers')
+        - if is_import
+          th Terminal/ Rail ETA
+      - else
+        th Terminal/ Rail ETA
+      th Terminal
+      th Appointment Date/Time
+      - if is_import
+        th Rail Last Free Day
+      - else
+        th Rail Cutoff Date
+
+      - if current_user.is_admin?
+        - unless is_import
+          - if ctrl_in?('containers')
+            th Early Receiving Date
+
+      th Container No.
+      th SSLine B/L No.
+      th Consignee/Shipper
+      th City
+      th State
+      - if current_user.is_admin?&&ctrl_in?('containers')
+        th Instructions to 1st Leg Trucker
+  tbody
+    = render :partial => "containers/containers_brief_rows", :locals => {:containers_brief => containers_brief}
+
+- if ctrl_in?('containers')&&current_user.is_admin?
+  - if is_import
+    .hidden.datatable-config
+      | {
+          "iDisplayLength": 100,
+          "aaSorting": [[0, "asc" ]],
+          "aoColumns": [
+            null,
+            { "sSortDataType": "dom-text" },
+            { "sSortDataType": "dom-text" },
+            null,
+            { "sSortDataType": "dom-text" },
+            null,
+            { "sSortDataType": "dom-text" },
+            { "sSortDataType": "dom-text" },
+            null,
+            null,
+            null,
+            null,
+            null,
+            { "bSortable": false }
+          ]
+        }
+  - else
+    .hidden.datatable-config
+      | {
+          "iDisplayLength": 100,
+          "aaSorting": [[0, "asc" ]],
+          "aoColumns": [
+            null,
+            { "sSortDataType": "dom-text" },
+            null,
+            null,
+            { "sSortDataType": "dom-text" },
+            { "sSortDataType": "dom-text" },
+            { "sSortDataType": "dom-text" },
+            null,
+            null,
+            null,
+            null,
+            null,
+            { "bSortable": false }
+          ]
+        }

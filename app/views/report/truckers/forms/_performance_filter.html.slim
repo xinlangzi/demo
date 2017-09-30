@@ -1,0 +1,6 @@
+.search-box
+  .search-inner
+    = simple_form_for @filter, as: :filter, url: performance_report_truckers_path, html: { method: :get, class: 'horiz'} do |f|
+      = f.input :from, as: :datepicker, label: 'From', wrapper: 'vertical', required: true
+      = f.input :to, as: :datepicker, label: 'to', wrapper: 'vertical', required: false
+      = f.submit 'Search'

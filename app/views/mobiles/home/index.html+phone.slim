@@ -1,0 +1,22 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+- case true
+- when current_user.is_trucker?
+  .narrow-block.list-block.accordion-list
+    ul.btns-3d
+      = render 'mobiles/drivers/notifications/alert'
+      = render 'mobiles/drivers/stops'
+      = render 'mobiles/drivers/j1s' if current_user.check_missing_doc? 
+      = render 'mobiles/drivers/paycheck'
+      = render 'mobiles/drivers/expirations/index'
+      = render 'mobiles/drivers/day_logs/index'
+      / = render 'mobiles/drivers/notification'
+- when current_user.is_superadmin?
+  = render 'mobiles/superadmin/financials'

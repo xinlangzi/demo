@@ -1,0 +1,67 @@
+- date_statuses = []
+- trucker_columns = Trucker::TRUCKER_EXPIRATION_COLUMNS.dup
+- truck_columns = Trucker::TRUCK_EXPIRATION_COLUMNS.dup
+
+- truck = Truck.default(current_user)
+- truck_columns.delete(:ifta_expiration) if truck&&!truck.ifta_applicable
+
+- pending_approval_proc = Proc.new{|obj, type| "Your document is awaiting approval!" if obj.has_pending_approval_renew_doc?(type) }
+- trucker_columns.each do |key, name|
+  - date_statuses << check_date_status(current_user.send(name)) if current_hub.send(key)
+- if truck
+  - truck_columns.each do |key, name|
+    - date_statuses << check_date_status(truck.send(name)) if current_hub.send(key)
+li.accordion-item#driver-expirations
+  a.item-content.item-link.ubtn.ubtn-3d-royal.ubtn-rounded.ubtn-jumbo href="#" 
+    .item-inner
+      .item-title My Documents
+      - case true
+      - when date_statuses.include?(:expired)
+        .icon36.ion-android-alert.red
+      - when date_statuses.include?(:expiring)
+        .icon36.ion-android-alert.orange
+  .accordion-item-content style="background:#632466;"
+    .card.expiration-dates      
+      .card-content
+        .list-block.media-list
+          ul
+            - trucker_columns.each do |key, name|
+              - if current_hub.send(key)
+                li
+                  .item-content
+                    .item-inner
+                      .item-title-row
+                        .item-title = Trucker::DOC_NAME_MAPS[key]
+                        .item-after
+                          a.ajax-popup href="#" data-url=attach_url_for_expiration_date(current_user, key)
+                            i.upload-icon.ion-images
+                      - pending_info = pending_approval_proc.call(current_user, key)
+                      .item-subtitle
+                        = display_date_with_status(current_user.send(name)) if pending_info.nil?
+                      .item-text = pending_info
+            - if truck
+              li
+                .item-content
+                  .item-inner
+                    .item-title-row
+                      .item-title Truck Title or Proof of Ownership
+                      .item-after
+                        a.ajax-popup href="#" data-url=attach_url_for_expiration_date(truck, Truck::OWNERSHIP_TAG)
+                          i.upload-icon.ion-images
+                    .item-subtitle &nbsp;
+                    .item-text
+                                      
+              - truck_columns.each do |key, name|
+                - if current_hub.send(key)
+                  li
+                    .item-content
+                      .item-inner
+                        .item-title-row
+                          .item-title = Trucker::DOC_NAME_MAPS[key]
+                          .item-after
+                            a.ajax-popup href="#" data-url=attach_url_for_expiration_date(truck, key)
+                              i.upload-icon.ion-images
+                        - pending_info = pending_approval_proc.call(truck, key)
+                        .item-subtitle
+                          = display_date_with_status(truck.send(name), date_show: truck[name]) if pending_info.nil?
+                        .item-text = pending_info

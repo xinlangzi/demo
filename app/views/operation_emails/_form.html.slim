@@ -1,0 +1,17 @@
+.row
+  .col-md-3
+    .rows
+      fieldset
+        - OperationEmail::KEYWORDS.each do |keyword, desc|
+          .line
+            .label = keyword
+            .value = desc
+  .col-md-9
+    fieldset.form
+      = simple_form_for @operation_email do |f|
+        = f.input :name, required: true, wrapper: 'vertical', input_html: {class: 'w600'}
+        = f.input :subject, label: 'Email Subject', wrapper: 'vertical', input_html: {class: 'w600'}
+        = f.input :status_title, label: 'Status Title', wrapper: 'vertical', input_html: {class: 'w600'}
+        = f.input :content, label: 'Email Content', required: false, wrapper: 'vertical', input_html: { class: 'full-width f120', rows: 60 }, hint: 'Please use the Slim template format. Connect to Developer'
+        = f.submit 'Save Email Template', id: 'submit'
+    .preview

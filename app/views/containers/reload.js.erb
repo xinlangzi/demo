@@ -1,0 +1,4 @@
+<%selector = ".container#{@container.id}"%>
+DataTable.destroy('<%=selector%>')
+$('<%=selector%>').replaceWith('<%=j render("containers/#{params[:partial]}", container: @container)%>')
+DataTable.draw('<%=selector%>')

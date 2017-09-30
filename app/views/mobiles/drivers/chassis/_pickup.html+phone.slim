@@ -1,0 +1,28 @@
+- if container.chassis_pickup_required?
+  - company = container.chassis_pickup_company
+  - if company
+    .swiper-slide
+      .card.container-card.no-box
+        .card-header
+          .pull-right
+            .badge.bg-green Chassis Pickup
+          .bold = link_to container.id, container
+          .company = company.name
+          .address = "#{company.address_street}, #{company.address_city}, #{company.state} #{company.zip_code}"
+        .card-content
+          .map
+            img src="https://maps.googleapis.com/maps/api/staticmap?zoom=10&size=350x200&maptype=roadmap&markers=size:mid%7Ccolor:red|#{company.address}"
+          .list-block.narrow-block
+            ul
+              = f7_label_text("Chassis No.", nil) do
+                = fields_for :container, container do |c|
+                  = c.text_field :chassis_no, class: "auto-save nospace", ref: "#{container.class.to_s}:#{container.id}:chassis_no", placeholder: 'Enter Chassis No.', disabled: !container.chassis_no_updatable_by?(current_user)
+                  i class=alter_status_icon(container, :chassis_no)
+        .card-footer.buttons-row
+          - ymd = container.chassis_pickup_at.try(:ymd)
+          - klasses = %w{only_date auto-save}
+          .pw85.relative.operation-date.button.button-big 
+            = text_field_tag :chassis_pickup_at, ymd, class: klasses, placeholder: 'Chassis Pickup Date', ref: "#{container.class.to_s}:#{container.id}:chassis_pickup_at", disabled: !container.chassis_pickup_at_updatable_by?(current_user)
+            i class=alter_status_icon(container, :chassis_pickup_at)
+          a.ajax-popup.button.button-big.button-fill.color-green.pw15 href="#" data-url=new_doc_path(image: { imagable_type: 'Container', imagable_id: container.id, column_name: 'chassis_pickup' }, layout: 'popup', target: 'stops')
+            i.upload-icon.ion-images.text-center&nbsp;

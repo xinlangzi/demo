@@ -1,0 +1,30 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+- unless @fuel_purchase.locked?
+  .content-block.top-block
+    a.button.button-big.button-fill.color-green href=edit_fuel_purchase_path(@fuel_purchase) Edit Fuel Purchase
+
+.list-block.narrow-block
+  ul
+    = f7_label_text("Driver", @fuel_purchase.trucker.name)
+    = f7_label_text("Date", @fuel_purchase.day.try(:us_date))
+    = f7_label_text("State", @fuel_purchase.purchase_state.abbrev)
+    = f7_label_text("Truck No.", @fuel_purchase.truck.number)
+    = f7_label_text("Price/Gallon", number_to_currency(@fuel_purchase.price))
+    = f7_label_text("Gallons", @fuel_purchase.gallons)
+    = f7_label_text("Amount", number_to_currency(@fuel_purchase.amount))
+.content-block.narrow-block
+  .content-block-title
+    center Fuel Purchase Receipt
+  .content-block-inner
+    center
+      = image_tag(@fuel_purchase.images.first.file.url, class: 'full') rescue 'N/A'

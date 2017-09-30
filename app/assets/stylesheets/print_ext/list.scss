@@ -1,0 +1,19 @@
+ul.caption{
+  @include horizontal-list-container;
+  margin: 0px !important;
+  background-color: lighten(#BDF, 10%);
+  border-width: 1px 1px 0px 1px;
+  border-color: $gray;
+  border-style: solid;
+  height: 25px;
+  position: relative;
+  li{
+    @include horizontal-list-item;
+    padding: 0px;
+    margin: 1px 3px;
+    &.title{
+      font-size: 110%;
+      font-weight: bold;
+    }
+  }
+}

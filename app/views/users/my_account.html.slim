@@ -1,0 +1,53 @@
+.title-bar
+  h1 Manage My Account
+  - if current_user.is_superadmin?
+    ul
+      li = link_to "Edit information on #{Owner.itself.name}", edit_owner_path(Owner.itself)
+- if current_user.is_superadmin?
+  - cache "guides" do
+    .content.guides
+      h2 Getting started
+      ul
+        li Here are a few of our favorite links, tools and tips to help you get started. <br/>
+        li Look at the list to discover more ways to learn fast and easy how to control and access your data.<br/>
+        li Use these tools to customize your web application exactly the way you want it.
+      h3 Basics
+      ul
+        li Add a #{link_to 'new customer', new_customer_path}
+        li
+          span Add a
+          ul
+            li #{ link_to 'consignee', new_consignee_path} ( if importing )
+            li #{ link_to 'shipper', new_shipper_path} ( if exporting )
+          span for an existing customer
+        li You can add a consignee / shipper when creating a new order without losing data entered in the container form.
+        li Add a #{link_to 'new trucker', new_trucker_path}  Once a trucker has been created, you may #{link_to 'assign a new truck', new_truck_path} or schedule a drug test  (random or pre-employment). Simply click on #{link_to 'Truckers', truckers_path}, choose to view the trucker and click on add new drug test.
+        li The system will send automated email notifications about expiring driver licenses, medical cards and truck annual inspections. Check out the #{link_to 'expiration dates', expiration_dates_truckers_path}  for more information on this.
+        li Add a #{link_to 'terminal', new_terminal_path}, #{link_to 'depot', depots_path} or #{link_to 'ssline', new_ssline_path} if you can't find it in the preloaded list.
+        li.tooltip Tip: Depots have the hours of operation for easier scheduling.
+      h3 Operations
+
+      ul
+        li #{link_to 'Place an order', new_container_path} by creating new container
+        li Check out existing containers in #{link_to 'Order Stack', containers_path} or #{link_to 'Pre alerts', pre_alerts_containers_path}
+        li #{link_to 'Calendar', calendar_containers_path} is a great tool to see upcoming or past deliveries
+
+
+      h3 Accounting
+      ul
+        li #{link_to 'Accts Receivable', :action => 'receivables', :controller => 'financials'} will provide a scale of options depending on what you would like to do
+        li #{link_to 'Accts Payable', :action => 'payables', :controller => 'financials'} will help monitor the outflow of financial resources
+
+
+      h3 Financials
+      ul
+        li Get a brief overall picture in #{link_to 'Performance Dashboard', :action => 'performance_dashboard', :controller => 'financials'}
+        li How is my business doing? See the #{link_to 'Health Indicator', :action => 'health_indicator', :controller => 'financials'}
+        li Check out the #{link_to 'Statistics', monthly_volume_containers_path} to help you with planning for the future
+        li Weekly #{link_to "Driver Payrolls", driver_payrolls_path}
+
+      h3 Settings
+      ul
+        li.tooltip Tip: If unsure how certain changes have been made, e.g. container charge has been deleted and different trucker assigned to container, you can track down who and when they made or authorized those changes by filtering through the log contents.
+        li #{link_to 'Roles & Rights', roles_path}: You'd like to restrict / allow a group of users to access different pages or features.
+        li.tooltip Tip: Your web site comes with preloaded, default roles and rights, therefore you shouldn't worry about it.

@@ -1,0 +1,3 @@
+.btn{
+  @include filter-gradient(lighten($base, 10%), $base);
+}

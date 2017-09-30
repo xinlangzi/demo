@@ -1,0 +1,58 @@
+.title-bar
+  h1 Driver Performance (Higher score is better)
+.full-page
+  = render 'report/truckers/forms/performance_filter'
+  - avg = @performances.sum(&:score).fdiv(@performances.size).round(2)
+  table.gray.vmiddle
+    caption The AVG score is #{avg}.
+    thead
+      tr
+        th width=100 Hub
+        th width=120 Driver
+        th width=80 Score
+        th Hire Date
+        th width=60 Points
+        th width=60 Moves#
+        th width=80 <50 miles
+        th width=80 >=50 miles
+        th width=60 Lates#
+        th width=60 Lates%
+        th width=80 Delay Mins
+        th width=80 Weekdays
+        th width=80 Dispatched Days
+        th width=80 Undispatched Days
+        th width=80 Vacation Days
+        th width=80 % Days Worked
+        th width=80 Cancelled#
+    tbody
+      - @performances.each do |performance|
+        - trucker = performance.trucker
+        tr 
+          td = trucker.hub.try(:name)
+          td = trucker.name
+          td.bold 
+            - if performance[:score] >= avg 
+              .green = performance[:score].round(2)
+            - else 
+              .red = performance[:score].round(2)
+          td = trucker.hire_date
+          td = performance[:points]
+          td = performance[:moves]
+          td = performance[:under50mi]
+          td = performance[:over50mi]
+          td = performance[:lates]
+          td = number_to_percentage(performance[:late_ratio]*100, precision: 2) rescue nil
+          td = performance[:delay_mins]
+          td = performance[:weekdays]
+          td = performance[:dispatched]
+          td = performance[:undispatched]
+          td = performance[:vacations]
+          td = number_to_percentage(performance[:worked_ratio]*100, precision: 2) rescue nil
+          td = performance[:cancels]
+  .hidden.datatable-config
+    | {
+        "bStateSave": true,
+        "bPaginate": false,
+        "bInfo": false,
+        "aaSorting": [[ 2, "desc" ]]
+      }

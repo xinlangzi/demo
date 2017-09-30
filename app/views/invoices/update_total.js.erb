@@ -1,0 +1,7 @@
+<% id = dom_id(@invoice.company) %>
+$("#<%=id%> .invoice-amount").html('<%=number_to_currency(@invoice.amount)%>')
+<% if @invoice.amount > 0 %>
+$("#<%=id%> .create-invoice").removeAttr('disabled')
+<%else%>
+$("#<%=id%> .create-invoice").attr('disabled', 'disabled')
+<%end%>

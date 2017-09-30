@@ -1,0 +1,13 @@
+fieldset.border#report-by-category
+  legend.title Report by Category
+  .rfloat
+    - if @reconciliation.new_record?
+      = link_to "Export to Excel", to_csv_report_reconciliations_path(search: params[:search], type: 'by_category', format: 'csv'), class: 'lblue-btn'
+    - else
+      = link_to "Export to Excel", to_csv_report_reconciliations_path(id: @reconciliation.id, type: 'by_category', format: 'csv'), class: 'lblue-btn'
+  center.red Double click the category name to expand or collaspe sub-categories.
+  br
+  = render "report/reconciliations/treeview", type: :receivable, for_containers: @classify_for_containers[:receivable], for_third_parties: @classify_for_third_parties[:receivable], for_credits: @classify_for_credits[:receivable]
+  = render "report/reconciliations/treeview", type: :payable, for_containers: @classify_for_containers[:payable], for_third_parties: @classify_for_third_parties[:payable], for_adjustments: @classify_for_adjustments, for_credits: @classify_for_credits[:payable]
+  .clear
+= javascript_include_tag "graphic"

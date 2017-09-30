@@ -1,0 +1,5 @@
+.title-bar
+  h1 Payments - #{current_user.is_admin? ? "Accounts #{@accounts_type}" : "Accounts #{@opposite_accounts_type}"}
+  = render 'payments/payment_ctrls', payment: @payment, show: 'single'
+.content
+  = render 'payments/payment_info', payment: @payment

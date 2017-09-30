@@ -1,0 +1,13 @@
+tr
+  td
+    = link_to container.id, container
+    = link_to '', polymorphic_path([:preview, container]), remote: true, class: "dialog fa fa-eye invisible"
+  td = container.created_at.us_date
+  td = container.container_no
+  td = container.customer.name
+  - customers = container.consignees_or_shippers_info
+  td = customers.map(&:name).join('<hr>').html_safe
+  td = customers.map(&:address_city).join('<hr>').html_safe
+  td = customers.map(&:abbrev).join('<hr>').html_safe
+  td = container.dropped_date
+  td = container.is_import? ? container.rail_lfd.try(:ymd) : container.rail_cutoff_date.try(:ymd)

@@ -1,0 +1,6 @@
+$('#container_ssline_id').val('<%=@company.ssline_id%>').trigger('change')
+setTimeout(function(){
+  $(".<%=@mark%>").val('<%=@company.id%>').trigger('change').removeClass('red')
+  $(".chassis-options").val('<%=@company.id%>').trigger('change')
+  App.closeDialog()
+}, 2000)

@@ -1,0 +1,28 @@
+= simple_form_for @operation_type, html: {class: 'rows'} do |f|
+  = f.error_messages
+  = f.input :name
+  = f.input :otype, as: :select, collection: OperationType::OTYPES, label: 'Type', include_blank: false, input_html: {class: 'w200'}, hint_html: { class: 'w600'}
+  = f.input :options_from, as: :select, collection: OperationType::OPTIONS, label: 'Company', include_blank: false, input_html: {class: 'w200'}, hint: sanitize('<span>Configure to populate the companies. For example, we define an operation type named <span class="green bold">Pickup</span> relating to <span class="red bold">Terminal</span>. Then when you add Pickup operation type to a container, the drop-down will populate all terminals. For <span class="green bold">Customer/Consignee</span>, you need to select the customer first, and the associated consignees will be populated as options.</span>'), hint_html: {class: 'w600'}
+  = f.input :container_type, label: 'Container Type', as: :select, collection: OperationType::CONTAINER_TYPES, include_blank: false, hint: sanitize('Set this operation type for import or export container. It will be used both in import and export container if you select <span class="green bold">Import/Export</span>.'), input_html: {class: 'w200'}, hint_html: {class: 'w600'}
+
+  = f.input :seq_num, label: 'Position', as: :string, hint: 'The default operation type will be ordered by position.'
+  = f.input :use_bobtail, label: sanitize('Use Bobtail Fee: <span class="f90 normal inline">Should have a link to add bobtail fee?</span>')
+  = f.input :default, label: sanitize('Set Default: <span class="f90 normal inline">Should this operation show up as a default operation when a container is being created?</span>')
+  = f.input :delivered, label: sanitize('Mark Delivery: <span class="f90 normal inline">Should the completion of this operation determine whether a container has been delivered and thus can be invoiced?</span>')
+  = f.input :appt_confirmed, label: sanitize('Confirm Appointment: <span class="f90 normal inline">Order will be marked as "receiving" status when operation date is set.</span>')
+  = f.input :actual_appt, label: sanitize('Actual Appointment: <span class="f90 normal inline">Acutal appointment when operation date is set.</span>')
+  = f.input :required_docs, label: sanitize('Required Document: <span class="f90 normal inline">Should this operation require attached document?</span>')
+  = f.input :returned, label: sanitize('Mark Returned: <span class="f90 normal inline">The container will become returned status and payable to trucker if the related company is selected.</span>')
+  = f.input :traceable_by_customer, label: 'Traceable Shipment to Customer'
+
+
+  fieldset.w650.ml155.padding10
+    legend Operation Date
+    = f.input :date_format, as: :select, collection: OperationType::DATE_FORMATS, label: 'Date Format', include_blank: false, hint: 'Set container operation date format. For example, you has to enter date and time for DateTime.', hint_html: {class: 'w600'}, input_html: {class: 'w150'}
+    = f.input :recipients, as: :select, collection: OperationType::RECIPIENTS, label: 'Notify Whom', include_blank: false, input_html: {class: 'w150'}
+    = f.input :email_when_set_date, label: false, wrapper: 'checkbox', label: 'Sent email to notify the recipients when operation date is set'
+    = f.input :set_date_email_id, as: :select, collection: OperationEmail.all, label: 'Email Template', include_blank: true
+    div.h5.clear
+    = f.input :email_when_remove_date, label: false, wrapper: 'checkbox', label: 'Sent email to notify the recipients when operation date is removed'
+    = f.input :reset_date_email_id, as: :select, collection: OperationEmail.all, label: 'Email Template', include_blank: true
+  = f.submit

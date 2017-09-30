@@ -1,0 +1,17 @@
+- if !new_line_items.blank?
+  - for c in new_line_items
+    tr
+      td
+        = fields_for "line_items[#{c.id}]",c do |l|
+          = l.check_box :selected_new_for_invoice, :onclick => "App.markSelection($(this))"
+          = l.hidden_field :id
+
+      td = link_to "uninvoiced", c
+      td = link_to c.id, c
+      td = c.container_no
+      td = c.customer.name
+      td = c.trucker_names.join("\n")
+      td = c.delivered_date.to_date rescue nil
+      td.number = number_to_currency(c.amount(controller.class.to_s.gsub('InvoicesController',''), invoice.company_id))
+- else
+  .red No uninvoiced containers.

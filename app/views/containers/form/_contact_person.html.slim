@@ -1,0 +1,11 @@
+= fields_for :container, container do |c|
+  - if current_user.is_customer?
+    span.icon-text.green
+      i.fa.fa-user
+      = current_user.name
+    = c.hidden_field :customers_employee_id, value: current_user.id
+  - else
+    - employee_options = container.customer.get_employees_names_and_ids rescue []
+    = c.select :customers_employee_id, employee_options, { include_blank: true }, {class: 'w200 chosen-select employee'}
+    | &nbsp;
+    = link_to "Add Contact", new_customers_employee_path, remote: true, class: 'f80'

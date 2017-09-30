@@ -1,0 +1,10 @@
+table.full-width class="#{print_status? ? '' : 'hidden'}" id=dom_id(invoice, 'adjustments')
+  tbody
+    - invoice.adjustments.each do |adjustment|
+      = render 'adjustments/form', adjustment: adjustment
+  - if accessible?('adjustments', 'new') && !print_status?
+    tfoot
+      tr
+        td.text-left
+          = link_to new_adjustment_path(invoice_id: invoice.id), method: :get, remote:  true do
+            i.fa.fa-plus-circle.green &nbsp;New Adjustment

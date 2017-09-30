@@ -1,0 +1,22 @@
+- plate_id = dom_id(@container, 'cancelled-appointments')
+- cancelled_appointment = CancelledAppointment.new(container_id: @container.id)
+a.show-hide rel=plate_id Cancelled Appointments
+.plate.w400.hidden.f90 id=plate_id
+  - unless @container.cancelled_appointments.empty?
+    table.gray.vmiddle
+      tr
+        th width=80 Trucker
+        th width=80 Issue Date
+        th width=200 Reason
+        th width=20
+      - @container.cancelled_appointments.each do |ca|
+        tr id=dom_id(ca)
+          td = ca.trucker.name
+          td = ca.issue_date
+          td = simple_format(ca.reason)
+          td
+            = link_to ca, method: :delete, remote: true, data: { confirm: 'Are you sure to delete this cancelled appointment?'} do
+              i.fa.fa-times-circle.red
+  fieldset.border
+    = render 'cancelled_appointments/new', cancelled_appointment: cancelled_appointment
+  a.rfloat.cancel.show-hide rel=plate_id Close

@@ -1,0 +1,25 @@
+.box
+  .box-title Payable Party
+  .box-content
+    table.gray.rl
+      tr
+        th width=180 Driver Type
+        td = trucker.driver_type.try(:titleize)
+      tr
+        th 1099 Independent Driver
+        td = checkmark(trucker.onfile1099)
+      tr
+        th Print Name
+        td = trucker.print_name
+      tr
+        th Contact Person
+        td = trucker.contact_person
+      tr
+        th Social Security No.
+        td = trucker.ssn
+      tr
+        th FEIN
+        td = trucker.fein
+      tr
+        th Address
+        td = trucker.billing_address

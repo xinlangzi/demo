@@ -1,0 +1,19 @@
+.title-bar
+  h1 Fuels
+
+.full-page
+  = render :partial=>"form"
+
+  table.gray
+    tr
+      th Hub
+      th From
+      th To
+      th Fuel Gallon Price
+    - @fuels.each do |fuel|
+      tr
+        td = fuel.hub.try(:name)
+        td = fuel.created_at.ymd
+        td = fuel.updated_at.ymd
+        td = fuel.price
+  = paginate @fuels

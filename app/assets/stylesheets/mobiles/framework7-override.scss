@@ -1,0 +1,12 @@
+.navbar{
+  height: 80px;
+}
+.navbar-fixed .page-content{
+  padding-top: 80px;
+}
+.accordion-item-content{
+  background: #EEE;
+  & > .card{
+    margin: 5px;
+  }
+}

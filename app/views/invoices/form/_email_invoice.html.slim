@@ -1,0 +1,20 @@
+- plate_id = "email_inv_#{email_invoice.id}"
+a.show-hide rel=plate_id E-mail Invoice
+.plate.w550.hidden id=plate_id
+  = simple_form_for email_invoice, as: :invoice, url: polymorphic_path([:email, email_invoice]), html: { method: :put } do |f|
+    fieldset.border.f90
+      - if email_invoice.date_sent.blank?
+        .red Invoice has NOT yet been emailed.
+      - elsif email_invoice.should_be_emailed
+        span.red Invoice needs to be EMAILED AGAIN.
+        span.green Last Sent: #{email_invoice.date_sent.to_formatted_s(:long_ordinal)}
+      - else
+        - if email_invoice.sent_to_whom.present?
+          div Invoice has been last emailed to the following recipient(s) on #{email_invoice.date_sent.try(:us_datetime)}.
+          .green = email_invoice.sent_to_whom
+    .clear
+    = f.input :email_to, label: "To", required: true, wrapper: :concise, hint: EMAIL_FORMAT_TIP, input_html: { multiple: 'multiple', class: 'w500' }
+    = f.input :email_subject, as: :text, label: "Subject", wrapper: :concise, input_html: { class: 'w500', rows: 5 }
+    .clear
+    = f.submit "Send Email", disable_with: PLEASE_WAIT
+    a.cancel.show-hide rel=plate_id Cancel

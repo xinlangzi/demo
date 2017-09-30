@@ -1,0 +1,16 @@
+- shipment = Shipment.init(container)
+= simple_form_for shipment, url: email_shipments_path, remote: true, html: { method: :post, class: 'observe-form' } do |f|
+  = f.input :container_id, as: :hidden
+  = f.input :recipients, required: true, hint: EMAIL_FORMAT_TIP, wrapper: :concise, input_html: { multiple: 'multiple', class: 'full-width unobservable' }
+  = f.input :comment, as: :text, required: true, wrapper: :concise, input_html: { class: 'full-width unobservable', rows: 8 }
+  = f.input :location_id, collection: location_for_drivers(container), label: "Display GPS Location", include_blank: true, wrapper: :concise, input_html: { class: 'full-width unobservable show-map'}
+  #view-gps
+  label class="control-label" Attachments
+  = render 'images/uploader', attrs: { cache: shipment.doc_key }
+  - if container.is_import?
+    .horiz
+      = f.input :request_pickup_no, as: :boolean, label: 'Request Pickup No.', wrapper: :checkbox if container.pending_pickup_no?
+      = f.input :request_last_free_day, as: :boolean, label: 'Request Last Free Day', wrapper: :checkbox if container.pending_last_free_day?
+  .clearfix
+  = f.submit "- Send Email -", disable_with: PLEASE_WAIT
+  a.cancel.show-hide rel=dom_id(container, 'shipment') Cancel

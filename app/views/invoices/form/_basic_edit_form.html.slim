@@ -1,0 +1,28 @@
+.basic-form
+  - inv = SimpleForm::FormBuilder.new(:invoice, invoice, self, {})
+  = inv.error_messages
+  table.gray.lform
+    tr
+      td.w120.bold Company
+      td = invoice.company
+    - if in_payable?
+      tr
+        td.bold Invoice No.
+        td = inv.text_field :number, size: 10
+      tr
+        td.bold Issue Date
+        td = inv.input_field :issue_date, as: :datepicker, required: true
+      - unless invoice.company.is_trucker?
+        tr
+          td.bold Received Date
+          td = inv.input_field :date_received, as: :datepicker
+    - else
+      tr
+        td.bold Invoice No.
+        td = inv.text_field :number, size: 10
+      tr
+        td.bold Issue Date
+        td = inv.input_field :issue_date, as: :datepicker, required: true
+    tr
+      td.bold Comments
+      td = inv.text_area :comments, rows: 5, cols: 30

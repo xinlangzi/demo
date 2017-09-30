@@ -1,0 +1,23 @@
+table.gray.vmiddle
+  thead
+    tr
+      th
+      th Cont ID
+      th Lock
+      th Chassis No.
+      th Container No.
+      th Appt Date
+      th Charges
+  tbody
+    - containers.each_with_index do |container, index|
+      tr
+        td = index + 1
+        td
+          = link_to container.id, container
+          = link_to '', polymorphic_path([:preview, container]), remote: true, class: "dialog fa fa-eye invisible"
+        td = lock_checkbox(container, ajax: true) 
+        td = container.chassis_no
+        td = container.container_no
+        td = appt_range(container, true)
+        td.w800.text-left id=dom_id(container, 'charges')
+          = render 'chassises/forms/charges', container: container

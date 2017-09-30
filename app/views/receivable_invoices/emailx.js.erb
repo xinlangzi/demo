@@ -1,0 +1,21 @@
+<%if request.post?%>
+<%if @first%>
+$('#<%= params[:emailx_form_id]%>').find('.emailx_status').html('<%= @first.valid? ? @info :  simple_errors_for(@first)%>')
+<%if @first.valid?%>
+<%@invoices.each do |invoice|%>
+$('#invoice_<%=invoice.id%>').find('.mail-icon').removeClass('icons-mail-no icons-mail-resend')
+$('#invoice_<%=invoice.id%>').find('.mail-icon').addClass('icons-mail-sent')
+$('#invoice_<%=invoice.id%>').find('.<%=@period%>').removeClass('<%=@period%>-no <%=@period%>-resend')
+$('#invoice_<%=invoice.id%>').find('.<%=@period%>').addClass('<%=@period%>-sent')
+<%end%>
+<%end%>
+<%else%>
+$('#<%= params[:emailx_form_id]%>').find('.emailx_status').html("Please select at select one invoice")
+<%end%>
+<%else%>
+$('#<%= params[:emailx_form_id]%>').find('._subject').hide()
+<%if @invoices.size==1%>
+$('#<%= params[:emailx_form_id]%>').find('._subject a').html('<%=@first.email_subject%>')
+$('#<%= params[:emailx_form_id]%>').find('._subject').show()
+<%end%>
+<%end%>

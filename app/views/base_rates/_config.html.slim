@@ -1,0 +1,26 @@
+- hub_ids = Analysis::BaseRate.refer_hub_ids
+- mile_step = Analysis::BaseRate.mile_step
+= form_tag configure_base_rates_path, method: :post, multipart: true do
+  table.gray.vmiddle
+    caption
+      ul
+        li.title Comparison
+    tbody
+      tr
+        th width=200 Mile Step
+        th = text_field_tag :mile_step, mile_step, class: 'text-center'
+      tr
+        th CSV(miles,rate)
+        td = file_field_tag :csv
+      tr
+        th Compare Customer Rates
+        td.text-left
+          - Hub.with_default.each do |hub|
+            label
+              = check_box_tag 'hub_ids[]', hub.id, hub_ids.include?(hub.id.to_s)
+              | #{hub.name}
+    tfoot
+      tr
+        th.text-right colspan=2
+          = submit_tag 'Save'
+br

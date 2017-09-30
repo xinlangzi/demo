@@ -1,0 +1,10 @@
+ul
+  - Container.where(id: session[:container_selectors]).each do |container|
+    = render 'container_selectors/selector', container: container
+input.w350#tracking-url-input value=build_trackshipment_url placeholder="Copy Track Shipment URL"
+button.btn class="c2c" data-clipboard-target="#tracking-url-input"
+  = fa_icon('copy')
+.hint
+  span Click&nbsp;
+  i.fa.fa-check-square-o &nbsp;
+  span under ID column to select container

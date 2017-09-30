@@ -1,0 +1,9 @@
+<%if @redirect_url%>
+  <%if @batch%>
+    $('#<%=dom_id(@invoice.company)%>').html('<%=j render("invoices/multiple")%>')
+  <%else%>
+    window.location = '<%= @redirect_url %>'
+  <%end%>
+<%else%>
+  $('#<%=dom_id(@invoice.company)%> .basic-form').replaceWith('<%=j render("invoices/form/basic_form", invoice: @invoice)%>')
+<%end%>

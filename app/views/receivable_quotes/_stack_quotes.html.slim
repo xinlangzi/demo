@@ -1,0 +1,37 @@
+.box#stack-quotes
+  .box-title Stack Quotes
+  .box-content
+    table.gray.vmiddle.f90
+      tr
+        - unless params[:preview]
+          th width=30
+        th ID
+        th Date
+        th Consignee/Shipper
+        th City
+        th State
+        th Terminal
+        th Triaxle
+        th width="#{params[:preview] ? 250 : 300}" Receivable Amount
+      tbody
+        - quotes.each do |container|
+          - customers = container.consignees_or_shippers_info
+          tr
+            - unless params[:preview]
+              td = radio_button_tag :target_id, "c:#{container.id}", false, required: true
+            td = link_to container.id, container, target: '_blank'
+            td = container.created_at.strftime('%m/%d/%y')
+            td = sanitize customers.map(&:name).join('<hr>')
+            td = sanitize customers.map(&:address_city).join('<hr>')
+            td = sanitize customers.map(&:abbrev).join('<hr>')
+            td = sanitize container.terminals_info.map(&:name).join('<hr>')
+            td = checkmark(container.triaxle?)
+            td 
+              table
+                - container.receivable_container_charges.each do |cc|
+                  tr class="#{'readonly' if cc.auto_save?}"
+                    td.w200.text-left = cc.name
+                    td.w50.number = number_to_currency(cc.amount)
+                    - unless params[:preview]
+                      td.w50 = check_box_tag 'charge_ids[]', cc.id, false, class: 'charge-item', disabled: true
+    center = paginate quotes, remote: true, params: { type: 'stack_quote'}

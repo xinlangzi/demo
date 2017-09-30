@@ -1,0 +1,239 @@
+.calendar-date-picker{
+  position: relative;
+  top: -2px;
+  font-size: 11px;
+  border: 1px solid #BDF;
+  font-weight: bold;
+  background-color: #eef7ff;
+  color: #0088CE;
+}
+.calendar-center{
+  padding: 0px !important;
+  border: none !important;
+  .ui-layout-pane{
+    padding: 0px !important;
+  }
+}
+
+//driver
+.sort-widget{
+  background: #FFFCB6;
+  border: 1px solid darken(#FFFCB6, 20%);
+  a{
+    font-size: 10px;
+    padding: 0px 4px;
+  }
+}
+#dddrivers{
+  background: #FFF;
+  .driver-to-assign{
+    position: relative;
+    padding: 1px 1px 1px 5px;
+    color: $gray50;
+    margin: 3px 0px;
+    font-size: 12px;
+    font-weight: bold;
+    background: #F9F9F9;
+    border: 1px solid #EEE;
+    &:hover{
+      background: white;
+      color: $red;
+      border-color: #999;
+      cursor: pointer;
+    }
+  }
+  div{
+    &.locked{
+      background: rgba(224, 255, 00, 0.9) !important;
+      color: $red !important;
+    }
+  }
+  .score{
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+    margin: 0 2px;
+    background: #cff6ff;
+    color: #333;
+    font-size: 10px;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid #EEE;
+    font-weight: normal;
+  }
+  .name{
+    color: #000;
+    text-decoration: none;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+  .right{
+    position: absolute;
+    right: 2px;
+    top: 4px;
+    font-size: 10px;
+    color: $gray30;
+    font-weight: normal;
+    a{
+      &.fa{
+        font-weight: normal !important;
+        font-size: 11px;
+        margin: 0 2px;
+      }
+      &:hover{
+        color: black !important;
+      }
+    }
+    .miles{
+      z-index: 99999;
+      font-weight: normal !important;
+      display: inline-block;
+      width: 20px;
+      text-align: center;
+    }
+    .j1s{
+      text-decoration: none;
+      padding: 0 2px;
+    }
+  }
+
+  .moves{
+    background: #FFF;
+    word-break: break-all;
+    a{
+      font-size: 9px;
+      margin: 0 2px;
+      text-decoration: none;
+      &:hover{
+        color: red;
+      }
+    }
+  }
+}
+
+
+#driver-panel{
+  padding: 0px;
+  .ui-layout-content{
+    padding: 2px;
+  }
+}
+.driver-pane{
+  .status:hover{
+    opacity: 0.5;
+  }
+  .tip{
+    padding: 0px 5px;
+  }
+}
+.toggleDriverPanel{
+  background: $base;
+  height: 100px;
+  line-height: 100px;
+  font-weight: bold;
+  color: white;
+  width: 8px;
+}
+#drive-date{
+  background: #555;
+  color: #FFF;
+  font-size: 16px;
+  font-weight: bold;
+  padding-left: 8px;
+}
+#dddrivers{
+}
+
+.ui-layout-toggler .content{
+  padding: 0px !important;
+}
+
+table.gray tbody tr.connected > td{
+  color: darken($red, 10%);
+  font-style: italic !important;
+}
+
+#calendar-date-picker{
+   font-size: 12px;
+}
+
+ul{
+  &.calendar_tabs{
+    & > li{
+      border: 1px solid $gray-10;
+      margin: 5px 0px;
+      &:hover{
+        border-color: $gray;
+        @include box-shadow;
+      }
+      .tab{
+        background: #EAEAEA;
+        border-bottom: 1px solid #C8C8C8;
+      }
+      .tab-inner{
+        background: #F9F9F9;
+        border-bottom: 1px solid #C9C9C9;
+      }
+      .tab, .tab-inner{
+        display: block;
+        padding: 1px 6px;
+        .date{
+          color: $base;
+          font-size: 120%;
+          font-weight: bold;
+        }
+        .type{
+          color: $base;
+          font-size: 110%;
+          padding-left: 5px;
+        }
+        .dayname, .empty{
+          font-size: 60%;
+          padding: 1px 5px;
+          @include border-radius(3px);
+          position: relative;
+          bottom: 2px;
+          margin: 0 4px;
+        }
+        .dayname{
+          background: $gray20;
+          color: $white;
+          width: 65px;
+        }
+        .empty{
+          background: $red;
+          color: $white;
+        }
+        &:hover{
+          cursor: pointer;
+        }
+      }
+      .containers-table{
+        padding: 0px 5px;
+      }
+    }
+  }
+}
+
+@media print{
+  #driver-panel{
+    display: none !important;
+    width: 0px !important;
+  }
+  .containers-table{
+    display: block !important;
+  }
+  .calendar-day{
+    .caption{
+      display: none !important;
+    }
+  }
+  ul.calendar_tabs{
+    li{
+      .tab{
+        background: #F0F0F0 !important;
+      }
+    }
+  }
+}

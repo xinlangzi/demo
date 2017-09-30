@@ -1,0 +1,4 @@
+fieldset.border id=dom_id(payment)
+  - unless print_status?
+    = render 'payments/payment_ctrls', payment: payment, show: 'multiple'
+  = render 'payments/payment_info', payment: payment

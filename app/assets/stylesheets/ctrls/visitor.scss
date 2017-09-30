@@ -1,0 +1,181 @@
+.visitor{
+  width: 98%;
+  max-width: 500px;
+  min-height: 300px;
+  margin: 10px auto 0px auto;
+  padding-bottom: 10px;
+  background: #F9F9F9;
+  border: 3px dashed #F6F6F6;
+  -webkit-background-clip: padding-box; /* for Safari */
+  background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+  @include box-shadow;
+  @include border-radius(5px);
+  &.full{
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+  }
+  .logo{
+    text-align: center;
+    background: #FFF;
+    border-bottom: 1px solid #EEE;
+    img{
+      margin: 5px;
+      height: 80px;
+      width: 180px;
+    }
+  }
+  h1{
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: normal;
+    color: #666;
+    padding: 10px 0;
+    margin: 0px;
+  }
+  .notice{
+    width: 75%;
+    margin: 10px auto;
+    font-size: 16px;
+  }
+  form, .form{
+    width: 80%;
+    margin: 10px auto;
+    padding: 10px;
+    input[type="text"],input[type="email"],input[type="phone"],input[type="password"]{
+      font-size: 16px;
+      padding: 5px;
+      height: auto;
+      @include border-radius(3px);
+      &.itext{
+        width: 100% !important;
+      }
+    }
+    select{
+      // background: transparent;
+      width: 100%;
+      padding: 5px;
+      font-size: 16px;
+      line-height: 1;
+      border: 1 solid #bcbcbc;
+      height: 30px;
+      @include border-radius(3px);
+    }
+    textarea{
+      width: 100%;
+      min-height: 50px;
+    }
+    input[type=submit], a.submit, .btn{
+      font-size: 18px !important;
+      height: 30px !important;
+      line-height: 30px !important;
+    }
+    span.error, label.error {
+      font-size: 100% !important;
+      line-height: 100% !important;
+      color: red;
+      margin: 0;
+    }
+    & > fieldset{
+      background: #F9F9F9;
+      margin: 5px 0;
+      padding: 5px 10px;
+      legend{
+        font-weight: bold;
+        color: #878787;
+      }
+    }
+  }
+  .remember-me{
+    label{
+      color: $gray30;
+      font-weight: normal;
+      margin-left: 0px;
+      font-size: 12px;
+    }
+  }
+  a{
+    color: darken($green, 10%);
+  }
+  .forgot-password, .back-to-login{
+    margin: 0px 5px;
+  }
+  .steps{
+    margin: 5px -15px;
+    height: 30px;
+    .lstep{
+      float: left;
+      font-size: 18px;
+    }
+    .rstep{
+      float: right;
+      font-size: 18px;
+    }
+  }
+  .sections{
+    background: #FFF;
+    overflow: auto;
+    @include box-sizing(border-box);
+    max-width: 800px;
+    margin-bottom: 10px;
+    form{
+      width: 100%;
+      padding: 0;
+    }
+    .gray{
+      background: #F0F0F0;
+    }
+    .block{
+      margin: 10px 0;
+      .label{
+        font-size: 12px;
+        font-weight: bold;
+        color: #666;
+        line-height: 120%;
+        display: block;
+      }
+      .h1{
+        font-size: 24px;
+        line-height: 170%;
+        display: block;
+      }
+      .h2{
+        font-size: 20px;
+        line-height: 160%;
+        display: block;
+      }
+      .h3{
+        font-size: 16px;
+        line-height: 150%;
+        display: block;
+      }
+      .h4{
+        font-size: 14px;
+        line-height: 140%;
+        display: block;
+      }
+    }
+  }
+  .arrow-steps{
+    .step{
+      font-size: 12px;
+      padding: 10px 6px;
+    }
+  }
+  .pod{
+    border-bottom: 1px solid #666;
+    a{
+      border: 1px solid green;
+      padding: 0 5px;
+      margin-left: 5px;
+      text-decoration: none;
+      font-weight: 100 !important;
+      text-align: center;
+      &:hover{
+        color: red;
+      }
+    }
+  }
+}

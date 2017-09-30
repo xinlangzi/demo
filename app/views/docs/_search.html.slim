@@ -1,0 +1,9 @@
+= form_tag search_docs_path, remote: true, method: :get, class: 'horiz' do
+  = hidden_field_tag :trucker_id, @trucker.id, name: 'q[trucker_id]'
+  .vertical
+    = text_field_tag :from, 7.days.ago.to_date, class: 'date_picker', placeholder: 'Operated From', name: 'q[from]'
+  .vertical
+    = text_field_tag :to, nil, class: 'date_picker', placeholder: 'To', name: 'q[to]'
+  .vertical
+    = submit_tag 'Search'
+  .clear

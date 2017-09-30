@@ -1,0 +1,6 @@
+fieldset.form
+  = form_for @reconciliation, :html => {class: 'observe-form', :id => 'reconciliation', data: {url: calculate_amount_report_reconciliations_path, method: :put}}, remote: true do |f|
+    #dymanic_part
+      = render 'form'
+    = render :partial => 'report/reconciliations/reconciliation', :locals => {table_caption: 'Receivable Payments', :f => f, :payments => @receivable_payments, :type => 'receivable', :amount => @receivable_amount}
+    = render :partial => 'report/reconciliations/reconciliation', :locals => {table_caption: 'Payable Payments', :f => f, :payments => @payable_payments, :type => 'payable', :amount => @payable_amount }

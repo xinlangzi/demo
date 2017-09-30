@@ -1,0 +1,32 @@
+.title-bar
+  h1 Reconciliations
+  ul
+    li = link_to "New Reconciliation", new_report_reconciliation_path
+.content
+  = render 'filter'
+  table.gray.hcenter
+    tr
+      th Name
+      th Created At
+      th Creator
+      th Payments
+      th
+      th
+      th
+
+    - @reconciliations.each do |reconciliation|
+      tr
+        td
+          - if reconciliation.backend?&&reconciliation.file.nil?
+            span.bold = reconciliation.name
+            .f75.red The reporting is being built. Be patient!
+          - else
+            = link_to reconciliation.name, reconciliation
+        td = reconciliation.created_at.strftime("%m/%d/%Y")
+        td = reconciliation.user
+        td = reconciliation.payments.size
+        td = link_to "", reconciliation, class: 'fa fa-info-circle'
+        td = link_to "", edit_report_reconciliation_path(reconciliation), class: 'fa fa-edit'
+        td = link_to "", reconciliation, data: {confirm: 'Are you sure you want to delete this reconciliation?'}, :method=>:delete, class: 'fa fa-trash'
+        
+  center = paginate @reconciliations

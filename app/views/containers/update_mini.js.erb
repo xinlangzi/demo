@@ -1,0 +1,3 @@
+App.removeSiblings('#<%=params[:respond_id]%>')
+<%info = @container.errors.blank? ? '<div class="ok">Updated!</div>' : errors_for(@container)%>
+$('#<%=params[:respond_id]%>').after('<%=info.html_safe%>')

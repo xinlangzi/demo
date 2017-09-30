@@ -1,0 +1,36 @@
+- today = Date.today
+.title-bar
+  h1 Dwelling Perdiem
+  ul
+    li = link_to 'Back to Reports', '/reports'
+.full-page
+  table.gray
+    tr
+      th ID
+      th Ssline
+      th Size/Type
+      th Outgate Date
+      th Ingate Date
+      th Free Days
+      th Expiration Date
+
+    - @containers.each do |container|
+      - operations = container.operations
+      - if operations.first.operated_at
+        tr
+          td = link_to container.id, container
+          td = link_to container.ssline.name, container.ssline
+          td = container.size
+          td
+            span.bold = operations.first.operated_at.us_date
+            sup.f70 = operations.first.operation_type.name
+          td
+            span.bold = operations.last.operated_at.us_date rescue 'N/A'
+            sup.f70 = operations.last.operation_type.name
+          td = container.free_days
+          - expiration_date = FreeOut.expiration_date(operations.first.operated_at, container.free_days).to_date
+          - klass = today < expiration_date ? 'greenbg' : (today==expiration_date ? 'yellowbg' : 'redbg')
+          td.bold class=klass
+            = expiration_date.us_date
+
+  = paginate @containers

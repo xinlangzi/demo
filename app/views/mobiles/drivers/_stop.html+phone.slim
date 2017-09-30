@@ -1,0 +1,65 @@
+- company = operation.company
+.swiper-slide
+  .card.container-card.no-box
+    .card-header
+      .pull-right.text-right
+        - case true
+        - when operation.first?
+          - from_container = container.street_turn_from
+          - if from_container
+            .badge.bg-red
+              = link_to "Street Turn from #{from_container.id}", from_container, class: 'white'
+            br
+            .badge.bg-green
+              = from_container.street_turn_type.titleize
+            br
+        - when operation.final?
+          - to_container = container.street_turn
+          - if to_container
+            .badge.bg-blue
+              = link_to "Street Turn to #{to_container.id}", to_container, class: 'white'
+            br
+            .badge.bg-green
+              = container.street_turn_type.titleize
+            br
+        .badge.bg-green
+          = operation.operation_type.name
+      .bold = link_to container.id, container
+      - if operation.appt_confirmed?
+        .appt-date
+          i.ion-clock &nbsp;
+          = appt_range(container, true)
+      .company = company.name rescue 'N/A'
+      .address = "#{company.address_street}, #{company.address_city}, #{company.state} #{company.zip_code}" rescue 'N/A'
+    .card-content
+      - if company
+        .map
+          img src="https://maps.googleapis.com/maps/api/staticmap?zoom=10&size=350x200&maptype=roadmap&markers=size:mid%7Ccolor:red|#{company.address}"
+      - if operation.before.nil?
+        .list-block.narrow-block
+          ul
+            - if container.chassis_pickup_with_container
+              = f7_label_text("Chassis No.", nil) do
+                = fields_for :container, container do |c|
+                  = c.text_field :chassis_no, class: "auto-save nospace", ref: "#{container.class.to_s}:#{container.id}:chassis_no", placeholder: 'Enter Chassis No.', disabled: !container.chassis_no_updatable_by?(current_user)
+                  i class=alter_status_icon(container, :chassis_no)
+            - if container.is_export?
+              = f7_label_text("Container No.", nil) do
+                = fields_for :container, container do |c|
+                  = c.text_field :container_no, class: "auto-save nospace", ref: "#{container.class.to_s}:#{container.id}:container_no", placeholder: 'Enter Container No.', disabled: !container.container_no_updatable_by?(current_user)
+                  i class=alter_status_icon(container, :container_no)
+            = f7_label_text("Seal No.", nil) do
+              = fields_for :container, container do |c|
+                = c.text_field :seal_no, class: "auto-save nospace", ref: "#{container.class.to_s}:#{container.id}:seal_no", placeholder: 'Enter Seal No.'
+    .card-footer class="#{operation.required_docs? ? 'buttons-row' : ''}"
+      - time_required = operation.time_required?
+      - ymdhm = operation.view_operated_at
+      - klasses = %w{operation-at}
+      - klasses << (time_required ? 'date_time' : 'only_date')
+      - klasses << 'full-width' unless operation.required_docs?
+      .relative.operation-date.button.button-big class="#{operation.required_docs? ? 'pw85' : 'full-width'}"
+        = text_field_tag :operated_at, ymdhm, class: klasses, placeholder: 'Operation Date/Time', data: { url: operate_operation_path(operation) }, disabled: !operation.operated_at_updatable_by?(current_user)
+        i class=alter_status_icon(operation, :operated_at)
+      - if operation.required_docs?
+        a.ajax-popup.button.button-big.button-fill.color-green.pw15 href="#" data-url=new_doc_path(image: { imagable_type: 'Operation', imagable_id: operation.id }, layout: 'popup', target: 'stops')
+          i.upload-icon.ion-images.text-center&nbsp;

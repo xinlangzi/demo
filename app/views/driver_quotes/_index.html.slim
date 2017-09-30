@@ -1,0 +1,48 @@
+.driver-quotes
+  .forms
+    = render 'form'
+  .row
+    .col-xs-6
+      = button_to "Add Route", new_driver_quote_path, class: 'btn', remote: true, method: :get
+      ul.fine-print
+        li Rail chassis rates only, triaxle rates available upon request
+        li Bobtail miles not included
+        li Chassis splits not included
+    .col-xs-6
+      .summary
+        .total
+          span Total:&nbsp;$
+          span.amount 0.00
+        ul.find-more
+          li
+            a#mail-contact href="javascript:void(0)"
+              | I'd like to find out more
+          li
+            a#mail-quotes href="javascript:void(0)"
+              | Email rates to myself
+
+  #driverbox.popup
+    .full-width.feedback
+      .header THANK YOU
+      .content
+      br
+      br
+      button.close type='button' onclick="$('#driverbox').hide();$('#fade').hide();" Close
+    .full-width.form
+      .header Enter your contact information!
+      .content
+
+        = form_tag mail_driver_quotes_path, method: :post, remote: true do
+
+          .row
+            .col-md-12
+              = text_field_tag :name, nil, { name: 'driver[name]', id: 'driver_name', class: 'full-width text', required: true, placeholder: 'Name' }
+            .col-md-12
+              = text_field_tag :email, nil, { name: 'driver[email]', class: 'full-width text', required: true, placeholder: 'Email', type: 'email' }
+            .col-md-12
+              = text_field_tag :phone, nil, { name: 'driver[phone]', class: 'full-width text', placeholder: 'Phone' }
+            .col-md-12
+              = hidden_field_tag :keys, nil, id: 'quote_keys'
+              = check_box_tag 'quotes', 1, false, id: 'driver_quotes',  name: 'driver[quotes]', class: 'hidden'
+              = submit_tag 'Send', class: 'btn', disable_with: PLEASE_WAIT
+              button.btn.pull-right type='button' onclick="$('#driverbox').hide();$('#fade').hide();" Close

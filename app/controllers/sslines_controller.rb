@@ -1,0 +1,2 @@
+class SslinesController < CompaniesController
+end

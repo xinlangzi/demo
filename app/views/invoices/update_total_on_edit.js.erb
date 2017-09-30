@@ -1,0 +1,16 @@
+$("#<%=dom_id(@invoice.company)%> .invoice-amount").html('<%=number_to_currency(@invoice_amount)%>')
+<%if @invoice_amount < 0%>
+$('#invalid_payment').show()
+$('#invoice_submit').attr('disabled', true)
+<%else%>
+$('#invalid_payment').hide()
+$('#invoice_submit').attr('disabled', false)
+<%end%>
+<%if !@selected%>
+$('#delete_invoice').show()
+$('#invoice_submit').attr('disabled', false)
+$('#invoice_submit').val("Delete Invoice")
+<%else%>
+$('#delete_invoice').hide()
+$('#invoice_submit').val("Update")
+<%end%>

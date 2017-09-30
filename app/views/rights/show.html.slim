@@ -1,0 +1,16 @@
+.title-bar
+  h1 Show Right
+  ul
+    li = link_to 'Back', roles_path
+    li = link_to 'Edit', edit_right_path(@right)
+
+.content
+  .rows
+    fieldset
+      .line
+        .label Action Name
+        .value = @right.name
+      .line
+        .label = @roles.empty? ? "Doesn't belong to any role" : "#{@roles.count} roles with access to this action"
+        - unless @roles.empty?
+          .value = @roles.map{|role| link_to role.name.humanize, edit_role_path(role)}.join(', ').html_safe

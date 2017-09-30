@@ -1,0 +1,7 @@
+.title-bar
+  h1 Day log for #{@day_log.trucker} on #{@day_log.issue_date} was deleted!
+  ul
+    li
+      = link_to "Close", "#", onClick: 'window.opener.location.reload();window.close();return false;'
+javascript:
+  DayLog.refreshCalendar()

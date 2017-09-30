@@ -1,0 +1,31 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .center.sliding = logo_tag
+
+.list-block.narrow-block
+  center.red = flash[:notice]
+  = simple_form_for User.new, url: login_path, html: { id: 'login-form' } do |s|
+    ul
+      li
+        .item-content
+          .item-media
+            i.f7-icons email
+          .item-inner
+            .item-input
+              = s.input_field :email, required: true, placeholder: 'Email'
+      li
+        .item-content
+          .item-media
+            i.f7-icons lock
+          .item-inner
+            .item-input
+              = s.input_field :password, required: true, placeholder: 'Password'
+              = s.input_field :remember_me, value: "1", as: :hidden
+      li
+        .item-content
+          .item-inner.row
+            .col-50
+              = s.submit 'Login', class: 'button button-big active', id: 'login'
+            .col-50
+              = link_to "Forgot Password", retrieve_password_path, class: 'button button-big button-fill color-red'

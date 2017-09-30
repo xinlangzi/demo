@@ -1,0 +1,19 @@
+- cache("financials_payables_quickbooks") do
+  .title-bar
+    h1 Accounts: Payables
+
+  .content.guides
+    h2 Add / New
+    ul
+      li = link_to "Record Received Invoice", new_payable_invoice_path
+    h2 List / Search
+    ul
+      li = link_to "Search Payable Invoice", payable_invoices_path
+      li = link_to 'Search for Trucker Advances', adjustments_path
+    h2 Settings
+    ul
+      li = link_to "Modify Default Container Charges for Truckers", payable_charges_path
+      li = link_to "Cost Categories", accounting_categories_path(:type=>'cost')
+    h2 QuickBooks
+    ul
+      li = link_to 'Export Payable Invoices', quick_book_payable_invoices_path

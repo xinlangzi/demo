@@ -1,0 +1,19 @@
+.title-bar
+  h1 Container Tasks
+  ul
+    li = link_to 'New Container Task', new_container_task_path
+.content
+  table.gray
+    tr
+      th Name
+      th Container Type
+      th Accts. Type
+      th.w20
+      th.w20
+    - @container_tasks.each do |container_task|
+      tr
+        td = container_task.name
+        td = container_task.ctype
+        td = container_task.acct_type
+        td = link_to '', [:edit, container_task], class: 'fa fa-edit'
+        td = link_to '', container_task, :confirm => "Are you sure you want to delete this container task?", method: :delete, class: 'fa fa-trash'

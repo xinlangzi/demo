@@ -1,0 +1,29 @@
+- others = applicant.others
+- Applicant::CUSTOMIZED_FIELDS_GROUPS.each do |name, groups|
+  .box
+    .box-title = name.to_s.titleize
+    .box-content
+      - with_tab = groups.size > 1
+      div class="#{with_tab ? 'tabs' : 'no-tabs'}"
+        - if with_tab
+          ul
+            - groups.each do |group|
+              li.f75
+                a href="##{group.to_s}" = group.to_s.titleize
+        - groups.each do |group|
+          div id=group.to_s
+            table.gray.rl.vmiddle
+              - infos = others.send(group) rescue {}
+              - Applicant::CUSTOMIZED_FIELDS[group].each do |field, options|
+                tr
+                  th width=180 = field.to_s.titleize
+                  td
+                    - type = options.type rescue nil
+                    - data = infos.send(field) rescue nil
+                    - case type
+                    - when :boolean
+                      = checkmark(data.to_boolean)
+                    - when :radio_buttons
+                      = data.try(:titleize)
+                    - else
+                      = data

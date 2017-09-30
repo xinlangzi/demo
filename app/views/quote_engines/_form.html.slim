@@ -1,0 +1,82 @@
+= form_for @quote_engine, remote: true, html: { id: "customer-quote" } do |q|
+  = hidden_field_tag :style, params[:style]
+  ul.quoteform
+    - if current_user
+      li
+        label Customer
+        - if current_user.is_admin?
+          - @quote_engine.customer_id = @quote_engine.customer_id.to_i
+          = q.select :customer_id, Customer.active.get_names_and_ids, {include_blank: "--------------Please Select ------------"}, { class: "required chosen-select"}
+        - if current_user.is_customer?
+          span &nbsp;&nbsp;#{current_user.customer}
+          = q.hidden_field :customer_id, :value=>current_user.customer_id
+    li.clear
+      label for='port' Hub
+      - @quote_engine.port_id = @quote_engine.port_id.to_i
+      = q.select :port_id, Port.for_customer_quote.options, { include_blank: 'Please Select' }, { id: 'port', class: "required"}
+    li
+      label Rail Road
+      span#rrid
+        = render "ports/rail_road_options"
+    li.clear
+      label Steam Ship Line
+      span#ssid
+        = render "ssline_options"
+    li
+        label for='dest'
+          span Zip Code/Street/City
+        // remove zipcode to avoid validator.coffee
+        = q.text_field :zip, id: "dest", class: "required text"
+        = q.hidden_field :dest_address, id: "dest_address"
+        #dest_detail
+    li.clear.size-type
+      label Container Size/Type
+      = q.select :container_size_id, objects_for_select(ContainerSize.all), { include_blank: true }, { id: "csize", class: "required trigger-cargo-weight container-size"}
+      = q.select :container_type_id, objects_for_select(ContainerType.all), { include_blank: true }, { id: "ctype", class: "required trigger-cargo-weight container-type"}
+    li
+      label Cargo Weight
+      span#cargo_weight
+        = render "quote_engines/cargo_weight_options"
+    li.clear
+      label Transport Mode
+      span#transport-mode
+        = q.radio_button :transport_style, QuoteEngine::LIVE_LOAD, checked:true
+        label[for="quote_engine_transport_style_1"] Live Load
+        = q.radio_button :transport_style, QuoteEngine::DROP_PULL
+        label[for="quote_engine_transport_style_2"] Drop&Pull
+        = q.radio_button :transport_style, QuoteEngine::LIVE_LOAD_AND_DROP_PULL
+        label[for="quote_engine_transport_style_3"] Both
+    li
+      label form='hazardous' Hazardous
+      = q.select :hazardous, QuoteEngine::NO_YES, {}, { id: 'hazardous' }
+    - if current_user&&current_user.is_admin?
+      li.clear
+        = q.label :free_text1, 'Charge1 Description'
+        = q.text_field :free_text1, :size=>20, class: 'text'
+      li
+        = q.label :q_free_text1, 'Charge1 Amount'
+        = q.text_field :q_free_text1,  :size => 10, :class=>"number text"
+      li.clear
+        = q.label :free_text2, 'Charge2 Description'
+        = q.text_field :free_text2, :size=>20, class: 'text'
+      li
+        = q.label :q_free_text2, 'Charge2 Amount'
+        = q.text_field :q_free_text2,  :size => 10, :class=>"number text"
+    li.clear#email-to
+      label for='quote_engine_email_to' Quote to Email
+      = q.text_field :email_to, class: "#{'required' if current_user.nil?||!current_user.is_admin?} emails text"
+    - if current_user&&current_user.is_admin?
+      li.clear#comment
+        label Comments
+        = q.text_area :comment,  :rows => 3, :cols => 60
+    li.clear
+      = q.hidden_field "rail_miles", id: "rail_miles"
+      = hidden_field_tag "rail_routes"
+      = q.submit "Calculate Quote", id: 'calculate', class: 'btn'
+      div[style='color:red'] = @quote_engine.errors[:base].join(", ")
+      - if !@quote_engine.errors[:rail_miles].empty?
+        div[style='color:red'] The rail miles is invalid!</div>
+#map
+= GoogleMap.show('CustomerQuote').html_safe
+javascript:
+  CustomerQuote.init()

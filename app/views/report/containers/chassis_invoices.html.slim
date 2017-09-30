@@ -1,0 +1,55 @@
+.title-bar
+  h1 Chassis Invoices
+  ul
+    li = link_to 'Back to Reports', '/reports'
+
+.full-page
+  #search-box.search-box
+    .search-inner
+      = simple_form_for @search, url: [:chassis_invoices, :report, :containers], html: { method: :get, class: 'horiz' } do |s|
+        = s.input :container_no_eq, label: 'Container No.', required: false,  wrapper: 'vertical', input_html: { class: 'w100'}
+        = s.input :chassis_no_eq, label: 'Chassis No.', required: false,  wrapper: 'vertical', input_html: { class: 'w100'}
+        = s.input :line_items_invoice_number_eq, label: 'Invoice No.', required: false,  wrapper: 'vertical', input_html: { class: 'w100'}
+        = s.input :last_trucker_id_eq, as: :select, collection: Trucker.get_all_names_and_ids, include_blank: true, label: "Trucker", required: false, wrapper: 'vertical', input_html: { class: 'chosen-select', data: { width: 200 } }
+        = s.input :chassis_loss_by_eq, as: :select, collection: Container.chassis_loss_bies.map{|k, v| [v, v]}, label: 'Chassis Loss By', required: false, wrapper: 'vertical'
+        = s.input :line_items_invoice_issue_date_gteq, as: :datepicker, label: 'Invoice from', required: false,  wrapper: 'vertical'
+        = s.input :line_items_invoice_issue_date_lteq, as: :datepicker, label: 'To', required: false,  wrapper: 'vertical'
+        = s.submit 'Search'
+  - unless @containers.empty?
+    table.gray
+      thead
+        tr
+          th Container ID
+          th.text-right AR Amount
+          th.text-right AP Amount
+          th.text-right Profit/Loss
+          th Days
+          th Trucker
+          th Loss Reason
+      tbody
+        - revenue = 0
+        - cost = 0
+        - @containers.each do |container|
+          - receivable = container.receivable_chassis
+          - payable = container.payable_chassis
+          - revenue+= receivable
+          - cost+= payable
+          tr
+            td
+              = link_to container.id, container
+              = link_to '', polymorphic_path([:preview, container]), remote: true, class: "dialog fa fa-eye invisible"
+            td.text-right = number_to_currency(receivable)
+            td.text-right = number_to_currency(payable)
+            td.text-right.bold class="#{receivable - payable > 0 ? 'green' : 'red'}"
+              = number_to_currency(receivable - payable)
+            td = chassis_invoice_days_label(container.chassis_days)
+            td = container.trucker_names.last if container.chassis_days <= -2
+            td = select_tag(:chassis_loss_by, options_from_collection_for_select(Container.chassis_loss_bies, :last, :last, Container.chassis_loss_bies[container.chassis_loss_by]), { class: ' auto-save', id: dom_id(container, 'chassis_loss_by'), ref: "Container:#{container.id}:chassis_loss_by" }) if container.chassis_days <= -2
+      tfoot
+        tr
+          th.text-right Total
+          th.text-right = number_to_currency(revenue)
+          th.text-right = number_to_currency(cost)
+          th.text-right class="#{revenue - cost > 0 ? 'green' : 'red'}"
+            = number_to_currency(revenue - cost)
+          th colspan=4

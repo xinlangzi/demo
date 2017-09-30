@@ -1,0 +1,64 @@
+.list-block.narrow-block
+  = simple_form_for @fp, html: { multipart: true, id: 'fuel-purchase-form' } do |s|
+    ul
+      li
+        .item-content
+          .item-inner
+            .full-width
+              a.item-link.list-button Step 1: Fill Form
+      li
+        a.item-link.smart-select href="#" data-back-on-select="true"
+          = s.input_field :truck_id, collection: @fp.related_trucks.map{|t| [t.number, t.id]}, include_blank: false
+          .item-content.small
+            .item-inner
+              .item-title.label Truck No.
+      li
+        .item-content.small
+          .item-inner
+            .item-title.label Purchased On
+            .item-input
+              = s.input_field :day, as: :string, required: true, placeholder: 'Purchased On', class: 'date_picker text-right'
+      li
+        a.item-link.smart-select href="#" data-back-on-select="true"
+          = s.input_field :purchase_state_id, collection: State.driving.get_states_and_ids, include_blank: false
+          .item-content.small
+            .item-inner
+              .item-title.label Purchase State
+      li
+        .item-content.small
+          .item-inner
+            .item-title.label Price/Gallon
+            .item-input
+              = s.input_field :price, as: :string, required: true, placeholder: 'Price/Gallon', class: 'text-right'
+      li
+        .item-content.small
+          .item-inner
+            .item-title.label Gallons
+            .item-input
+              = s.input_field :gallons, as: :string, required: true, placeholder: 'Gallons', class: 'text-right'
+      li
+        .item-content.small
+          .item-inner
+            .item-title.label Odometer
+            .item-input
+              = s.input_field :odometer, as: :string, required: false, placeholder: 'Odometer', class: 'text-right'
+      li
+        .item-content
+          .item-inner
+            .full-width style="height: 45px;"
+              a.item-link.list-button
+                |  Step 2:&nbsp;
+                i.icon.icon32.ion-ios-camera-outline
+                |  Capture Receipt
+              = s.input_field :file, as: :file, accept: "images/*", capture: "camera", class: 'camera-input', id: 'capture-receipt'
+
+      li
+        .item-content.small
+          .item-inner
+            = s.submit 'Submit', class: 'button button-big active', disabled: true
+.error-messages
+.content-block.narrow-block
+  - if @fp.receipt
+    = image_tag(@fp.receipt.file.url, class: 'full', id: 'receipt')
+  - else
+    img.full#receipt

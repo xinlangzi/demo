@@ -1,0 +1,8 @@
+- if container.chassis_return_company
+  tr
+    th.w150 Chassis Return
+    td.w150
+      = calendar_for(container, :chassis_return_at, { disabled: container.lock? })
+      = attachments_for(container, :chassis_return)
+    - if current_user.is_admin?
+      td

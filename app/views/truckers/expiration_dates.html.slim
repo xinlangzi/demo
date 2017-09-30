@@ -1,0 +1,49 @@
+.title-bar
+  h1
+    span Truckers: Expiration Dates&nbsp;&nbsp;
+    a = "(Today's date: #{Date.today}, #{Date.today.strftime('%A')})"
+  ul
+    li = link_to "Back to Owner Operators", truckers_path
+    li = link_to 'Export Active', export_active_to_csv_truckers_path(format: :csv)
+    li = link_to 'Export Inactive', export_inactive_to_csv_truckers_path(format: :csv)
+    li = link_to 'Export All', export_all_to_csv_truckers_path(format: :csv)
+
+.full-page
+  table.gray.f90
+    thead
+      tr
+        th colspan=5
+        th colspan="#{truck_expiring_column_list.size}" Truck(s)
+      tr
+        th Trucker
+        th Phone No.
+        th Hire Date
+        th Driver License
+        th Medical Card
+        - truck_expiring_column_list.each do |key, proc|
+          th = Trucker::DOC_NAME_MAPS[key]
+    tbody
+      - @truckers.each do |trucker|
+        - truck = Truck.default(trucker)
+        - if truck
+          tr
+            td = link_to trucker.name, trucker
+            td = trucker.phone_mobile
+            - expiring_column_list.each do |key, proc|
+              td
+                = proc.call(trucker)
+                .clear
+                = attachments_for(trucker, key.to_s) if [:hire_date].exclude?(key)
+
+            - if trucker.trucks.blank?
+              td.red NO TRUCKS ADDED
+              - (truck_expiring_column_list.size - 1).times do
+                td
+            - else
+              - truck_expiring_column_list.each do |key, proc|
+                td
+                  = proc.call(truck)
+                  .clear
+                  = attachments_for(truck, key.to_s) if [:truck_no].exclude?(key)
+  .hidden.datatable-config
+    | {"bPaginate": false, "aaSorting": [[ 0, "asc" ]]}

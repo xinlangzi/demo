@@ -1,0 +1,68 @@
+.title-bar
+  h1 Await to Resolve
+  = render 'report/audit_charges/menu'
+
+.full-page
+  #search-box.search-box
+    .search-inner
+      = simple_form_for @search, url: [:unresolved, :report, :audit_charges], html: { method: :get, class: 'horiz' } do |s|
+        = s.input :category_eq, collection: enum_options(AuditCharge.categories, use_integer: true), label: 'Category', required: false,  wrapper: 'vertical'
+        = s.input :error_eq, collection: enum_options(AuditCharge.errors, use_integer: true), label: 'Error', required: false,  wrapper: 'vertical'
+        = s.input :assignee_id_eq, collection: Admin.active, label: 'Assignee', required: false,  wrapper: 'vertical'
+        = s.submit 'Search'
+  table.gray.vmiddle.f90
+    thead
+      tr
+        th width=72 Cont ID
+        th Hub
+        th Container No.
+        th Chassis No.
+        th Delivered On
+        th Category
+        th Error
+        th width=400 Comment
+        th Assignee
+        th Status
+        th Submitted
+    tbody
+      - @audit_charges.each do |audit_charge|
+        - container = audit_charge.container
+        tr
+          td
+            a href="javascript:void(0)" onclick="javascript:App.newPopup('#{container_path(container)}', 'ViewContainer', 700, 1280, 0, 0)" = container.id
+          td = container.hub.name
+          td = container.container_no
+          td = container.chassis_no
+          td = container.delivered_date.to_date rescue 'N/A'
+          td = audit_charge.category.try(:titleize)
+          td = audit_charge.error.try(:titleize)
+          td
+            = fields_for :audit_charge, audit_charge do |f|
+              = f.text_area :comment, class: 'full-width auto-save auto-area', ref: "AuditCharge:#{audit_charge.id}:comment", id: dom_id(audit_charge, 'comment'), placeholder: 'Comment', rows: 1
+          td
+            = fields_for :audit_charge, audit_charge do |f|
+              = f.select :assignee_id, Admin.active.get_names_and_ids, { include_blank: '- Assignee -' }, { class: 'auto-save', ref: "AuditCharge:#{audit_charge.id}:assignee_id", id: dom_id(audit_charge, 'assignee_id') }
+          td
+            = fields_for :audit_charge, audit_charge do |f|
+              = f.select :status, enum_options(AuditCharge.statuses), { include_blank: false }, { class: 'auto-save', ref: "AuditCharge:#{audit_charge.id}:status", id: dom_id(audit_charge, 'status') }
+          td rel=audit_charge.created_at.to_i
+            = time_ago_in_words(audit_charge.created_at)
+  .hidden.datatable-config
+    | {
+        "bInfo": false,
+        "bPaginate": false,
+        "aaSorting": [[10, "asc" ]],
+        "aoColumns": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          { "orderDataType": "dom-textarea" },
+          { "orderDataType": "dom-select" },
+          { "bSortable": false },
+          { "orderDataType": "cell" }
+        ]
+      }

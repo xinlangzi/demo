@@ -1,0 +1,368 @@
+@import "framework7/framework7.3dpanels";
+@import "framework7-override";
+@import "mobiscroll/mobiscroll";
+@import "overrides";
+@import "home";
+@import "docs";
+@import "containers";
+@import "drivers";
+@import "day_log";
+
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  -webkit-touch-callout: default;
+}
+
+body{
+  background: #074d55;
+  background: -moz-radial-gradient(center,ellipse cover,#a7cfdf 0%,#23538a 100%);
+  background: -webkit-gradient(radial,right bottom,0px,left top,100%,color-stop(0%,#6967a5),color-stop(50%,#2075a1),color-stop(100%,#074d55));
+  background: -webkit-radial-gradient(right bottom,ellipse cover,#6967a5 0%,#2075a1 50%,#074d55 100%);
+  background: radial-gradient(ellipse at right bottom,#6967a5 0%,#2075a1 50%,#074d55 100%);
+}
+.text-right{
+  text-align: right !important;
+}
+.page{
+  background: #e0e0e0;
+}
+.help{
+  @extend .ion-ios-help;
+  font-size: 24px;
+}
+.input-calendar{
+  background: white asset-data-url('img/calendar.png') right no-repeat;
+  padding-right: 17px;
+}
+
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-moz-keyframes rotate {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+//Override
+.views{
+  .navbar {
+    border-bottom: none;
+    background: #1F68EB;
+    color: #fff;
+    a{
+      color: #FFF;
+    }
+  }
+}
+
+.popup{
+  &.popup-ajax{
+    .top-block{
+      .header{
+        margin: -5px -5px 0 -5px;
+        padding: 0 10px;
+        background: #fafafa;
+        border-bottom: 1px solid #F0F0F0;
+        .close-popup{
+          color: red;
+          font-size: 18px;
+          padding: 10px 0;
+          display: block;
+        }
+      }
+      .card{
+        margin: 5px 0px;
+      }
+    }
+  }
+}
+.picker-modal{
+  .content-block{
+    margin: 20px 0;
+    ul.errors{
+      padding: 0 0 0 20px;
+      li{
+        color: red;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+a.open-panel{
+  font-size: 14px;
+}
+
+.panel .page, .panel .pages, .panel {
+  background: none;
+}
+
+.panel .list-block{
+  ul{
+    background: none;
+    border: none;
+  }
+  .item-link{
+    color: white;
+    font-weight: bold;
+  }
+  .item-inner{
+    border-bottom-color: rgba(255,255,255,0.2);
+  }
+}
+
+.list-block{
+  .item-title.label{
+    width: 50%;
+  }
+  .item-content.small{
+    .item-title.label{
+      width: 40%;
+      font-size: 75%;
+    }
+    .item-input{
+      input{
+        font-size: 90%;
+      }
+    }
+  }
+  .item-text{
+    height: auto !important;
+  }
+}
+
+.item-input.inline{
+  input, select{
+    display: inline-block !important;
+    width: auto;
+  }
+}
+
+.tabbar a{
+  color: #007aff;
+  font-size: 24px;
+}
+
+.card{
+  &.no-box{
+    @include box-shadow(none);
+    @include border-radius(0);
+  }
+}
+
+.extend-inner{
+  margin-left: -15px;
+  margin-right: -15px;
+}
+// Extend
+.f12{font-size: 12px !important;}
+.f13{font-size: 13px !important;}
+.f14{font-size: 14px !important;}
+.relative{ position: relative !important; }
+.hidden{ display: none !important; }
+.normal{ text-transform: none !important; }
+.bold{ font-weight: bold !important; }
+.block{ display: block !important; }
+.top-block{ margin: 0px;padding: 5px;background: #FFF; }
+.narrow-block{ margin: 0px; }
+.gray-block{ background: #DDD; }
+.black-block{ background: #000;color: #FFF; }
+.full-width{ width: 100% !important; }
+.white{ color: #FFF !important;}
+.gray{color: #888 !important;}
+.red{color: red !important; }
+.orange{color: orange !important;}
+.green{ color: $green !important;}
+.dark-green{ color: $dark-green !important;}
+.text-left{ text-align: left !important; }
+.text-right{ text-align: right !important; }
+.text-center{ text-align: center !important; }
+.borderless{ border-color: transparent !important; }
+.item-value{ width: 100%; text-align: left; color: #888; }
+.pull-left{float: left;}
+.pull-right{ float: right; }
+.clear{clear: both !important;}
+.title{font-size: 18px;}
+
+.required-field{
+  @extend .ion-ios-circle-outline;
+  @extend .color-red;
+  position: absolute;
+  right: 5px;
+  top: 15px;
+  font-size: 24px;
+}
+.save-success{
+  @extend .ion-happy-outline;
+  @extend .color-green;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  font-size: 24px;
+}
+
+ul.error-recap{
+  background: red !important;
+  color: white;
+  font-size: 15px;
+  padding: 10px;
+  .title-error{
+    display: none;
+  }
+  li{
+    padding: 1px 0px 1px 5px;
+  }
+}
+ul.inner-links{
+  padding-left: 0 !important;
+  background: #F9F9F9;
+  border: 1px solid #EEE;
+  margin: 5px 0px;
+  .item-link{
+    a{
+      display: block;
+    }
+  }
+}
+
+
+// Exact Element
+.popup-pod{
+  background: #F2F2F2;
+}
+
+#signature-popup{
+  background: #F2F2F2;
+  .buttons-row{
+    margin-top: 20px;
+  }
+  canvas{
+    background: #FFF;
+    border: 1px solid #DDD;
+    display: block;
+  }
+}
+.popup-pod-success{
+  i{
+    font-size: 150px;
+  }
+}
+.camera-input{
+  position: relative;
+  top: -48px;
+  left: -1px;
+  width: 100%;
+  height: 44px;
+  z-index: 99999;
+  opacity: 0.0;
+}
+
+img.full{
+  display: block;
+  width: 100%;
+  margin: 10px auto;
+}
+
+img#signature{
+  background: #FFF;
+  display: block;
+  margin: 15px auto;
+  max-width: 90%;
+}
+
+// table
+table{
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #BCBCBC;
+  font-size: 75%;
+  margin-top: 10px;
+  tr{
+    td{
+      border: 1px solid #BCBCBC;
+      padding: 3px 2px;
+    }
+    &:nth-child(2n+1), &:nth-child(2n+1) td{
+      background-color: #FFF;
+    }
+    &:nth-child(2n), &:nth-child(2n) td{
+      background-color: #F6F6F6;
+    }
+  }
+}
+
+// Icons
+.icon16::before{ font-size: 16px; }
+.icon24::before{ font-size: 24px; }
+.icon32::before{ font-size: 32px; }
+.icon36::before{ font-size: 36px; }
+.icon48::before{ font-size: 48px; }
+
+.icon-checkbox{
+  display: inline-block;
+  input[type='checkbox']{
+    display: none;
+  }
+  input[type='checkbox']:disabled + span{
+    cursor: default;
+  }
+}
+
+.icon-checkbox{
+  input[type='checkbox'] + span{
+    @extend .icon;
+    @extend .icon32;
+    @extend .ion-ios-circle-outline;
+    cursor: pointer;
+  }
+  input[type='checkbox']:checked + span{
+    @extend .ion-ios-close-outline;
+    color: red;
+  }
+}
+.approval-alter{
+  @extend .ion-ios-checkmark;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 24px;
+  line-height: 40px;
+  color: green;
+}
+.pending-entry{
+  @extend .ion-ios-circle-outline;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 24px;
+  line-height: 40px;
+  color: red;
+}
+.pending-approval-alter{
+  @extend .ion-ios-circle-filled;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 24px;
+  line-height: 40px;
+  color: orange;
+}

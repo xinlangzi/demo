@@ -1,0 +1,308 @@
+table{
+  @include table-scaffolding;
+  margin-bottom: 5px !important;
+  caption{
+    @include box-sizing(border-box);
+    background-color: lighten(#BDF, 10%);
+    border-width: 1px 1px 0px 1px;
+    border-color: $gray;
+    border-style: solid;
+    font-weight: bold;
+    padding-left: 5px;
+  }
+  th, td{
+    vertical-align: top;
+  }
+  th{
+    &.ttitle {
+      font-size: 120%;
+      padding: 2px 0px;
+      background: lighten($lblue, 20%);
+      border: 1px solid $lblue;
+    }
+  }
+  &.vmiddle{
+    td{
+      vertical-align: middle !important;
+    }
+  }
+
+  &.form{
+    label{
+      font-weight: bold;
+      color: $gray40;
+    }
+    tr{
+      td:nth-child(1) {
+        text-align: right;
+        font-weight: bold;
+      }
+    }
+  }
+
+  &.shadow{
+    @include box-shadow;
+  }
+
+  &.gray {
+    width: 100%;
+    background: #FFF;
+    border: 1px solid $gray20 !important;
+    tbody{
+      tr {
+        &.overdue{
+          border: 3px solid $red;
+        }
+        &.greenBg td, td.greenBg{
+          background: #98FF98 !important;
+        }
+        &.pinkBg td, td.pinkBg{
+          background: #FFE6E4 !important;
+        }
+        &:nth-child(2n+1), &.odd, &:nth-child(2n+1) td, &.odd td{
+          background-color: $white;
+          &.sorting_1 {
+            background-color: #D3D6FF;
+          }
+        }
+        &:nth-child(2n), &.even, &:nth-child(2n) td, &.even td{
+          background-color: #F8F8F8;
+          &.sorting_1{
+            background-color: #EAEBFF;
+          }
+        }
+        &.marked td{
+          background-color: #DDFCDD !important;
+        }
+        &.marked:hover td{
+          background-color: #DDFCDD !important;
+        }
+
+        &:hover, &:hover > td{
+          background-color: #FFD;
+        }
+        &:hover .invisible{
+          visibility: visible ;
+        }
+        &.strike td {
+          text-decoration: line-through !important;
+          color: #888 !important;
+          font-size: 90% !important;
+          .action{
+            display: none;
+          }
+        }
+        &.inactive *{
+          color: red !important;
+          font-style: italic !important;
+        }
+        &.highlight > td{
+          background: $yellow !important;
+        }
+        td.active-state{
+          background: $yellow !important;
+        }
+        td.hover-state{
+          background: $yellow !important;
+          & *{
+            color: red;
+          }
+        }
+        td.greenbg{
+          background: $green !important;
+          color: $white !important;
+        }
+        td.yellowbg{
+          background: $yellow !important;
+        }
+        td.redbg{
+          background: darken($red, 5%) !important;
+          color: $white !important;
+        }
+      }
+    }
+    th {
+      background: #F4F4F4;
+      border: 1px solid $gray20;
+      word-wrap: break-all;
+      font-size: 90%;
+      text-align: center;
+      color: $gray50;
+      vertical-align: middle;
+      &.header{
+        font-size: 105%;
+      }
+    }
+    td{
+      text-align: center;
+      color: darken($dark, 20%);
+      font-size: 96%;
+      border: 1px solid $gray10;
+      padding: 2px;
+      white-space: normal;
+      &.number{
+        text-align: right !important;
+      }
+      &.label{
+        font-weight: bold;
+        line-height: 22px;
+      }
+      a{
+        text-decoration: underline;
+        font-weight: bold;
+        color: $blue;
+      }
+    }
+    &.rl{
+      th{
+        text-align: right;
+        padding-right: 10px;
+      }
+      td{
+        text-align: left;
+        padding-left: 10px;
+      }
+    }
+  }
+  &.order, &.lform{
+    th{
+      font-size: 105%;
+      letter-spacing: 1px;
+    }
+    td{
+      text-align: left !important;
+      padding: 3px;
+    }
+    label{
+      margin-left: 2px;
+    }
+  }
+  &.mform{
+    td{
+      text-align: center !important;
+    }
+  }
+  &.normal{
+    th{
+      font-style: normal;
+      font-size: 90%;
+      letter-spacing: 0;
+    }
+  }
+
+  &.borderless{
+    @include inner-table-borders(0px, transparent);
+    @include outer-table-borders(0px);
+    margin: 0 !important;
+    tbody{
+      tr{
+        &:nth-child(2n+1), &.odd, &:nth-child(2n+1) td, &.odd td{
+          background-color: transparent !important;
+        }
+        &:nth-child(2n), &.odd, &:nth-child(2n) td, &.odd td{
+          background-color: transparent !important;
+        }
+        td{
+          border: none !important;
+        }
+      }
+    }
+  }
+  &.operations{
+    th, td{
+      text-align: left;
+    }
+    sup{
+      font-style: italic;
+    }
+    .no-driver{
+      background: #F2DEDE;
+      color: #B94A48;
+    }
+    .active-state{
+      th{
+        background: $yellow !important;
+      }
+    }
+    .hover-state{
+      th{
+        background: $yellow !important;
+        color: $red !important;
+      }
+    }
+  }
+}
+// table title
+.leader1{
+  background: lighten($lblue, 20%);
+  font-size: 100%;
+  font-weight: bold;
+  padding: 1px 5px;
+}
+//datatables
+table.dataTable {
+  margin: 0 !important;
+  border-collapse: collapse !important;
+  thead th, tbody th, tbody td{
+    padding: 3px !important;
+    @include box-sizing(border-box);
+  }
+  tfoot th, tfoot td {
+    padding: 3px 5px;
+    border-top: 1px solid #111;
+    @include box-sizing(border-box);
+  }
+}
+//container
+table.gray{
+  tbody{
+    tr{
+      td.customer{
+        background: $light-green !important;
+      }
+      td.trucker{
+        background: $light-red !important;
+      }
+      td.receivableCharges{
+        background-color: #DDFCDD !important;
+        border: 1px solid #62C262 !important;
+      }
+      td.payableCharges{
+        background-color: #FFE1D8 !important;
+        border: 1px solid #FFC5B2 !important;
+      }
+      td.profit{
+        background-color: #FFFFC0 !important;
+        border: 1px solid #FFC224 !important;
+      }
+      td.operationDetail{
+        background-color: #FAEDD1 !important;
+        border: 1px solid #C1A262 !important;
+      }
+      td.operations-panel{
+        background-color: $gray-25 !important;
+        border: 1px solid $gray !important;
+      }
+      &:hover {
+        td.customer{
+          background: darken($light-green, 16%) !important;
+        }
+        td.trucker{
+          background: darken($light-red, 16%) !important;
+        }
+      }
+    }
+  }
+}
+
+@media print{
+  .dataTables_wrapper{
+    margin: 0px !important;
+    padding: 0px !important;
+    background: none !important;
+    border: none !important;
+    .dataTables_filter{
+      display: none !important;
+    }
+  }
+}

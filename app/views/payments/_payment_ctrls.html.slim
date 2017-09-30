@@ -1,0 +1,6 @@
+ul.nav
+  li = link_to 'List Payments', payment.class.new
+  - if current_user.is_admin?
+    li = link_to 'Generate New', new_polymorphic_path(payment.class)
+    li = link_to 'Edit', edit_polymorphic_path(payment)
+    li = link_to "Delete", polymorphic_path(payment, from: 'show', show: show), method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this payment?' }

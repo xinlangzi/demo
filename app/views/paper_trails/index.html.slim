@@ -1,0 +1,36 @@
+.title-bar
+  h1 Track Changes
+.full-page
+  = render 'filter'
+  table.gray.vmiddle
+    thead
+      tr
+        th ID
+        th Name
+        th Association
+        th Who
+        th When
+        th Action
+        th.text-left width=600
+          .row.container-fluid
+            .col-md-4 Changes
+            .col-md-4 Before
+            .col-md-4 After
+    tbody
+      - @versions.each do |version|
+        tr.vmiddle
+          td = version.id
+          td = version.item_type
+          td = link_to version.parent, version.parent if version.parent
+          td = version.who
+          td = version.created_at.us_datetime
+          td = version.event.titleize
+          td
+            table.full-width
+              - item = version.item
+              - version.dataset.each do |key, changes|
+                tr.text-left
+                  th.pw20 = key.humanize
+                  td.pw40 = changes[0]
+                  td.pw40 = changes[1]
+  center = paginate @versions 

@@ -1,0 +1,15 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div Dear #{@trucker.name},
+      - @operations.group_by(&:container).each do |container, ops|
+        p The following move for container no #{container.container_no}/#{container.id} from #{@owner.name} has been canceled.
+        table.gray cellpadding="0" cellspacing="0" valign="middle"
+          tr style=outlook_font
+            th Locations
+            th Miles
+          - ops.each do |operation|
+            tr style=outlook_font
+              td = address_sequences(operation.location_sequences, operation.action_sequences)
+              td align="center"
+                = mileage_sequences(operation.mileage_sequences)

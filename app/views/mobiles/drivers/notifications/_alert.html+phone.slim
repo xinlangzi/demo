@@ -1,0 +1,38 @@
+- payroll = DriverPayroll.new(current_user)
+- if payroll.status == :alert
+  li.accordion-item
+    a.item-content.item-link.ubtn.ubtn-3d-caution.ubtn-rounded.ubtn-jumbo href="#" 
+      .item-inner
+        .item-title Alert
+    .accordion-item-content style="background:#c22d18"
+      .card#alert
+        .card-header.red Paycheck impediment due to:
+        .card-content
+          .list-block.media-list
+            ul
+              - unless payroll.good_day_log?
+                li.item-content
+                  .item-inner
+                    .item-title-row
+                      .item-title
+                      .item-after
+                    .item-subtitle Daily Logs: Missing/Rejected
+                    .item-text 
+                      a href="javascript:$('.page-content').animate({scrollTop:$('#day-logs').offset().top},500)" View Daily Logs Calendar
+              - if payroll.invoices_pending_j1s.present?
+                li.item-content
+                  .item-inner
+                    .item-title-row
+                      .item-title
+                    .item-subtitle Containers with missing/pending/rejected J1s
+                    .item-text
+                      = payroll.containers_pending_j1s.map(&:id).join(', ')
+              - if current_user.has_expiration_date?
+                li.item-content
+                  .item-inner
+                    .item-title-row
+                      .item-title
+                    .item-subtitle Expiration dates(missing/expired)
+                    .item-text
+                      a href="javascript:$('.page-content').animate({scrollTop:$('#driver-expirations').offset().top},500)" View Expiration Dates
+                      .red ATTN: Update expiration docs.

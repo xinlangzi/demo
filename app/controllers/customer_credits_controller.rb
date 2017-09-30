@@ -1,0 +1,2 @@
+class CustomerCreditsController < CreditsController
+end

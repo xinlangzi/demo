@@ -1,0 +1,8 @@
+.search-box
+  .search-inner
+    = simple_form_for(@search, url: report_vacations_path, html: { method: :get, class: 'horiz'} ) do |f|
+      = f.input :user_id_eq, as: :select, collection: Trucker.active, label: 'Trucker', wrapper: 'vertical', required: false, input_html: { class: 'clearable chosen-select'}
+      = f.input :vstart_gteq, as: :datepicker, label: 'From', wrapper: 'vertical', required: false, input_html: { class: 'clearable'}
+      = f.input :vstart_lteq, as: :datepicker, label: 'to', wrapper: 'vertical', required: false, input_html: { class: 'clearable'}
+      = f.submit 'Search'
+      a.clear_button.btn Clear

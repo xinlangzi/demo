@@ -1,0 +1,4 @@
+<%@feedbacks.each do |id, value|%>
+$('#mangify_<%=Operation.find(id).container_id%>').html('<%=value[:charges]%>')
+$('#feedback_<%=id%>').html('<%=value[:info]%>')
+<%end%>

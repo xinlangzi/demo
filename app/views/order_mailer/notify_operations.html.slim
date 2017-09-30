@@ -1,0 +1,44 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div Dear #{@trucker.name},
+      - @operations.group_by(&:container).each do |container, ops|
+        p #{container.class.to_s} from #{@owner.name} is assigned to you. Click #{link_to 'here', polymorphic_url(container)}, to see full detailed.
+        table.gray cellpadding="0" cellspacing="0" valign="middle"
+          tr style=outlook_font
+            th Container
+            th Locations
+            th Miles
+          - ops.each_with_index do |operation, index|
+            tr style=outlook_font
+              - if index == 0
+                td rowspan=ops.size width="250"
+                  table.inner width="100%" cellpadding="4" cellspacing="0"
+                    tr style=outlook_font
+                      td width="100" Container No.
+                      td = container.container_no
+                    tr style=outlook_font
+                      td Pickup No.
+                      td = container.pickup_no
+                    tr style=outlook_font
+                    - if container.is_a?(ExportContainer)
+                      td Booking No.
+                      td = container.ssline_booking_no
+                    - else
+                      td SS Line B/L No.
+                      td = container.ssline_bl_no
+                    tr style=outlook_font
+                      td Seal No.
+                      td = container.seal_no
+                    tr style=outlook_font
+                      td Size/Type
+                      td #{@container.size} #{"triaxle needed" if container.triaxle}
+                    tr style=outlook_font
+                      td Weight
+                      td #{container.weight_decimal_humanized} lbs
+                    tr style=outlook_font
+                      td Commodity
+                      td = container.commodity
+              td = address_sequences(operation.location_sequences, operation.action_sequences)
+              td align="center"
+                = mileage_sequences(operation.mileage_sequences)

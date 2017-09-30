@@ -1,0 +1,5 @@
+<%unless @found%>
+$('#container-selectors ul').append('<%=j render("selector", container: @container)%>')
+<%end%>
+$('a[rel="container-selectors"] .count').html('<%= session[:container_selectors].size%>')
+$('#tracking-url-input').val('<%=build_trackshipment_url%>')

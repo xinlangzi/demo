@@ -1,0 +1,7 @@
+tr
+  th colspan=9
+    a.show-hide rel=dom_id(invoice, 'adjustments') = print_status? ? "Adjustments" : "Show/Hide Adjustments (#{invoice.adjustments.count})"
+    = render "adjustments/forms", invoice: invoice
+  th.number id=dom_id(invoice, 'sum_adjustments') = number_to_currency(invoice.sum_adjustments)
+  th.number id=dom_id(invoice, 'sum_remaining_adjustments') = number_to_currency(invoice.sum_remaining_adjustments)
+  th

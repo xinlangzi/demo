@@ -1,0 +1,7 @@
+- f = ActionView::Helpers::FormBuilder.new("reconciliation".to_sym, @reconciliation, self, {})
+= f.error_messages
+fieldset.form
+  = f.label :name, 'Enter the name'
+  = f.text_field :name, class: 'unobservable'
+  span &nbsp;
+  = f.submit

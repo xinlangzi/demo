@@ -1,0 +1,23 @@
+.search-box
+  .search-inner
+    .tableless.full-width
+      .table-cell.pw50
+        = simple_form_for @search, url: charges_chassises_path, html: { method: :get , class: 'horiz' } do |f|
+          = f.input :chassis_no_within, as: :text, label: 'Search Containers by Chassis No.', wrapper: :vertical, required: true, hint: 'Accepts comma separated (,) multiple Chassis No.', input_html: { rows: 4 }, wrapper_html: { class: 'full-width' }
+          .clear
+          = f.input :appt_date_gteq, as: :datepicker, label: "Appt from", wrapper: 'vertical', required: false
+          = f.input :appt_date_lteq, as: :datepicker, label: "To", wrapper: 'vertical', required: false
+          = f.submit 'Search'
+          .clear
+        - chassis_nos = @chassis_nos - @containers.map(&:chassis_no)
+        - unless chassis_nos.empty?
+          .bold.red = chassis_nos.join(', ')
+      .table-cell.pw50
+        = form_tag audit_chassises_path, method: :post, multipart: true, class: 'horiz' do
+          .vertical
+            = label_tag :file, "*File(csv)"
+            = file_field_tag :file, multiple: true, required: true, class: 'w400'
+            .hint Analyse CSV invoice; The chassis invoice must match this #{link_to "sample", "/ChassisInvoiceSample.csv"} csv.
+          .clear
+          = submit_tag "Upload & Analyse"
+          = link_to 'Analyse Previous CSV', audit_chassises_path, class: 'btn green-btn'

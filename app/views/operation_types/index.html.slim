@@ -1,0 +1,62 @@
+.title-bar
+  h1 Customized Operations
+  ul
+    li = link_to 'New Operation Type', new_operation_type_path
+    li = link_to 'New Email Template', new_operation_email_path
+.full-page
+  table.gray
+    caption
+      ul
+        li.title Operation Types
+    tr
+      th Name
+      th Type
+      th Container Type
+      th Company
+      th Date Format
+      th Position
+      th Mark Delivery
+      th Confirm Appt.
+      th Actual Appt.
+      th Docs?
+      th Bobtail?
+      th Mark Return
+      th Visible to Shipment
+      th Default
+      th.w20
+      th.w20
+    - @operation_types.each do |operation_type|
+      tr
+        td = operation_type.name
+        td = operation_type.otype
+        td = operation_type.container_type
+        td = operation_type.options_from
+        td = operation_type.date_format
+        td = operation_type.seq_num
+        td = checkmark(operation_type.delivered)
+        td = checkmark(operation_type.appt_confirmed)
+        td = checkmark(operation_type.actual_appt)
+        td = checkmark(operation_type.required_docs)
+        td = checkmark(operation_type.use_bobtail)
+        td = checkmark(operation_type.returned)
+        td = checkmark(operation_type.traceable_by_customer)
+        td = checkmark(operation_type.default)
+        td = link_to '', edit_operation_type_path(operation_type), class: 'fa fa-edit'
+        td = link_to_if operation_type.can_destroy?, '', operation_type, :confirm => "Are you sure you want to delete this operation type?", method: :delete, class: 'fa fa-trash'
+
+  table.gray
+    caption
+      ul
+        li.title Operation Email Templates
+    tr
+      th.w300 Name
+      th Demo
+    - @operation_emails.each do |email|
+      tr
+        td
+          = email.name
+          br
+          = link_to '', [:edit, email], class: 'fa fa-edit'
+          = link_to_if email.set_date_operations.empty?&&email.remove_date_operations.empty?, '', email, method: :delete, data: { confirm: 'Are you sure to delete?'}, class: 'fa fa-trash'
+        td
+          iframe src=preview_operation_email_path(email) width="100%" height="600"

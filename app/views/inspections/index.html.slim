@@ -1,0 +1,21 @@
+.title-bar
+  h1 Driver Inspections
+  ul
+    li = link_to 'Back to Reports', '/reports'
+    li = link_to 'Export to Excel', inspections_path(q: params[:q].to_h, format: 'csv')
+    li = link_to 'New Inspection', new_inspection_path
+.content
+  = render 'inspections/forms/search'
+  .ui-container.default-ui-layout
+    .pane.ui-layout-west
+      - @summary.each do |s|
+        - klass = s.trucker_id == @trucker.try(:id) ? 'active' : ''
+        = link_to inspections_path(q: params[:q].to_h, trucker_id: s.trucker_id), class: klass do
+          i = s.trucker_name
+          .rfloat = number_to_currency(s.total)
+    .pane.ui-layout-center#inspections
+      center 
+        span Merge amount into outstanding invoice&nbsp;
+        span.red Negative: Penalty&nbsp;&nbsp;
+        span.green Positive: Bonus
+      = render 'inspections'

@@ -1,0 +1,4 @@
+class ReceivablePaymentsController < PaymentsController
+
+
+end

@@ -1,0 +1,16 @@
+- if @accounts_type=="Payable"
+  ul.select-widget
+    li Select:
+    li
+      a onclick="App.checkAll('line_item', true);" All
+    li
+      a onclick="App.checkAll('line_item', false);" None
+    li
+      a onclick="App.checkFirst('line_item');" First
+    li
+      a onclick="App.checkLast('line_item');" Last
+    li
+      a onclick="Payment.allWithSameInvoice();" All With Same Invoice
+    - payment.invoices.uniq.each do |invoice|
+      li.rfloat
+        a onclick="App.checkAll('#{invoice.number}', true);" = invoice.number

@@ -1,0 +1,12 @@
+h1 Container Charge Details
+= render 'charges', container: @container
+.sections.container
+  .row
+    .col-md-12.gray
+      = simple_form_for Container.new, as: :container, url: charges_web_container_path(id: @container.uuid), method: :get, remote: true, html: { class: 'horiz full-width'} do |f|
+        label for='container_container_no' Do you need charge detail information on other loads? Please search here:
+        = f.input :container_no, required: true, label: false, wrapper: :vertical, input_html: { name: 'container_no', class: 'w300', placeholder: 'Enter Container No.' }
+        .vertical
+          = f.submit 'Search'
+          span#container-search
+        

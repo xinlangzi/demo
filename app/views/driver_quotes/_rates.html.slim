@@ -1,0 +1,11 @@
+- if @driver_quote.valid?
+  .row
+    - @driver_quote.summary.each do |key, value|
+      .col-md-2.col-xs-6
+        span #{key.to_s.titleize}:&nbsp;
+        span.num #{number_to_currency(value)}
+    .col-md-2.col-xs-6
+      .miles #{@driver_quote.miles} mi rt
+    .col-md-2.col-xs-6
+      span Total:&nbsp;
+      span.sum = number_to_currency(@driver_quote.total)

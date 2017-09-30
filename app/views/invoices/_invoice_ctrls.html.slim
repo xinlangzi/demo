@@ -1,0 +1,20 @@
+ul.nav
+  li = link_to 'List Invoices', invoice.class.new
+  - if current_user.is_admin?
+    li = link_to 'Track Changes', polymorphic_path(invoice, action: :history), method: :get, remote: true, class: 'show-hide', rel: dom_id(invoice, 'history')
+  - if invoice.outstanding?&&current_user.is_admin?
+    - new_payment_name = @accounts_type == "Payable" ? "Make a Payment" : "Record Received Payment"
+    li = link_to new_payment_name, new_polymorphic_path("#{@accounts_type}Payment".constantize.new, filter: { company_id: invoice.company_id})
+  - if invoice.company.send_invoice_by_edi?
+    li = link_to 'Preview EDI 210 Message', polymorphic_url(invoice, :action => :preview_210)
+    li = link_to "Transmit by EDI", polymorphic_url(invoice, action: :transmit_by_edi), data: { confirm: 'Are you sure?' }, method: "put"
+  li = link_to 'Export IIF', polymorphic_path(invoice, format: :iif)
+  li = link_to 'Print Invoice', polymorphic_path([:print, invoice]), target: '_blank'
+  - if current_user.is_admin?&&(@accounts_type == "Receivable")
+    li = render :partial => 'invoices/form/email_invoice', :object => invoice
+  - if current_user.has_access?(invoice.type.tableize, 'new')
+    li = link_to 'New', new_polymorphic_path(invoice.class)
+  - if current_user.has_access?(invoice.type.tableize, 'edit')
+    li = link_to 'Edit', edit_polymorphic_path(invoice)
+  - if current_user.has_access?(invoice.type.tableize, 'destroy')
+    li = link_to "Delete", polymorphic_path(invoice, from: 'show', show: show), method: :delete, remote: true, :data => { :confirm => 'Are you sure you want to delete this invoice?' }

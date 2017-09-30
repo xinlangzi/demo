@@ -1,0 +1,6 @@
+- if current_user.is_admin? && !duplicates.blank?
+  div With Same Information:
+  - duplicates.each_slice(5).each do |group|
+    - group.each do |dup|
+      = link_to dup.id, dup, target: '_blank', class: 'mr5'
+    br

@@ -1,0 +1,100 @@
+= c.error_messages
+- case true
+- when @company.is_a?(Accounting::TpCompany)
+  = render 'accounting/tp_companies/form', c: c
+- when @company.is_a?(Trucker)
+  = render 'truckers/form', c: c
+- else
+  - if @company.is_a?(Customer)
+    fieldset.border
+      .red Note: After you create this customer you need to create a user (employee) for it.
+  - if @company.respond_to?(:hub)
+    fieldset
+      legend Hub
+      = c.association :hub, label: 'Name'
+  = render @partial_before, c: c if @partial_before
+  fieldset
+    legend Basic Information
+    - if %w(depot yard terminal).include?(@company.class.to_s.downcase)
+      = c.input :ophours, label: 'Hours of Operation'
+    - if %w(ssline shipper).include?(@company.class.to_s.downcase)
+      - name = 'Company Name'
+    - elsif %w(customer).include?(@company.class.to_s.downcase)
+      - name = 'Display Name'
+    - else
+      - name = 'Name'
+    = c.input :name, label: name
+    - if %w(customer terminal).include?(@company.class.to_s.downcase)
+      = c.input :print_name, label: 'Print Name', hint:  "Print on check as"
+    = c.input :contact_person, label: 'Contact Person'
+    - if @company.kind_of?(User)
+      = c.input :email
+    - else
+      = c.input :email, hint: EMAIL_FORMAT_TIP, input_html: { multiple: 'multiple', class: 'w500' }
+    - if @company.kind_of?(Customer)
+      = c.input :accounting_email, label: 'Accounting Email', hint: EMAIL_FORMAT_TIP, input_html: { multiple: 'multiple', class: 'w500' }
+      = c.input :collection_email, label: 'Collection Email', hint: EMAIL_FORMAT_TIP, input_html: { multiple: 'multiple', class: 'w500' }
+    - if @company.kind_of?(Ssline)
+      = c.input :rail_billing_email, label: 'Rail Billing Email', hint: EMAIL_FORMAT_TIP, input_html: { multiple: 'multiple', class: 'w500' }
+      = c.input :eq_team_email, label: 'EQ Team Email', hint: EMAIL_FORMAT_TIP, input_html: { multiple: 'multiple', class: 'w500' }
+    .inline
+      = c.input :phone ,required: @company.kind_of?(Yard) || @company.kind_of?(CustomersClient), input_html: {size: 12, class: 'w100'}
+      = c.input :phone_extension, label: 'ext', input_html: {size: 3, class: 'w50'}, wrapper_html: {class: 'nofirst'}
+    = c.input :phone_mobile, label: 'Phone Mobile'
+    = c.input :fax
+    = c.input :extra_contact_info, as: :text, input_html: {rows: 5, cols: 40, class: 'w500'}, label: 'Extra Contact Info.'
+    - if %w(terminal).include?(@company.class.to_s.downcase)
+      = c.input :rail_fee, as: :string, label: 'Rail Fee'
+      = c.input :rail_road_id, as: :grouped_select, collection: Port.all, group_method: :rail_roads, label_method: :name_with_lan_lon, label: 'Rail Road'
+    - if %w(customer).include?(@company.class.to_s.downcase)
+      = c.input :fein, label: "FEIN"
+  fieldset.address-entry#address1
+    legend Address Information
+    = c.input :address_street, label: 'Street Address', input_html: { size: 60, class: 'geocode w300 street', autocomplete: "off" }
+    = c.input :address_street_2, label: 'Street Address Line 2', input_html: { size: 60, class: 'geocode w300 street2', autocomplete: "off" }
+    = c.input :address_city,  label: 'City', input_html: { class: 'geocode city', autocomplete: "off" }
+    .inline
+      = c.input :address_state_id, as: :select, collection: State.get_states_and_ids, include_blank: true, label: 'State', input_html: { class: 'geocode state' }
+      = c.input :zip_code, as: :string, label: 'Zip Code', input_html: { size: 7, class: 'geocode w60 zipcode', autocomplete: "off" }, wrapper_html: {class: 'nofirst'}
+      a.f80.clear-address Clear Address
+      | &nbsp;&nbsp;
+      a.f80.validate-address Validate by Google Map
+    .clear
+    .inline
+      = c.input :lat, as: :string, label: 'Latitude', input_html: { size: 10, class: 'w100 lat' }
+      = c.input :lng, as: :string, label: 'Longitude', input_html: { size: 10, class: 'w100 lng' }, wrapper_html: { class: 'nofirst' }
+    .geocoded
+
+  - if @company.is_user?
+    fieldset
+      legend
+        span Security
+        - unless @company.new_record?
+          label.inline.f80.green
+            | &nbsp;&nbsp;
+            = c.check_box :change_pwd
+            | Check if you want to change password
+      = c.input :password, input_html: {value: '', autocomplete: "off"}
+      = c.input :password_confirmation, label: 'Retype password', input_html: {value: '', autocomplete: "off"}
+
+  - if @company.instance_of?(Admin) && current_user.is_superadmin?
+    = render 'admins/hubs', c: c
+
+  - if @company.kind_of?(Ssline)
+    = render 'sslines/free_per_diem', c: c
+    fieldset
+      legend Others
+      = c.input :edi_customer_code, label: 'SS Line SCAC'
+      = c.input :chassis_fee,       label: 'Chassis Fee', as: :string
+
+  - if @company.kind_of?(Customer)
+    fieldset
+      legend Invoice Information
+      = c.input :invoice_j1s, label: "Invoice with J1s Doc", collection: enum_options(Customer.invoice_j1s)
+    fieldset
+      legend EDI Information
+      = c.input :edi_customer_code, label: "Customer Code"
+      = c.input :use_edi, as: :boolean, label: "Enable EDI"
+  fieldset
+    legend Comments
+    = c.input :comments, as: :text, label: '&nbsp;'.html_safe, input_html: { rows: 5, cols: 40, class: 'w500' }

@@ -1,0 +1,154 @@
+body{
+  // font: 13px/1.6, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font: 14px/1.5 Arial, Verdana, sans-serif !important;
+}
+
+h1{
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: underline;
+  line-height: 125%;
+  font-style: italic;
+  margin: 5px 0px;
+}
+h2{
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 5px 0px;
+}
+
+fieldset{
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  &.border{
+    border: 1px solid $gray-10;
+    padding: 5px;
+  }
+}
+a{
+  font-weight: normal !important;
+}
+strong{
+  font-weight: bold !important;
+}
+
+.btn-yellow{
+  background: #FAC000;
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  margin: 10px 0;
+  display: inline-block;
+}
+
+.wrapper{
+  width: 1000px;
+  margin: auto;
+  border: 1px solid #CCC;
+}
+
+.content{
+  border: 2px solid $gray-20;
+  background: #FFF;
+}
+
+.infos{
+  background: #F9F9F9;
+  border-bottom: 1px solid #CCC;
+  color: #000;
+  height: 100px;
+  padding: 5px 0;
+}
+
+.company-info{
+  display: table-cell;
+  vertical-align: top;
+  line-height: 110%;
+  font-size: 12px;
+  font-weight: bold;
+  width: 200px;
+}
+
+.logo-image{
+  position: relative;
+  top: 5px;
+  display: table-cell;
+}
+
+.footer{
+  background: $gray-20;
+  padding: 5px;
+  color: $dark;
+}
+
+#invoiceHeader{
+  border-bottom: 1px solid #CCC;
+  padding: 5px;
+  font-size: 110%;
+  color: $base;
+  margin-bottom: 10px;
+}
+
+.mail{
+  width: 800px;
+  margin: auto;
+  border: 1px solid #CCC;
+  background: #FFF;
+  @include box-sizing(border-box);
+  .header{
+    background: #F9F9F9;
+    border-bottom: 1px solid #CCC;
+    a.logo{
+      display: block;
+      width: 150px;
+      margin: auto;
+      img{
+        width: 120px;
+        padding: 5px 10px 0 10px;
+      }
+    }
+  }
+  .section{
+    padding: 10px;
+  }
+  .footer{
+    background: #F3F3F3;
+    border-top: 1px solid #DDD;
+    padding: 15px;
+    color: #999;
+    *{
+      line-height: 1.4;
+      font-size: 11px;
+    }
+    a{
+      color: #999;
+      text-decoration: none;
+      font-weight: normal !important;
+    }
+    .social-links a{
+      font-size: 15px;
+      color: #666;
+    }
+  }
+  .name{
+    font-size: 15px;
+    line-height: 1.2;
+  }
+  .mcontent{
+    margin: 10px 0px;
+  }
+  .mfooter{
+    background: $gray-30;
+  }
+}
+
+center#signature{
+  margin: 5px;
+  border: 1px dotted #DDD;
+  background: #FFF;
+  img{
+    max-width: 100% !important;
+  }
+}

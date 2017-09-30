@@ -1,0 +1,20 @@
+- disabled = payment.persisted?
+= form_for payment, url: driver_payrolls_path, remote: true, html: { class: 'observe-form', data: { url: summary_driver_payrolls_path, method: :put }} do |p|
+  table.borderless.f90
+    tr
+      td.w120
+        = p.select :payment_method_id, PaymentMethod.names_and_ids, {include_blank: '-Method-'}, { class: 'batch-payment-method full-width', id: random_id("payment_method_id"), required: true, disabled: disabled }
+      td.w150
+        - disabled_number = disabled || payment.payment_method&&payment.payment_method.is_check?
+        = p.text_field :number, class: 'batch-payment-number full-width', disabled: disabled_number, placeholder: 'Number'
+      td.w120
+        = p.text_field :issue_date, class: 'date_picker full-width', id: random_id("issue_date"), required: true, disabled: disabled, placeholder: 'Issue Date'
+      td.w40
+        - if disabled
+          = link_to "", [:edit, payment], class: "fa fa-edit", target: '_blank'
+        - else
+          = p.hidden_field :company_id
+          = hidden_field_tag :invoice_id, payment.invoices.first.id
+          = hidden_field_tag :amount, payment.amount
+          = p.submit "Save", disable_with: PLEASE_WAIT
+  .red.text-left = payment.errors.full_messages.join("; ")

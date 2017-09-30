@@ -1,0 +1,10 @@
+.title-bar
+  h1 Edit Port #{@port.name}
+  ul
+    li = link_to 'Cancel', :back
+.content
+  = simple_form_for @port, as: :port, html: {class: 'rows'} do |f|
+    fieldset
+      legend Basic Information
+      = render partial: 'form', locals: {f: f}
+    = f.submit 'Update'

@@ -1,0 +1,61 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.list-block.narrow-block
+  = simple_form_for @search, as: :search, url: search_quote_engines_path, html: { class: 'load-page'} do |s|
+    ul
+      li
+        .item-content
+          .item-inner
+            .item-input
+              = s.input_field :id_eq, required: true, placeholder: 'Container ID'
+      li
+        .item-content
+          .item-inner
+            = s.submit 'Search', class: 'button button-fill button-big active'
+
+- @container_quotes.each do |cq|
+  - container = cq.container
+  br
+  .list-block.narrow-block
+    ul
+      li
+        a.external.item-link.list-button target='_blank' href=map_container_path(container) Route Direction
+      li
+        = link_to "Container #{container.id}", container, class: 'item-link list-button'
+
+  - cq.quotes.each_with_index do |quote, index|
+    .list-block.media-list.narrow-block
+      ul
+        - miles = quote.operation.mileage_sequences
+        - quote.operation.location_sequences.zip(quote.operation.action_sequences).map do |company, action|
+          li
+            .item-content
+              .item-inner
+                .item-title-row
+                  .item-title
+                    span.badge = action
+                    small = company.name
+                  .item-after
+                    - unless miles.empty?
+                      b #{miles.shift}mi
+                small.gray = company.address
+
+
+    .list-block.narrow-block
+      ul
+        = f7_label_text("Base Rate", number_to_currency(quote.base_rate_fee.precision2)) unless quote.preset
+        = f7_label_text("Fuel Amount", number_to_currency(quote.fuel_amount.precision2)) unless quote.preset
+        = f7_label_text("Fuel Percent", "#{quote.percent_fuel.precision2}%") unless quote.preset
+        = f7_label_text("Toll Surcharge", number_to_currency(quote.toll_surcharge.precision2)) unless quote.preset
+        = f7_label_text("Tolls Fee", number_to_currency(quote.tolls_fee.precision2)) unless quote.preset
+        = f7_label_text("Fuel Price(Gallon)", number_to_currency(quote.gallon_price.precision2)) unless quote.preset
+        = f7_label_text("Total", number_to_currency(quote.preset ? quote.operation.preset_fee : quote.cal_total.precision2))

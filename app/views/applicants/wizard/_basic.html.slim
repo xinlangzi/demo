@@ -1,0 +1,14 @@
+= render 'applicants/wizard/steps', step: 1
+= simple_form_for @applicant, url: wizard_applicants_path, method: :post do |f|
+  .tableless
+    .table-cell
+      = f.input :first_name, label: 'First Name', wrapper: :vertical, input_html: { autocomplete: 'off', class: 'itext' }, required: true
+    .table-cell &nbsp;&nbsp;
+    .table-cell
+      = f.input :last_name, label: 'Last Name', wrapper: :vertical, input_html: { autocomplete: 'off', class: 'itext' }, required: true
+  = f.input :email, wrapper: :vertical, input_html: { autocomplete: 'off', type: 'email', class: 'itext' }, required: true
+  = f.input :phone, wrapper: :vertical, input_html: { autocomplete: 'off', type: 'phone', class: 'itext' }, required: true
+  = f.association :hub, collection: Hub.with_default, include_blank: '- Please Select -', wrapper: :vertical, input_html: { class: 'itext' }, required: true
+  = f.input :comment, label: 'Notes', wrapper: :vertical, input_html: { autocomplete: 'off', class: 'itext', rows: 5 }
+  .text-right
+    = f.submit 'Next', class: 'w100 green-btn'

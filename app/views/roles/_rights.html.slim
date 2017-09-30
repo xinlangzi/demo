@@ -1,0 +1,18 @@
+- right_ids = @role.rights.map(&:id)
+- @rights.each do |controller, rights_list|
+  - ctrl = controller.to_s.dasherize.gsub("/", "_")
+  - list_rights = "list_rights_#{ctrl}"
+  div id="expand_#{controller.to_s.dasherize}"
+    - if rights_list.empty?
+      = controller.humanize.titleize
+    - else
+      a.show-hide rel=list_rights = controller.humanize.titleize
+  ul.hidden id="#{list_rights}"
+    = check_box_tag "select_all_#{ctrl}", 'none', false, class: "check_all lfloat", ref: ctrl
+    = label_tag "select_all_#{ctrl}", "Select All"
+    - rights_list.each do |right|
+      - checked = right_ids.include?(right.id) ? true : false
+      label
+        | &nbsp;
+        = check_box "right", right.id, checked: checked, class: ctrl
+        span = right.name.titleize + "(#{right.action})"

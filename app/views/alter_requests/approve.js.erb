@@ -1,0 +1,5 @@
+<%if @error%>
+alert('<%=@error%>')
+<%else%>
+$('#<%=dom_id(@alter_request, "approve")%>').remove()
+<%end%>

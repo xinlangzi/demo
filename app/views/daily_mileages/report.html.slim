@@ -1,0 +1,48 @@
+.title-bar
+  h1 Generate Quaterly Report
+  ul
+    li =link_to "Record Today's Mileage", new_daily_mileage_path
+    li =link_to "Record Fuel Purchase", new_fuel_purchase_path
+    li =link_to "List Fuel Purchases", fuel_purchases_path
+    li = link_to "Generate Quarterly Report", report_daily_mileages_path
+.content
+  = render 'quarter'
+  - if !@fuel_purchases.blank?
+    h2 Fuel Purchases
+    = render :partial => 'daily_mileages/fuels', :object => @fuel_purchases
+  - elsif @fuel_purchases.blank? && !@fuel_purchases.nil?
+    .border-info.red No fuel purchase recorded for this period.
+  .lfloat.mr20
+    - if !@state_mileages.blank?
+      h2 Miles/State
+      = render :partial => 'daily_mileages/state_mileages', :object => @state_mileages
+    - elsif @state_mileages.blank? && !@state_mileages.nil?
+      .border-info.red No mileage recorded for this period.
+  .lfloat
+    - if !@fuel_purchases.blank? && !@state_mileages.blank?
+      - miles = @state_mileages.inject(0){|sum, m| sum+m.miles}
+      - gallons = FuelPurchase.total_gallons(@fuel_purchases)
+      h2 Statistics
+      table.gray.w400
+        tr
+          th.text-left Driven miles
+          td = miles ? (h miles) : 'N/A'
+        tr
+          th.text-left Fuel volume (in gals.)
+          td = gallons ? (h gallons) : 'N/A'
+
+        - if !@fuel_purchases.blank?
+          tr
+            th.text-left Fuel bought
+            td = "#{@fuel_purchases.length} times"
+          tr
+            th.text-left Paid amount
+            td = number_to_currency FuelPurchase.total_amount(@fuel_purchases)
+          tr
+            th.text-left Average price of fuel
+            td = number_to_currency (FuelPurchase.total_amount(@fuel_purchases) / FuelPurchase.total_gallons(@fuel_purchases))
+        tr
+          th.text-left Average fuel consumption
+          td = gallons.zero? ? 'N/A' : "#{number_with_precision(miles/gallons, :precision => 2)} miles/gal."
+.clear
+br

@@ -1,0 +1,7 @@
+<%if @success%>
+$('#<%=dom_id(@adjustment, "form")%>').remove()
+$("#<%=dom_id(@invoice, 'sum_adjustments')%>").html("<%=number_to_currency(@invoice.sum_adjustments)%>").effect("highlight", {color:"#84E000"}, 2000 )
+$("#<%=dom_id(@invoice, 'sum_remaining_adjustments')%>").html("<%=number_to_currency(@invoice.sum_remaining_adjustments)%>").effect("highlight", {color:"#84E001"}, 2000 )
+$("#<%=dom_id(@invoice, 'invoice_amount')%>").html('<%=number_to_currency(@invoice.amount + @invoice.sum_adjustments + @invoice.sum_remaining_credits)%>').effect("highlight", { color: "#84E002" }, 2000)
+$("#<%=dom_id(@invoice, 'invoice_balance')%>").html('<%=number_to_currency(@invoice.balance + @invoice.sum_remaining_adjustments + @invoice.sum_remaining_credits)%>').effect("highlight", { color: "#84E003" }, 2000)
+<%end%>

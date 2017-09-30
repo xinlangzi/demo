@@ -1,0 +1,7 @@
+- user_ids = @role.users.map(&:id)
+- for user in @users 
+  div
+    - checked = user_ids.include?(user.id) ? true : false 
+    = check_box "user", user.id, checked: checked, class: "lfloat" 
+    = label_tag "user_#{user.id}", user.name
+   

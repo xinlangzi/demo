@@ -1,0 +1,5 @@
+- @invoices.each do |invoice|
+  - if invoice.respond_to?(:third_party?)
+    = render "accounting/invoices/invoice", invoice: invoice
+  - else
+    = render "invoices/invoice", invoice: invoice

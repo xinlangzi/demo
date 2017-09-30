@@ -1,0 +1,13 @@
+table width="100%" cellpadding=10
+  tr
+    td align="center"
+      table.progress width="100%" cellpadding=5 cellspacing=0
+        tr
+          - container.progress_statuses.each_with_index do |status, index|
+            - done = status[:done]
+            td class="#{done ? 'green' : 'gray'}" style=outlook_font
+              - if done
+                b &#10004;&nbsp;
+              - else
+                b #{index + 1}&nbsp;
+              span.txt = status[:name].to_s.titleize.downcase

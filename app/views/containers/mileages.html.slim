@@ -1,0 +1,9 @@
+.title-bar
+  h1 Container Mileages
+  ul
+    li = link_to 'Container Monthly Volume', monthly_volume_containers_path, title: "To see more information on container volume"
+    li = link_to 'Container Daily Volume', daily_volume_containers_path, title: "To see more information on container volume"
+
+.full-page
+  = render 'containers/filters/mileages'
+  #mileages-chart

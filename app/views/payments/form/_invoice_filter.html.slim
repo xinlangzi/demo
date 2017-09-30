@@ -1,0 +1,27 @@
+- accounts = @accounts_type
+#search-box.search-box
+  .search-inner
+    = simple_form_for @filter, as: :filter, url: new_polymorphic_path(crud_class.new), html: { method: :get, class: 'horiz' } do |f|
+      - grouped_collection = []
+      - if in_payable?
+        - grouped_collection << ["Trucker", Trucker.outstanding(accounts).get_all_names_and_ids] if Trucker.outstanding(accounts).get_all_names_and_ids.count > 0
+        - grouped_collection << ["TP Vendor", Company.third_party.outstanding(accounts).get_names_and_ids] if Company.third_party.outstanding(accounts).count > 0
+      - else
+        - grouped_collection << ["Customer", Customer.outstanding(accounts).get_all_names_and_ids] if Customer.outstanding(accounts).get_all_names_and_ids.count > 0
+        - grouped_collection << ["TP Customer", Company.third_party.outstanding(accounts).get_names_and_ids] if Company.third_party.outstanding(accounts).count > 0
+      - grouped_collection << ["Others", Company.other.outstanding(accounts).get_all_names_and_ids] if Company.other.outstanding(accounts).count > 0
+      = f.input :company_id, as: :grouped_select, collection: grouped_collection, group_method: :last, input_html: { class: 'chosen-select' }, wrapper: :vertical
+      - if in_payable?
+        - companies = Accounting::TpVendor.for_user(current_user).outstanding(accounts).get_all_names_and_ids
+        = f.input :tp_company_id, collection: companies, label: "TP Vendor", include_blank: true, input_html: { class: 'chosen-select' }, wrapper: :vertical unless companies.blank?
+      - else
+        - companies = Accounting::TpCustomer.for_user(current_user).outstanding(accounts).get_all_names_and_ids
+        = f.input :tp_company_id, collection: companies, label: "TP Customer", include_blank: true, input_html: { class: 'chosen-select' }, wrapper: :vertical unless companies.blank?
+      = f.input :from,  as: :datepicker, label: "Issue Date From", wrapper: :vertical
+      = f.input :to,  as: :datepicker, label: "To", wrapper: :vertical
+      = f.submit "Search"
+    .clear
+    - if in_payable?
+      .f90
+        span Batch Payment for:&nbsp;
+        = link_to "Driver Payrolls", driver_payrolls_path

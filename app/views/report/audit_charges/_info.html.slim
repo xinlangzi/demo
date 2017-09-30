@@ -1,0 +1,30 @@
+table.gray.text-left
+  tr
+    - customers = container.consignees_or_shippers_info
+    td colspan=2
+      .bold Consignee / Shipper
+      = customers.map(&:name).join('<hr>')
+    td colspan=2
+      .rfloat = container.live_load? ? 'Live Load' : 'Drop&Pull'
+      span.bold Size/Type:&nbsp;
+      span = container.size
+      .clear
+      span.bold Triaxle:&nbsp;
+      span = checkmark(container.triaxle?) || 'No'
+    td colspan=2
+      .bold Delivered On
+      = container.delivered_date.to_date rescue 'N/A'
+  tr
+    td width='50%' colspan=3
+      .bold Admin Comments:
+      = simple_format(container.admin_comment)
+    td colspan=3
+      .bold Customer Comments:
+      = simple_format(container.customer_comment)
+  tr
+    td colspan=3
+      .bold Chassis Comments:
+      = simple_format(container.chassis_comment)
+    td colspan=3
+      .bold Public Comments:
+      = simple_format(container.public_comment)

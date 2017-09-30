@@ -1,0 +1,68 @@
+- container = @pod.container
+table.gray.f125
+  tr
+    td.center colspan=4
+      .bold.f120 PROOF OF DELIVERY
+  tr
+    th.pw25.text-right Driver
+    td.pw25 = @pod.user.name
+    th.pw25.text-right Truck No.
+    td.pw25 = Truck.default(@pod.user).try(:number) rescue nil
+  tr
+    th.text-right Container No.
+    td = container.container_no
+    th.text-right Chassis No.
+    td = container.chassis_no
+  tr
+    th.text-right Seal No.
+    td = @pod.seal_no
+    th.text-right Intact
+    td = @pod.intact? ? 'Yes' : 'No'
+  tr
+    td colspan=4 &nbsp;
+  tr
+    th.text-right Rails From
+    td = container.operations.first.company if container.is_a?(ImportContainer)
+    th.text-right Rails To
+    td = container.operations.last.company if container.is_a?(ExportContainer)
+
+  - company = container.consignees_or_shippers_info.first
+  tr
+    th.text-right Shipper(Origin)
+    td colspan=3 = company.name if company.is_a?(Shipper)
+  tr
+    th.text-right Consignee(Destination)
+    td colspan=3 = company.name if company.is_a?(Consignee)
+  tr
+    th.text-right Address
+    td colspan=3 = company.address_street
+  tr
+    th.text-right City
+    td = company.address_city
+    th.text-right State
+    td = company.state
+  tr
+    th.text-right Arrival Time
+    td = @pod.arrival_time.try(:us_time)
+    th.text-right Departure Time
+    td = @pod.departure_time.try(:us_time)
+  tr
+    td colspan=4 &nbsp;
+  tr
+    th.text-right Print Name
+    td = @pod.name
+    th.text-right Total Pieces/Wt./Pkg Type
+    td = @pod.measure
+  tr
+    th.text-right Exceptions
+    td colspan=3 = @pod.exceptions
+  tr
+    th colspan=4
+      center Customer Signature(#{Date.today.to_s(:mmddyyyy)})
+  tr
+    td colspan=4
+      center#signature
+        = uploader_image_tag(@pod.signature, { size: @pod.image_size })
+  tr
+    td colspan=4 style="color:#666;"
+      center.bold Call dispatch if you have any freight over, short, damaged, or any problems.

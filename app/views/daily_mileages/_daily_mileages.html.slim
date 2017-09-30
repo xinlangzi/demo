@@ -1,0 +1,41 @@
+table.gray.vmiddle
+  thead
+    tr
+      th
+      th Trucker
+      th.w80 Date
+      th Truck No.
+      th Mileage
+      th States
+      th Details
+      th
+      th
+  tbody
+    - @daily_mileages.each do |dm|
+      tr
+        td
+          - if current_user.is_admin?
+            label.lock-checkbox
+              = fields_for dm do |f|
+                = f.check_box :locked, class: 'auto-save', id: dom_id(dm, 'locked'), ref: "DailyMileage:#{dm.id}:locked"
+              span
+          - else
+            = dm.id
+        td = dm.truck.trucker
+        td = dm.day.us_date
+        td = dm.truck.number
+        td = dm.mileage
+        td = dm.state_mileages.length
+        td
+          table.gray
+            thead
+              tr
+                th State
+                th Miles
+            tbody
+              - for sm in dm.state_mileages
+                tr
+                  td = sm.state.abbrev
+                  td = sm.miles
+        td = link_to '', edit_daily_mileage_path(dm), class: 'fa fa-edit' unless dm.locked?
+        td = link_to '', dm, :confirm => "Are you sure you want to delete the mileage?", method: :delete , class: 'fa fa-trash' unless dm.locked?

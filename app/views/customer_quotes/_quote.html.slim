@@ -1,0 +1,20 @@
+table.gray.vmiddle
+  tr
+    th.w140 Base Rate
+    td.w80 = number_to_currency(@quote[:base_rate])
+    td.w80.new-base-rate = number_to_currency(@quote[:adjust_base_rate])
+  tr
+    th Fuel Surcharge
+    td = number_to_currency(@quote[:fuel_amount])
+    td.new-fuel-amount = number_to_currency(@quote[:adjust_fuel_amount])
+  tr
+    th Fuel Percent
+    td #{@quote[:fuel_percent]}%
+    td
+      label
+        = text_field_tag :fuel_percent, @quote[:adjust_fuel_percent], class: 'w60 text-center new-percent'
+        | %
+  tr
+    th Total
+    th #{@quote[:miles]} mi
+    th.total = number_to_currency(@quote[:total])

@@ -1,0 +1,30 @@
+- lip = line_item_payment
+- company = lip.payment.company
+- container = lip.line_item.container
+- invoice = lip.line_item.invoice
+- for_trucker = company.is_trucker?
+- columns = for_trucker ? 11 : 9
+- new_or_existing = lip.new_record? ? "payment[new_line_item_payments][#{lip.line_item_id}]" : "payment[existing_line_item_payments][]"
+= fields_for new_or_existing, lip do |l|
+  - marked = lip.selected_for_payment ? 'marked' : ''
+  tr class="#{marked}"
+    td
+      - klass = container.is_a?(ImportContainer) ? 'import_item' : 'export_item'
+      = l.check_box :selected_for_payment, onclick: "App.markSelection($(this))", class: "line_item_check_box line_item #{klass} #{invoice.number}", data: { id: invoice.id }
+      = l.hidden_field :line_item_id
+      = l.hidden_field :invoice_id, value: invoice.id
+      = l.hidden_field :container_id, value: container.id
+    td = link_to invoice.number, invoice
+    td = invoice.date.to_date
+    td = link_to container.id, container, target: '_blank'
+    td = container.container_no
+    td = container.delivered_date.to_date rescue nil
+    - if for_trucker
+      td = checkmark(invoice.ready_to_pay?)
+      td = checkmark(!container.pending_j1s?(company))
+    td.number = number_to_currency lip.total_charged
+    td.number = number_to_currency lip.line_item.balance
+    td.center $ #{l.text_field :amount, size: 12, class: 'w100'}
+  - unless lip.errors.empty?
+    tr
+      td colspan=columns = simple_errors_for(lip)

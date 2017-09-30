@@ -1,0 +1,8 @@
+.title-bar
+  h1 New Drug Test for #{@trucker.name}
+  ul
+    li = link_to 'Cancel', @trucker
+
+.content
+  fieldset.form
+    = render :partial => 'drug_tests/form'

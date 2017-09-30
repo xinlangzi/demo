@@ -1,0 +1,18 @@
+- if current_user.is_admin?
+  #warning_emails
+    - unless (warnings = CheckEmail.warnings).empty?
+      fieldset.border
+        .bold.red.center The system cannot send emails to some of the addresses, which are listed in the table below. Please contact administrator to correct them and retry.
+        table.gray.w800.hcenter
+          thead
+            tr
+              th Type
+              th Username
+              th Invalid Email Addresses Only accepts comma separated (,) multiple email addresses
+          tbody
+            - warnings.each do |warning|
+              - obj, field = warning
+              tr
+                td = obj.class.to_s
+                td = current_user.is_admin? ? link_to(obj.name, obj, :target=>'_blank') : obj.name
+                td = obj.send(field)

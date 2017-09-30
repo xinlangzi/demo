@@ -1,0 +1,13 @@
+<%if params[:summary]%>
+  $('#<%=@time%>-summary').closest('.period').find('.total_amount').html('<%= number_to_currency(@invoices[@time][:total_amount])%>').effect("highlight", {color:"#84E032"}, 2000 )
+  $('#<%=@time%>-summary').closest('.period').find('.total_credit').html('<%= number_to_currency(@invoices[@time][:total_credit])%>').effect("highlight", {color:"#BEFF60"}, 2000 )
+  $('#<%=@time%>-summary').closest('.period').find('.total_adjustment').html('<%= number_to_currency(@invoices[@time][:total_adjustment])%>').effect("highlight", {color:"#BEFF60"}, 2000 )
+  $('#<%=@time%>-summary').closest('.period').find('.total_paid').html('<%= number_to_currency(@invoices[@time][:total_paid])%>').effect("highlight", {color:"#A7FF27"}, 2000 )
+  $('#<%=@time%>-summary').closest('.period').find('.total_balance').html('<%= number_to_currency(@invoices[@time][:total_balance])%>').effect("highlight", {color:"#84E011"}, 2000 )
+  $('#<%=@time%>-summary').closest('.period').find('.total_invoices').html('<%= @invoices[@time][:size]%>').effect("highlight", {color:"#C2FFFA"}, 2000 )
+<%else%>
+  $('#<%=@time%>_showall').html('<%=j render("shared/invoices/invoices")%>')
+  $('#<%=@time%>_showall').prev().find('.show-hide').removeAttr('href')
+  $('#<%=@time%>_showall').prev().find('.show-hide').removeAttr('data-remote')
+  $('#<%=@time%>_showall').prev().find('.show-hide').removeAttr('data-method')
+<%end%>

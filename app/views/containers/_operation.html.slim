@@ -1,0 +1,79 @@
+- readable = current_user.is_admin? || operation.by_trucker?(current_user)
+- container = operation.container
+tr.operation-detail[id="#{operation.uid}"]
+  td.operation-info[colspan=4]
+    .containerOperationDiv
+      .operationDetail
+        .bold = operation.operation_type.name
+        - if operation.company
+          = render :partial => 'shared/print_brief_company', :object => operation.company
+        .operationDate
+          = calendar_for_operation(operation)
+          = attachments_for(operation)
+        .operationMile
+          = operation.distance.miles.to_s + " miles↓" if !operation.final?&&operation.distance
+      .operationDrop
+        - if operation.is_drop?
+          .bold Home Yard:
+          = render :partial => 'shared/print_brief_company', :object => operation.yard
+          .operationDate
+            = calendar_for(operation, :appt, { time: operation.time_required?})
+          .operationMile
+            = '↔' + operation.yard_distance.miles.to_s + " miles" if operation.yard_distance
+      .operationDriver
+        - if readable&&(operation.payable_charge_fee > 0)
+          .oepration-fee.fee = number_to_currency(operation.payable_charge_fee)
+
+        - unless operation.final?
+          - if current_user.is_admin?
+            span.icon-text
+              i.fa.fa-user
+              = operation.trucker.name rescue 'N/A'
+              = inactive_tip(operation.trucker)
+              - if operation.notified?
+                .rfloat.icons-mail-sent.icon16
+            - if operation.trucker
+              = link_to "SMS", new_text_message_path(operation_id: operation.id, text_message: { phone_number: operation.trucker.phone_mobile, company_id: operation.trucker_id, container_id: container.id, message: operation.sms_info}), remote: true, class: 'ml5', id: dom_id(operation, 'sms')
+              .sms-form.green.bold
+          .clear
+          - if readable
+            .bold Instruction:&nbsp;
+            div = operation.instructions
+
+          .link-containers
+            - if readable&&operation.linker
+              - linked_container = operation.linker.container
+              div = link_to "↖ Linked from Container #{linked_container.id}", linked_container, target: '_blank', class: 'green-btn center'
+
+            - if operation.linkable? || operation.linked
+              - if operation.linked
+                - linked_container = operation.linked.container
+                div
+                  = link_to "↘ Linked to Container #{linked_container.id}", linked_container, target: '_blank', class: 'green-btn center' if readable
+                  - if current_user.is_admin?
+                    - unless operation.invoiced?
+                      - if operation.link_editable?
+                        .text-right.mr5 id=dom_id(operation, "link")
+                          = link_to "Change", [:link, operation], remote: true, class: 'f80 red dialog'
+                          | &nbsp;&nbsp;
+                          = link_to "Unlink", [:unlink, operation], remote: true, class: 'f80 red'
+                    - else
+                      .red.f80 Unchangable since payable invoice exists.
+              - else
+                - if current_user.is_admin?
+                  div = link_to "Live Load to Container", [:link, operation], remote: true, class: 'btn dialog center'
+        .street-turn
+          - if operation.final?
+            - unless container.street_turn
+              = link_to "Street Turn", new_street_turn_path(id: container.id), remote: true, class: 'btn red-btn dialog center'
+            - if container.street_turn
+              = link_to "Street Turn to #{container.street_turn.id} by #{container.street_turn_type.titleize}", container.street_turn, class: 'btn green-btn center', target: '_blank'
+              .text-right.mr5
+                | &nbsp;&nbsp;
+                = link_to "Change", new_street_turn_path(id: container.id), remote: true, class: 'f80 red dialog'
+                | &nbsp;&nbsp;
+                = link_to "Unlink", unlink_street_turn_path(id: container.id), remote: true, method: :delete, class: 'f80 red'
+          - if operation.first?
+            - from_container = container.street_turn_from
+            - if from_container
+              = link_to "Street Turn from #{from_container.id} by #{from_container.street_turn_type.titleize}", from_container, class: 'btn blue-btn center', target: '_blank'

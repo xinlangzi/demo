@@ -1,0 +1,17 @@
+- if current_user&&current_user.is_admin?
+  .search-box
+    .search-inner
+      = simple_form_for BulkQuote.new, html: { class: 'horiz', multipart: true} do |s|
+        = s.input :csv, as: :file, label: 'CSV File', required: true, wrapper: 'vertical'
+        = s.submit "Upload"
+      .clear
+      table.gray.w500
+        tr
+          th CSV File
+          th Uploaded At
+          th Status
+        - current_user.bulk_quotes.each do |quote|
+          tr
+            td = quote.csv.file.filename
+            td = quote.created_at.us_datetime
+            td = quote.done? ? link_to("Download", quote.csv.url) : "Processing"

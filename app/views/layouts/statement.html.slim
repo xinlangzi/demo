@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    meta http-equiv="X-UA-Compatible" content="IE=Edge"
+    = wisepdf_stylesheet_tag "print"
+  body
+    .wrapper
+      .infos
+        .hcenter.w400.table
+          .logo-image
+            = uploader_image_tag(@owner.logo, { size: '188x80' } ) if @owner.logo?
+          .company-info
+            h1 = @owner.name
+            div = @owner.address_street
+            div = "#{@owner.address_city}, #{@owner.address_state.abbrev} #{@owner.zip_code}"
+            div = "Phone: #{@owner.phone}"
+            div = "Fax: #{@owner.fax}" if !@owner.fax.blank?
+            div = @owner.email
+            div = @company.invoice_footer
+      .content
+        = yield

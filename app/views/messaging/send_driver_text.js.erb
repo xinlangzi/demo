@@ -1,0 +1,13 @@
+<%if @error%>
+  App.showNotice('<%=@error%>')
+<%else%>
+  <%if @bad%>
+    <%@text_messages.each do |tm|%>
+      $('#sms_status_<%=tm.trucker_id%>').html('<%=tm.status%>')
+    <%end%>
+    $('#send').val("Send")
+    $('#send').attr('disabled', false)
+  <%else%>
+    window.location = '/messaging/send_driver_text'
+  <%end%>
+<%end%>

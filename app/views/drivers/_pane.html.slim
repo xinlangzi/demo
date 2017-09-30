@@ -1,0 +1,12 @@
+/ FIXME INVESTIGATE params[:date] might be passed unsanitized
+h3#drive-date = params[:date]
+.sort-widget
+  a Sort By:
+  a.by-status status
+  a.by-score score
+  a.by-name name
+  a.by-mileages mileages
+.ui-layout-content
+  .scrolling-content#dddrivers data-date=params[:date]
+    = render_async summary_drivers_path(date: params[:date])
+    / = render "drivers/summary" rescue nil

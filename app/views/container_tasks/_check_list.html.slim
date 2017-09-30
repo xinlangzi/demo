@@ -1,0 +1,9 @@
+/type: import,export, account: receivable, payable, others
+.check-tasks data-id=container.id data-ids=container.task_ids data-disabled=container.lock.to_i
+  - cache "#{type}-#{account}", skip_digest: true do
+    ul.task-check-list
+      - ContainerTask.send(type).send(account).each do |ct|
+        li
+          label.icon-checkbox
+            = check_box_tag ct.name, ct.id
+            span = ct.name

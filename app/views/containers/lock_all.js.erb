@@ -1,0 +1,3 @@
+DataTable.destroy('#<%=params[:tbody]%>');
+$('#<%=params[:tbody]%>').html('<%=j render(partial: params[:partial], locals: {containers: @containers, containers_brief: @containers})%>');
+DataTable.draw('#<%=params[:tbody]%>')

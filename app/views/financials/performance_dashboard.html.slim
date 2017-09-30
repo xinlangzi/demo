@@ -1,0 +1,85 @@
+.title-bar
+  h1 Performance Dashboard
+  ul
+    li = link_to "Export to Excel / Generate and download CSV file", containers_path(format: 'csv')
+.content
+  = render partial: 'financials/delivered_filter'
+
+  - if @containers
+    - container_profit = @container_revenue - @container_cost
+    table.gray
+      thead
+        tr
+          th[colspan=3] = "#{@containers.count} containers in this period (by delivery/invoice date)"
+      tfoot
+        tr
+          th.pw25 Gross Profit
+          th.pw70.number = number_to_currency container_profit + (@tp_revenue - @tp_cost)
+          th.pw5
+      tbody
+        tr
+          th Total Revenues
+          td.number = number_to_currency @container_revenue + @tp_revenue
+          td
+        tr
+          th Account Receivable orders (by delivery date)
+          td.number = number_to_currency @container_revenue
+          td = link_to '', sql_path(@receivable_container_charges_sql.iid, tmpl: 'financials/show_all', partial: 'financials/container_charges', target: 'rccs'), remote: true, class: 'show-hide fa fa-list-ul', title: 'show/hide all', rel: 'rccs'
+        tr.hidden#rccs
+          td
+          td[colspan=2]
+        tr
+          th Third Party Receivable (by Invoice Date)
+          td.number = number_to_currency @tp_revenue
+          td = link_to '', sql_path(@tp_receivable_invoices_sql.iid, tmpl: 'financials/show_all', partial: 'financials/tp_invoices', target: 'tpris'), remote: true, class: 'show-hide fa fa-list-ul', title: 'show/hide all', rel: 'tpris'
+        tr.hidden#tpris
+          td
+          td[colspan=2]
+        tr.hidden
+          td[colspan=3]
+        tr
+          th Total Costs
+          td.number = number_to_currency @container_cost + @tp_cost
+          td
+        tr
+          th Account Payable orders (by delivery date)
+          td.number = number_to_currency @container_cost
+          td = link_to '', sql_path(@payable_container_charges_sql.iid, tmpl: 'financials/show_all', partial: 'financials/container_charges', target: 'pccs'), remote: true, class: 'show-hide fa fa-list-ul', title: 'show/hide all', rel: 'pccs'
+        tr.hidden#pccs
+          td
+          td[colspan=2]
+        tr
+          th Third Party Payable (by Invoice date)
+          td.number = number_to_currency @tp_cost
+          td = link_to '', sql_path(@tp_payable_invoices_sql.iid, tmpl: 'financials/show_all', partial: 'financials/tp_invoices', target: 'tppis'), remote: true, class: 'show-hide fa fa-list-ul', title: 'show/hide all', rel: 'tppis'
+        tr.hidden#tppis
+          td
+          td[colspan=2]
+    h2 Uninvoiced Containers (by delivery date)
+    table.gray.w400
+      thead
+        tr
+          th[colspan=2] = "#{@uninvoiced_containers} uninvoiced containers"
+        tbody
+          tr
+            td Receivable Uninvoiced Containers
+            td = @uninvoiced_receivable_containers
+          tr
+            td Payable Uninvoiced Containers
+            td = @uninvoiced_payable_containers
+    h2 Accounts Receivable (by invoice date)
+    = render :partial => 'financials/invoices_totals', :object => @receivable_invoices, :locals => {:outstanding => @outstanding_receivable_invoices}
+    h2 Accounts Payable (by invoice date)
+    = render :partial => 'financials/invoices_totals', :object => @payable_invoices, :locals => {:outstanding => @outstanding_payable_invoices}
+    h2 Third Party Receivable (by invoice date)
+    = render :partial => 'financials/tp_invoices_totals', :object => @tp_receivable_invoices_per_company
+    h2 Third Party Payable (by invoice date)
+    = render :partial => 'financials/tp_invoices_totals', :object => @tp_payable_invoices_per_company
+
+javascript:
+  $(document).on('mouseup', 'tr.tosubtotal th', function(){
+    var by_what = $(this).attr('rel');
+    var table = $(this).closest('table');
+    table.find(".subtotal").hide();
+    table.find("." + by_what).show();
+  });

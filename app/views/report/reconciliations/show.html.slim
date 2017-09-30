@@ -1,0 +1,12 @@
+- unless @reconciliation.backend?
+  .title-bar
+    h1 Reconciliation: #{@reconciliation.name}
+    ul
+      li = link_to "Back to List", report_reconciliations_path
+      li = link_to "Edit", edit_report_reconciliation_path(@reconciliation)
+      li = link_to "Delete", @reconciliation, :method=>:delete, :confirm => 'Are you sure to delete?'
+  .content
+    = render 'payments'
+    = render 'report_by_category'
+- else
+  = @reconciliation.file.read.html_safe

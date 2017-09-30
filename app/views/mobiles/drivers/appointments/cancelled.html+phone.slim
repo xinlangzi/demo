@@ -1,0 +1,25 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding My Performance
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+.content-block-title 
+  center Cancelled Appointment 
+.list-block.media-list
+  ul
+    - @cancelled_appointments.each do |ca|
+      li
+        a.item-link.item-content href="#"
+          .item-inner
+            .item-title-row
+              .item-title = ca.container_id
+              .item-after = ca.issue_date
+            .item-text 
+              = simple_format(ca.reason)
+            
+              

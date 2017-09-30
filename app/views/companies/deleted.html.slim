@@ -1,0 +1,9 @@
+.title-bar
+  h1 Deleted #{@new_company.class.to_s.pluralize}
+  = render 'ctrls'
+.content
+  - if !@deleted_companies.empty?
+    = render 'filter' rescue nil
+    = render :partial => 'companies/companies', :object => @deleted_companies
+  - else
+    fieldset.border.red There are no deleted #{@new_company.class.to_s.downcase.pluralize}.

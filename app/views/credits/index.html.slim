@@ -1,0 +1,25 @@
+.title-bar
+  h1 = crud_class.new.class.to_s.tableize.titleize
+.content
+  = render 'filter'
+  table.gray
+    thead
+      tr
+        th Invoice#
+        th Payment#
+        th Company
+        th Catalog
+        th Issue Date
+        th Amount
+        th
+    tbody
+      - @credits.each do |credit|
+        tr
+          td = link_to credit.invoice.number, credit.invoice
+          td = link_to credit.payment.number, credit.payment if credit.payment
+          td = credit.invoice.company
+          td = credit.catalogable.try(:name)
+          td = credit.issue_date
+          td = number_to_currency(credit.amount)
+          td = link_to '', credit, data: { confirm: 'Are you sure you want to delete it?' }, method: :delete, class: 'fa fa-trash' if credit.can_destroy?
+  = paginate @credits

@@ -1,0 +1,31 @@
+.day-cell{
+  position: relative;
+  top: -5px;
+  width: 72px;
+  height: 72px;
+  margin:auto;
+  text-align: center;
+  color: white;
+  font-size: 11px;
+  .count{
+    padding-top: 10px;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: bold;
+  }
+  .info{
+    width: 40px;
+    margin: auto;
+    line-height: 11px;
+  }
+}
+
+.red-cell{
+  background-image: asset-data-url("img/red.png");
+  background-repeat: no-repeat;
+}
+
+.green-cell{
+  background-image: asset-data-url("img/green.png");
+  background-repeat: no-repeat;
+}

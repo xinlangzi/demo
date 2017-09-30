@@ -1,0 +1,107 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+
+.list-block.narrow-block
+  ul
+    li.accordion-item
+      a.item-content.item-link href="#"
+        .item-inner
+          .item-title Please select from recent emails
+      .accordion-item-content
+        ul
+          - @pod.similars.pluck(:email).uniq.each do |email|
+            li.choose-receiver
+              .item-content
+                .item-media
+                  i.f7-icons email
+                .item-inner
+                  b.item-title.email = email
+.list-block.narrow-block
+  = simple_form_for @pod, url: container_pods_path(@container, @pod), html: { multipart: true, id: 'pod-form' } do |s|
+    = s.input_field :signature_data, as: :string, id: 'signature-data', class: 'hidden'
+    ul
+      li
+        .item-content.small
+          .item-media
+            i.f7-icons person
+          .item-inner
+            .item-title.label Receiver Name
+            .item-input
+              = s.input_field :name, required: false, placeholder: 'First Name, Last Name'
+      li
+        .item-content.small
+          .item-media
+            i.f7-icons email
+          .item-inner
+            .item-title.label Receiver Email
+            .item-input
+              = s.input_field :email, required: false, placeholder: 'Receiver Email'
+      li
+        .item-content.small
+          .item-media
+            i.f7-icons calendar
+          .item-inner
+            .item-title.label Arrival
+            .item-input.inline
+              = s.input_field :arrival_time, as: :string, required: false, placeholder: 'Arrival Time', class: 'timePicker'
+      li
+        .item-content.small
+          .item-media
+            i.f7-icons calendar
+          .item-inner
+            .item-title.label Departure
+            .item-input.inline
+              = s.input_field :departure_time, as: :string, required: false, placeholder: 'Departure Time', class: 'timePicker'
+      li
+        .item-content.small
+          .item-media
+            i.f7-icons settings
+          .item-inner
+            .item-title.label Seal No.
+            .item-input.inline
+              = s.input_field :seal_no, required: false, placeholder: 'Seal No.'
+      li
+        .item-content.small
+          .item-media
+            i.f7-icons settings
+          .item-inner
+            .item-title.label Intact
+            .item-input
+              label.label-switch
+                = check_box_tag :intact, true, @pod.intact, name: "pod[intact]", id: 'intact'
+                .checkbox
+            .item-after
+              .yes-intact.green class="#{@pod.intact ? '' : 'hidden'}" Yes
+              .no-intact class="#{@pod.intact ? 'hidden' : ''}" No
+
+      li
+        .item-content.small
+          .item-media
+            i.f7-icons settings
+          .item-inner
+            .item-input
+              = s.input_field :measure, required: false, placeholder: 'Total Pieces/Wt./Pkg Type'
+      li
+        .item-content.small
+          .item-media
+            i.f7-icons chat
+          .item-inner
+            .item-input
+              = s.input_field :exceptions, as: :string, required: false, placeholder: 'Exceptions'
+      li.open-pod
+        .item-content.small
+          .item-inner.text-center
+            a.full-width href="#" Customer Signature
+      li
+        .item-content.small
+          .item-inner
+            = s.submit 'Upload', class: 'button button-big active'
+  img.open-pod#signature src=@pod.signature_data

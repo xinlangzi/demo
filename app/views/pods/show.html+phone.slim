@@ -1,0 +1,26 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+.list-block.narrow-block
+  ul
+    = f7_label_text("Container", @pod.container_id)
+    = f7_label_text("Receiver Email", @pod.email)
+    = f7_label_text("Receiver Name", @pod.name)
+    = f7_label_text("Seal No.", @pod.seal_no)
+    = f7_label_text("Intact", @pod.intact ? "Yes" : "No")
+    = f7_label_text("Arrival Time", @pod.arrival_time.try(:us_time))
+    = f7_label_text("Departure Time", @pod.departure_time.try(:us_time))
+    = f7_label_text("Pieces/Wt./Pkg Type", @pod.measure)
+    = f7_label_text("Exceptions", @pod.exceptions)
+  center.content-block-title Signature
+  .content-block
+    .content-block-inner
+      = image_tag(@pod.signature, { width: "100%" })
+      

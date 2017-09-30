@@ -1,0 +1,11 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .center.sliding = logo_tag
+.content-block.narrow-block
+  .content-block-inner
+    #map style="width:100%;height:400px"
+= GoogleMap.show.html_safe
+= javascript_tag
+  - @trips.each do |trip|
+    = raw GoogleMap.request_directions(trip.first.address, trip.last.address, '1')

@@ -1,0 +1,62 @@
+.box{
+  border: 1px solid $gray !important;
+  background: #FFF;
+  padding: 0;
+  margin-bottom: 15px;
+  position: relative;
+  @include border-top-radius(1px);
+  @include border-bottom-radius(1px);
+  .box-title{
+    padding: 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0px;
+    background: #F8F8F8;
+    border-bottom: 1px solid #CCC;
+    color: #666;
+    .pull-right{
+      .radio, .checkbox{
+        margin-top: 0px;
+      }
+    }
+    &:nth-child(n+2){
+      border-top: 1px solid #CCC;
+    }
+  }
+  .box-actions{
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    a{
+      font-size: 11px;
+      line-height: 12px;
+      @extend .btn;
+      .fa{
+        font-size: 12px;
+        top: 0px;
+      }
+    }
+  }
+  h4{
+    margin: 6px -5px;
+    background: #EEE;
+    padding: 5px;
+    font-size: 13px;
+    font-weight: normal;
+    font-style: italic;
+  }
+  .box-content{
+    width: auto;
+    padding: 8px;
+    // overflow-y: auto; # effect on the chosen plugin
+  }
+  .box-list{
+    a.item{
+      display: block;
+      padding: 10px;
+      &:hover{
+        background: #F9F9F9;
+      }
+    }
+  }
+}

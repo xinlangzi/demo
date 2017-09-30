@@ -1,0 +1,16 @@
+tr id=dom_id(audit_charge)
+  td = audit_charge.category.try(:titleize)
+  td = audit_charge.error.try(:titleize)
+  td
+    = fields_for :audit_charge, audit_charge do |f|
+      = f.text_area :comment, class: 'full-width auto-area auto-save', ref: "AuditCharge:#{audit_charge.id}:comment", id: dom_id(audit_charge, 'comment'), placeholder: 'Comment', rows: 1
+  td
+    = fields_for :audit_charge, audit_charge do |f|
+      = f.select :status, enum_options(AuditCharge.statuses), { include_blank: false }, { class: 'auto-save', ref: "AuditCharge:#{audit_charge.id}:status", id: dom_id(audit_charge, 'status') }
+  td width="130"
+    = fields_for :audit_charge, audit_charge do |f|
+      = f.select :assignee_id, Admin.active.get_names_and_ids, { include_blank: '- Assignee -' }, { class: 'auto-save', ref: "AuditCharge:#{audit_charge.id}:assignee_id", id: dom_id(audit_charge, 'assignee_id') }
+  td.f120
+    - if accessible?("report/audit_charges", :destroy)
+      = link_to [:report, audit_charge], method: :delete, remote: true, data: { confirm: 'Are you sure to delete?'} do
+        = fa_icon('times-circle', class: 'red')

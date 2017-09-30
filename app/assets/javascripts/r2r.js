@@ -1,0 +1,10 @@
+//= require jquery_ujs
+//= require jquery-ui
+//= require jquery.multiselect
+//= require vendors/jquery.validate
+//= require vendors/clipboard
+//= require geocomplete
+//= require exts/core
+//= require exts/validator
+//= require ctrls/driver_quote
+//= require ctrls/customer_quote

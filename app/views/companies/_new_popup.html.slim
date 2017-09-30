@@ -1,0 +1,3 @@
+= simple_form_for @company, as: :company, remote: true, html: {class: 'rows'} do |c|
+  = render 'companies/form', c: c
+  = c.submit 'Create'

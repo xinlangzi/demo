@@ -1,0 +1,9 @@
+ul
+  li = link_to 'Back to Reports', '/reports'
+  - unless current_page?(controller: 'report/containers', action: 'audit_charges')
+    li = link_to "Audit Charges", '/report/containers/audit_charges' 
+  - unless current_page?(controller: 'report/audit_charges', action: 'unresolved')
+    li = link_to 'Await to Resolve', '/report/audit_charges/unresolved'
+  - unless current_page?(controller: 'report/audit_charges', action: 'errors')
+    - if accessible?('report/audit_charges', :errors)
+      li = link_to 'Error Charges', '/report/audit_charges/errors'

@@ -1,0 +1,25 @@
+- options = Accounting::Category.parent_options(current_user, @invoice.type_info)
+tr
+  - if options.empty?
+    td.red[colspan='4'] Please click #{link_to 'here' , accounting_categories_path(:type=>@invoice.type_info), :target=>'_blank'} to create #{@invoice.type_info} Category first!
+  - else
+    - disabled = li.object.payments.blank? ? false : true
+    td
+      = li.select :category_id, Accounting::Category.parent_options(current_user, @invoice.type_info, nil, false).collect{|x| x[0..1]}, {include_blank: true},{ disabled: disabled, class: 'w250 unobservable chosen-select category'}
+      - add_url = new_accounting_category_path(type: @invoice.type_info, popup: true)
+      = link_to "+ Add", add_url, remote: true, class: 'dialog rfloat' if accessible_url?(add_url)
+    td
+      = li.text_area :description, :rows=>2, :cols => 28, class: 'unobservable', disabled: disabled
+    td
+      span $
+      - if disabled
+        span = text_field :line_items, :amount_fake, { size: 10, disabled: disabled, value: li.object.amount }
+        = li.hidden_field :amount
+      - else
+        = li.text_field :amount, size: 10, class: 'w100'
+    td
+      - unless li.object.new_record?||disabled
+        = li.check_box :_destroy
+      - if li.object.new_record?
+        a.fa.fa-times-circle onclick="$(this).closest('tr').removeThenChangeForm()"
+

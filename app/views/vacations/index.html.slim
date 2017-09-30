@@ -1,0 +1,24 @@
+.title-bar
+  h1 Truckers: Vacation Calendar
+  ul
+    li = link_to 'Back to Owner Operators', '/truckers'
+.content
+  - if current_user.is_admin?
+    .ui-container#vacation-calendar-layout
+      .pane.ui-layout-west
+        - current_hub.truckers.active.each do |trucker|
+          .draggable-trucker data-id="#{trucker.id}" = trucker.name
+      .pane.ui-layout-center
+        fieldset.border
+          ul
+            li 1. Drag&Drop driver on the calendar cell to create vacation.
+            li 2. Click driver label on the calendar cell to adjust load weight factor, and background color will be changed.
+            li
+              span 3. Background color indicates weight factor:&nbsp;
+              span style="background: #00CC29" &nbsp;&nbsp;1.0&nbsp;&nbsp;
+              span style="background: #DBCD00" &nbsp;&nbsp;0.5&nbsp;&nbsp;
+              span style="background: #A30000" &nbsp;&nbsp;0.0&nbsp;&nbsp;
+
+        #vacation-calendar.full-calendar
+  - else
+    #my-vacations.full-calendar

@@ -1,0 +1,3 @@
+<% title = "Viewing #{@container.class.to_s.titleize} with ID #{@container.id}"%>
+App.showDialog({width: 935, maxHeight: 720, title: "<%=title%>"}).html('<%=j render("containers/preview")%>')
+ContainerTask.init()

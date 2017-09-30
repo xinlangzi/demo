@@ -1,0 +1,102 @@
+.section{
+  .block{
+    margin: 10px 0;
+    .label{
+      font-size: 12px;
+      font-weight: bold;
+      color: #666;
+      line-height: 120%;
+      display: block;
+    }
+    .h1{
+      font-size: 24px;
+      line-height: 170%;
+      display: block;
+    }
+    .h2{
+      font-size: 20px;
+      line-height: 160%;
+      display: block;
+    }
+    .h3{
+      font-size: 16px;
+      line-height: 150%;
+      display: block;
+    }
+    .h4{
+      font-size: 14px;
+      line-height: 140%;
+      display: block;
+    }
+  }
+}
+.check-circle{
+  font-size: 24px;
+  color: green;
+}
+table.progress{
+  td{
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid #FFF;
+    em{
+      font-size: 12px;
+    }
+    &.green{
+      background: #54a263;
+      color: #FFF;
+    }
+    &.gray{
+      background: #CCC;
+      color: #555;
+    }
+  }
+}
+.container{
+  .title{
+    font-size: 20px;
+    line-height: 120%;
+    a{
+      color: #444;
+      text-decoration: none;
+    }
+  }
+  .info{
+    label{
+      color: #666;
+    }
+    span{
+      color: #00A0DB;
+    }
+  }
+}
+.shipment-steps, .shipment-location{
+  font-size: 14px;
+  margin: 0;
+  border-top: 1px solid #EEE;
+  border-bottom: 1px solid #EEE;
+  background: #FCFCFC;
+  color: #666;
+}
+.shipment-location{
+  .driver{
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .address{
+    font-size: 20px;
+    margin: 15px 0;
+  }
+  .time{
+    font-size: 15px;
+    font-style: italic;
+  }
+}
+.charge-details{
+  .block{
+    margin: 0 0 0 5px;
+    .num{
+      color: green;
+    }
+  }
+}

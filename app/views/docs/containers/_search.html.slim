@@ -1,0 +1,6 @@
+= simple_form_for Container.search, url: containers_docs_path(trucker_id: @trucker.id), remote: true, html: { method: :get, class: 'horiz'} do |f|
+  = f.input :id_eq, label: false, placeholder: 'Container ID', wrapper: 'vertical', required: false, input_html: { class: 'w150' }
+  = f.input :container_no_cont, label: false, placeholder: 'Container No.', wrapper: 'vertical', required: false, input_html: { class: 'w150' }
+  = f.input :chassis_no_cont, label: false, placeholder: 'Chassis No.', wrapper: 'vertical', required: false, input_html: { class: 'w150' }
+  = f.submit 'Search'
+.clear

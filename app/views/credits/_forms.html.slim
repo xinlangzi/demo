@@ -1,0 +1,14 @@
+table.full-width id=dom_id(invoice, 'credits')
+  tbody id=dom_id(invoice, 'credits')
+    - invoice.credits.each do |credit|
+      = render 'credits/form', credit: credit
+  - if !print_status? && accessible?('credits', 'new')
+    tfoot
+      tr
+        td.text-left
+          - if in_payable?
+            = link_to new_vendor_credit_path(invoice_id: invoice.id), remote: true, class: 'green' do
+              i.fa.fa-plus-circle&nbsp;New Credit
+          - else
+            = link_to new_customer_credit_path(invoice_id: invoice.id), remote: true, class: 'green' do
+              i.fa.fa-plus-circle&nbsp;New Credit

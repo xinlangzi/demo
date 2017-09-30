@@ -1,0 +1,55 @@
+- url||= polymorphic_path(crud_class.new)
+= simple_form_for @search, url: url, html: { method: :get } do |f|
+  table.gray.lform.vmiddle
+    - if current_user.is_admin?
+      tr
+        - if in_payable?
+          td = f.label :trucker_id_eq, "Trucker"
+          td = f.select :trucker_id_eq, Trucker.get_all_names_and_ids, { selected: @search.company_id_eq.to_i, include_blank: true}, {class: 'chosen-select'}
+        - else
+          td = f.label :customer_id_eq, "Customer"
+          td = f.select :customer_id_eq, Customer.get_all_names_and_ids, { selected: @search.company_id_eq.to_i, include_blank: true}, {class: 'chosen-select'}
+        - if in_payable?
+          td = f.label :tp_company_id_eq, "TP Vendor"
+          td
+            - companies = Accounting::TpVendor.for_user(current_user).get_all_names_and_ids
+            = f.select :tp_company_id_eq, companies, { selected: @search.company_id_eq.to_i, include_blank: true }, { class: 'chosen-select' }
+        - else
+          td = f.label :tp_company_id_eq, "TP Customer"
+          td
+            - companies = Accounting::TpCustomer.for_user(current_user).get_all_names_and_ids
+            = f.select :tp_company_id_eq, companies, { selected: @search.company_id_eq.to_i, include_blank: true }, { class: 'chosen-select' }
+            / = f.select :tp_company_id_eq, Company.active.invoiced(@accounts_type).third_party.get_names_and_ids, { selected: @search.company_id_eq.to_i, include_blank: true }, { class: 'chosen-select' }
+        td = f.label :company_id_eq, "Others"
+        td = f.select :company_id_eq, Company.active.invoiced(@accounts_type).other.get_names_and_ids, { selected: @search.company_id_eq.to_i, include_blank: true }, { class: 'chosen-select' }
+    tr
+      td = f.label :issue_date_gteq, 'Issue Date'
+      td
+        = f.input_field :issue_date_gteq, as: :datepicker, required: false, dateFormat: 'yy-mm-dd', value: @search.issue_date_gteq.to_s, class: 'mr10', placeholder: 'From'
+        = f.input_field :issue_date_lteq, as: :datepicker, required: false, dateFormat: 'yy-mm-dd', value: @search.issue_date_lt.to_s, placeholder: 'To'
+      td = f.label :balance_gteq, 'Balance'
+      td
+        = f.text_field :balance_gteq, :size => 3, class: 'nocomma w100 mr10', placeholder: 'Greater than'
+        = f.text_field :balance_lt, :size => 3, class: 'nocomma w100', placeholder: 'Less than'
+      td = f.label :amount_gteq, 'Amount'
+      td
+        = f.text_field :amount_gteq, :size => 3, class: 'nocomma w100 mr10', placeholder: 'Greater than'
+        = f.text_field :amount_lt, :size => 3, class: 'nocomma w100', placeholder: 'Less than'
+    tr
+      td = f.label :invoice_no_in, 'Invoice No.'
+      td = f.text_field :invoice_no_in, :size => 24, class: 'w250', placeholder: "Comma separated multiple Invoice No."
+      td = f.label :container_no_cont, 'Container No.'
+      td = f.text_field :container_no_cont, :size => 24, class: 'w250 nospace'
+
+    tr
+      th.text-right colspan=6
+        / = f.label :exported_to_quickbooks_true, 'Exported to QuickBooks', class: 'inline'
+        / = f.check_box :exported_to_quickbooks_true, class: 'inline'
+        = f.label :outstanding_true, 'Outstanding Only', class: 'inline'
+        = f.check_box :outstanding_true, class: 'inline mr10'
+        = f.label :as_of, 'as of', class: 'inline mr5'
+        = f.input_field :as_of, as: :datepicker, required: false, class: 'inline mr10'
+        = f.label :referred_payment_date, 'Referred Payment Date', class: 'inline mr5'
+        = f.select :referred_payment_date, Invoice::REFERRED_PAYMENT_DATES[@accounts_type.downcase.to_sym], class: 'inline mr10'
+        | &nbsp;&nbsp;
+        = f.submit 'Search'

@@ -1,0 +1,44 @@
+fieldset{
+  @include box-sizing(border-box);
+  border: 1px solid $gray !important;
+  &.appt_time{
+    font-size: 80%;
+    margin-bottom: 5px;
+    padding: 5px 0px;
+    text-align:center;
+    legend{
+      font-weight: bold;
+    }
+    label{
+      display: inline;
+    }
+  }
+  //inside form
+  .rows &{
+    background: lighten($gray, 23%);
+    padding: 5px;
+    margin-bottom: 5px;
+    legend{
+      color: $gray40;
+      font-size: 120%;
+      font-weight: bold;
+      padding: 5px;
+      margin: 0px 10px;
+    }
+  }
+
+  &.form, &.border{
+    margin-bottom: 10px;
+    padding: 5px;
+    background: #F6F6F6;
+    legend{
+      &.title{
+        color: darken($base, 5%);
+        padding: 0px 10px;
+        font-weight: bold;
+        font-size: 16px;
+        border: 1px solid $gray-10;
+      }
+    }
+  }
+}

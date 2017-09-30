@@ -1,0 +1,60 @@
+- stale_warning = container.errors.delete(:vid).present?
+- if stale_warning
+  fieldset.border.red.guides
+    .bold ATTN: Another user has made a change to that record since you accessed the edit form. Two solutions for you:
+    - track_change_link = link_to('Track Changes', [:history, container, vid: params[:container][:vid]], remote: true, method: :get, class: 'show-hide', rel: 'paper_trail_entries')
+    ol
+      li 1. #{track_change_link}, compare, edit and resubmit. If resubmit, your data will become the latest version.
+      li 2. Ignore changes and #{link_to('reload', [:edit, container])} the latest version to edit.
+  .paper-trails.hidden#track-changes
+= simple_form_for container, as: :container, html: { id: 'container-form'} do |c|
+  = hidden_field_tag :order_type, container.type
+  = c.hidden_field :id
+  = c.hidden_field :to_save
+  = c.hidden_field :vid if container.persisted?
+  = c.error_messages
+  .stickbox.w0
+    .actions
+      - if current_user.is_admin?
+        = c.submit 'Save as Pending AR', class: 'btn brown-btn', disabled: !container.pending_receivable?
+        = c.submit 'Save as Pre-Alert', class: 'btn red-btn'
+        = c.submit 'Save as Confirmed', class: 'btn'
+        hr
+        - if container.to_equipment_release?
+          .btn.lblue-btn#equipment-release data-url=build_equipment_releases_path(container_id: container.id) Equipment Release
+        - if container.to_rail_bill?
+          .btn.red-btn#rail-bill data-url=build_rail_bills_path(container_id: container.id) Rail Billing
+
+        = link_to 'Calculate Receivables', 'javascript:void(0)', id: 'calculate-receivables', class: 'btn lblue-btn'
+        - if container.to_review
+          = link_to 'Send 997 Reject', send_997_reject_container_path(container), method: :put, class: "btn red-btn"
+          .hint.red
+            | (Note: Container order will be removed automatically)
+      - else
+        = c.submit 'Save', class: 'btn'
+  table.gray.order.vmiddle
+    tr
+      td colspan=4
+        .w500.hcenter.bold
+          span.f125 = container.class.to_s.underscore.split('_').map(&:capitalize).join(' ')
+          - if current_user.is_admin?
+            span.f125
+              span &nbsp;For&nbsp;
+              span = c.select(:customer_id, Customer.active.get_names_and_ids, { include_blank: true }, { class: 'w250 chosen-select', disabled: !container.customer_modifiable?, data: { pre: container.customer_id }})
+          div
+            span.f120.mr5 Contact Person
+            = render 'containers/form/contact_person', container: container
+    tr
+      td.pw20.bold SS Line
+      td.pw30
+        = c.select :ssline_id, Ssline.active.get_names_and_ids, { include_blank: true}, { class: 'chosen-select' }
+        - if container.is_export? && container.ssline
+          - ssline = container.ssline
+          = link_to 'Modify to send RB/EQ email', [:edit, ssline], remote: true, class: 'dialog red' if !ssline.email_valid?(:rail_billing_email) || !ssline.email_valid?(:eq_team_email)
+      td.pw20.bold Reference No.
+      td.pw30 = c.text_field :reference_no
+    - if container.kind_of? ImportContainer
+      = render 'containers/form/import_container', c: c, container: container
+    - else
+      = render 'containers/form/export_container', c: c, container: container
+    = render 'containers/form/shared', c: c, container: container

@@ -1,0 +1,5 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div Dear #{@invoice_statement.customer.name},
+      = simple_format(@invoice_statement.body)

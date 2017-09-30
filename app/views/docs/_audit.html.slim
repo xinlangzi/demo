@@ -1,0 +1,8 @@
+fieldset.form id=dom_id(image, 'audit')
+  legend Current Status: #{image.status.titleize}
+  = simple_form_for image, url: reject_doc_path(image), method: :patch, remote: true, html: { class: 'horiz' } do |s|
+    = s.input :comment, as: :string, label: false, placeholder: 'Reason', wrapper: 'vertical', required: true, wrapper_html: { class: 'full-width' }, input_html: { class: 'full-width' }
+    = s.submit 'Reject', class: 'red-btn'
+    - unless image.approved?
+      | &nbsp;or&nbsp;
+      = link_to 'Approve', approve_doc_path(image), method: :patch, remote: true, data: { confirm: "Are you sure to approve this doc?" }, class: 'green-btn'

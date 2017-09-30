@@ -1,0 +1,35 @@
+table.gray
+	thead
+		tr
+			th Invoice no
+			th Type
+			th Company
+			th Date created
+	tbody
+		- @double_invoiced_line_items.each do |li|
+			tr
+				td #{link_to li.invoice.number, li.invoice}
+				td #{li.invoice.class.to_s}
+				td #{li.invoice.company.name}
+				td #{li.created_at}
+
+/ <table class="neat">
+	
+/ 	<tr>
+/ 		<th>Invoice no</th>
+/ 		<th>Type</th>
+/ 		<th>Company</th>
+/ 		<th>Date created</th>
+/ 	</tr>
+	
+/ 	<%@double_invoiced_line_items.each do |li| %>
+/ 		<tr>
+/ 			<td>
+/ 				<%=link_to li.invoice.number, li.invoice %>
+/ 			</td>
+/ 			<td><%=li.invoice.class.to_s%></td>
+/ 			<td><%=li.invoice.company.name%></td>
+/ 			<td><%=li.created_at%></td>
+/ 		</tr>
+/ 	<%end%>
+/ </table>

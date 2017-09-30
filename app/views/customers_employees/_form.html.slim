@@ -1,0 +1,12 @@
+= c.error_messages
+- if current_user.is_admin?
+  = c.input :customer_id, as: :select, collection: Customer.active.get_names_and_ids, include_blank: true, input_html: { class: 'chosen-select', data: { width: 300 } }
+= c.input :name
+= c.input :email
+- unless c.object.new_record?
+  .group-checkboxs
+    = c.input :change_pwd, as: :boolean, label: 'Set new password'
+  .clear
+= c.input :password, label: 'Password'
+= c.input :password_confirmation, label: 'Retype password'
+= c.input :comments, as: :text, input_html: {rows: 5, cols: 40, class: 'w500'}

@@ -1,0 +1,49 @@
+.title-bar
+  h1 List of uncleared payments
+  ul
+    li = link_to "Back", :back
+.content
+  - if @payments.blank?
+    div No payments found.
+  - else
+    = form_for :payments, :html =>{:id => 'payment_form'},:url => {:action => 'set_cleared_date'} do |pf|
+      = pf.submit 'Save',:disable_with => PLEASE_WAIT, class: 'w100'
+      table.gray.vmiddle#unclear_payment
+        thead
+          tr
+            th.150 Check No.
+            th Company
+            th Check Amount
+            th #{@accounts_type == 'Payable' ? 'Date Send On' : 'Date Received On'}
+            th.w100 Cleared Date
+        tbody
+          - @payments.each do |payment|
+            tr
+              td = link_to payment.number, payment
+              td 
+                = payment.company.name
+                sup = payment.company.is_a?(Accounting::TpCompany) ?  'TP' : ''
+              td.number data-filter=numeric_to_filter(payment.amount) = number_to_currency(payment.amount)
+              td = payment.date ? payment.date.to_date : "N/A"
+              td
+                = errors_for(payment)
+                = fields_for "payment[]", payment do |p|
+                  = p.text_field :cleared_date, class: 'date_picker set-cleared-date', data: { max_date: Date.today.ymd }
+        tfoot
+          tr
+            td.number.bold#payment_subtotal_amount colspan=3
+              = number_to_currency(@selected_total)
+            th.text-right colspan=2
+              = pf.submit 'Save', disable_with: PLEASE_WAIT, class: 'w100'
+      .hidden.datatable-config
+        | {
+            "bPaginate": false,
+            "aaSorting": [[ 3, "desc" ]],
+            "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              {"bSortable": false}
+            ]
+          }

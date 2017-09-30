@@ -1,0 +1,102 @@
+.title-bar
+  h1 Audit Charges
+  = render 'report/audit_charges/menu'
+
+.full-page
+  #search-box.search-box
+    .search-inner
+      = simple_form_for @search, url: [:audit_charges, :report, :containers], html: { method: :get, class: 'horiz' } do |s|
+        = s.input :operated_at_from, as: :datepicker, label: 'Operated from', required: false,  wrapper: 'vertical'
+        = s.input :operated_at_to, as: :datepicker, label: 'To', required: false,  wrapper: 'vertical'
+        = s.submit 'Search'
+  - unless @containers.empty?
+    table.gray.vmiddle.f90
+      thead
+        tr
+          th Cont ID
+          th Tasks
+          th Hub
+          th Lock
+          th Container No.
+          th Chassis No.
+          th Ref No.
+          th Delivered On
+          th Receivable Invoices
+          th.text-right Receivable Amount
+          th Payable Invoices
+          th.text-right Payable Amount
+          th.text-right Profit/Loss
+          th Audit Status
+      tbody
+        - revenue = 0
+        - cost = 0
+        - pending_receivable_invoices = 0
+        - pending_payable_invoices = 0
+        - @containers.each do |container|
+          - receivable = container.receivable_amount
+          - payable = container.payable_amount
+          - revenue+= receivable
+          - cost+= payable
+          - pending_task = @pending_task_ids.include?(container.id)
+          - audit_statuses = container.audit_charges.pluck(:status)
+          tr
+            td
+              = link_to container.id, container
+              = link_to '', polymorphic_path([:preview, container]), remote: true, class: "dialog fa fa-eye invisible"
+            td rel=(pending_task ? 0 : 1)
+              i.fa.fa-circle class="#{pending_task ? 'red' : 'lgreen'}"
+            td = container.hub.name
+            td = lock_checkbox(container, { ajax: true })
+            td = container.container_no
+            td = container.chassis_no
+            td = container.reference_no
+            td = container.delivered_date.to_date rescue 'N/A'
+            td.customer
+              - pending_receivable_invoices+= 1 if container.receivable_invoices.empty?
+              - container.receivable_invoices.each do |invoice|
+                = link_to invoice.number, invoice, target: '_blank'
+                br
+            td.text-right.customer = number_to_currency(receivable)
+            td.trucker
+              - pending_payable_invoices+= 1 if container.payable_invoices.empty?
+              - container.payable_invoices.each do |invoice|
+                = link_to invoice.number, invoice, target: '_blank'
+                br
+            td.text-right.trucker = number_to_currency(payable)
+            td.text-right.bold
+              a.view-charges class="#{receivable - payable > 0 ? 'green' : 'red'}" rel='facebox' href="/report/audit_charges/#{container.id}/view" = number_to_currency(receivable - payable)
+            td = audit_statuses.include?('await_to_resolve') ? 'Unresolved' : 'Resolved' unless audit_statuses.empty?
+      tfoot
+        tr.f120
+          th colspan=9 
+            span #{@containers.size} Containers &nbsp;
+            span.green #{pending_receivable_invoices} Pending Receivable Invoices &nbsp;
+            span.red #{pending_payable_invoices} Pending Payable Invoices
+          th.text-right = number_to_currency(revenue)
+          th
+          th.text-right = number_to_currency(cost)
+          th.text-right class="#{revenue - cost > 0 ? 'green' : 'red'}"
+            = number_to_currency(revenue - cost)
+          th
+    .hidden.datatable-config
+      | {
+          "bInfo": false,
+          "bPaginate": false,
+          "aaSorting": [[0, "asc" ]],
+          "aoColumns": [
+            null,
+            { "sSortDataType": "cell", "sType": "numric" },
+            null,
+            { "bSortable": false },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }

@@ -1,0 +1,23 @@
+- empty = true
+- unless @import_containers.empty?
+  #import_containers
+    = render :partial => 'containers/wild_search_parts', :locals => {:part => :import}
+  - empty = false
+
+- unless @export_containers.empty?
+  #export_containers
+    = render :partial => 'containers/wild_search_parts', :locals => {:part => :export}
+  - empty = false
+
+- unless @unconfirmed_import_containers.empty?
+  #unconfirmed_import_containers
+    = render :partial => 'containers/wild_search_parts', :locals => {:part => :unconfirmed_import}
+  - empty = false
+
+- unless @unconfirmed_export_containers.empty?
+  #unconfirmed_export_containers
+    = render :partial => 'containers/wild_search_parts', :locals => {:part => :unconfirmed_export}
+  - empty = false
+
+- if empty
+  fieldset.border-info.red There are no matched orders.

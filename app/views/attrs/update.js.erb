@@ -1,0 +1,8 @@
+$('#<%=params[:respond_id]%>').parent().children('.auto-save-info').remove()
+<%if @error.nil?%>
+$('#<%=params[:respond_id]%>').parent().append('<%=j content_tag(:div, "Updated!", class: "ok auto-save-info")%>')
+$('#<%=params[:respond_id]%>').parent().find('.auto-save-info').delay(1500).fadeOut("slow")
+eval(<%=params[:callback].html_safe%>)
+<%else%>
+$('#<%=params[:respond_id]%>').parent().append('<%=j content_tag(:div, @error, class: "error auto-save-info")%>')
+<%end%>

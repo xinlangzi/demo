@@ -1,0 +1,10 @@
+= fields_for "adjustments[#{ppd.adjustment_id}]", ppd do |d|
+  tr.adjustment data-invoice-id=ppd.invoice_id
+    td.pw10 = d.check_box :selected, class: "check_box"
+    td.pw20.red.center = Invoice.find(ppd.invoice_id).number
+    td.pw60.red = Adjustment.find(ppd.adjustment_id).category.try(:name)
+    td.pw10.red.bold
+      = number_to_currency(ppd.total)
+      = d.hidden_field :total
+      = d.hidden_field :invoice_id
+      = d.hidden_field :adjustment_id

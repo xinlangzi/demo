@@ -1,0 +1,12 @@
+.title-bar
+  h1  Choose Hub and Order Type:
+.content
+  .hcenter.w500
+    .choose-order
+      h3 Choose Hub
+      = render 'shared/hub'
+      br
+      - cache "order-types" do
+        h3 Choose Type
+        - Settings.order_types.each do |name, values|
+          = link_to name, values['url'], class: "#{values['class']} deco-none"

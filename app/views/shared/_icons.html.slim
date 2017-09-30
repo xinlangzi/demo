@@ -1,0 +1,7 @@
+- if current_user.is_admin?
+  .icons-widget
+    - unresolved = current_user.audit_charges.await_to_resolve.count
+    - if unresolved > 0
+      .icon 
+        = link_to unresolved_report_audit_charges_path(q: { assignee_id_eq: current_user.id }) do 
+          .fa.fa-warning = unresolved

@@ -1,0 +1,15 @@
+table width="100%" cellpadding="10"
+  tr style=outlook_font
+    td.text-left
+      div Dear #{@trucker.name},
+      p The #{link_to "container #{@container.id} / #{@container.container_no}", polymorphic_url(@container)} was updated. Here are the most important changes:
+      table.gray cellpadding="0" cellspacing="0" valign="middle"
+        tr style=outlook_font
+          th
+          th Before
+          th After
+        - @changes.each do |name, diff|
+          tr.text-center style=outlook_font
+            td = name
+            td = diff.first
+            td = diff.last

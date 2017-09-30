@@ -1,0 +1,6 @@
+.title-bar
+  h1 Payments - Accounts #{@accounts_type}
+  = render 'accounting/payments/payment_ctrls', payment: @payment, show: 'single'
+.content
+  .w900.hcenter
+    = render 'accounting/payments/payment_info', payment: @payment

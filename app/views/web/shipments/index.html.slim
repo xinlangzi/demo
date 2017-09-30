@@ -1,0 +1,12 @@
+- @title = 'Track Shipment'
+h1 Track Shipment
+#track-shipments
+  .notice Please enter Container Number or Booking Number to see the most updated status of your shipment.
+  = form_tag '/web/shipments', method: :get do 
+    = text_area_tag :ids, params[:ids], rows: 3
+    = submit_tag 'Track Shipment', class: 'green-btn'
+  #shipments
+    - if @containers.empty?
+      p.red &nbsp;No container is found. Please try again.
+    - else
+      = render partial: 'web/shipments/container', collection: @containers

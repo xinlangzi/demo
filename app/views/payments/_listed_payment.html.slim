@@ -1,0 +1,15 @@
+tr id=dom_id(listed_payment)
+  td = listed_payment.payment_method.name
+  td = link_to listed_payment.number, listed_payment, class: listed_payment.class.to_s=~/Accounting/ ? 'tp' : 'no-tp'
+  td = listed_payment.company.name + "#{listed_payment.company.is_a?(Accounting::TpCompany) ? '(TP)' : '' }"
+  td rel="#{listed_payment.issue_date.to_i}" = listed_payment.issue_date || 'N/A'
+  td.number[rel="#{listed_payment.amount}"] = number_to_currency listed_payment.amount
+  td.number[rel="#{listed_payment.balance}"] = number_to_currency listed_payment.balance
+  td[rel="#{listed_payment.cleared_date.to_i}"] = listed_payment.cleared_date
+  td = link_to '', listed_payment, class: 'fa fa-info-circle'
+  - if current_user.is_admin?
+    td = link_to '', [:edit, listed_payment], class: 'fa fa-edit'
+    td = link_to '', listed_payment, method: :delete, remote: true, class: 'fa fa-trash', data: { confirm: 'Are you sure you want to delete this payment?' }
+  - else
+    td
+    td

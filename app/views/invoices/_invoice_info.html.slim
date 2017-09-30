@@ -1,0 +1,128 @@
+- unless print_status?
+  = render 'invoices/paper_trail', invoice: invoice
+  - if current_user.is_admin?
+    - if invoice.kind_of?(ReceivableInvoice) && invoice.should_it_be_emailed_again?
+      fieldset.border
+        .bold.red Invoice had been updated. You might want to email it again.
+  .bold.red[id="invoice_delete_#{invoice.id}"]
+div[id="invoice_action_#{invoice.id}"]
+  div[id="invoice_info_#{invoice.id}"]
+    #invoiceHeader
+      - if print_status?
+        .bold Bill #{in_receivable? ? "to" : "from"}:
+        div = invoice.company.print_name
+        div
+          = invoice.company.phone
+          = " / " + invoice.company.phone_extension if invoice.company.phone_extension.present?
+        div = invoice.company.address_street
+        div = "#{invoice.company.address_city}, #{invoice.company.address_state.abbrev} #{invoice.company.zip_code}"
+      - else
+        #invoiceHeaderCompany
+          div
+            span.bold Company:&nbsp;
+            = link_to invoice.company.name, invoice.company
+          div
+            span.bold Phone:&nbsp;
+            = invoice.company.phone
+            = " / " + invoice.company.phone_extension if !invoice.company.phone_extension.blank?
+          div
+            span.bold Address:&nbsp;
+            = invoice.company.address
+          div
+            span.bold ATTN:&nbsp;
+            span #{invoice.company.contact_person} #{mail_to(invoice.company.email, invoice.company.email, subject: "Invoice #{invoice.number}")}
+      .clear
+    div
+      span.bold Invoice No.:&nbsp;
+      span = "#{invoice.number} / #{invoice.date.ymd}"
+    - if in_payable?&&!invoice.company.is_trucker?
+      div
+        span.bold Received Date:&nbsp;
+        span = invoice.date_received || 'N/A'
+    - if !print_status?&&!invoice.valid?
+      .red = errors_for invoice, 'This invoice has errors:'
+    - outstanding_balance = invoice.balance + invoice.sum_remaining_adjustments + invoice.sum_remaining_credits
+    - if !invoice.payments.blank?
+      .bold Invoice Paid With:
+      ul
+        - for p in invoice.payments
+          li
+            = link_to("#{p.payment_method.name} #{h p.number}", polymorphic_url(p))
+            = " of #{p.amount}"
+            = " from #{p.issue_date.strftime('%Y-%m-%d')}."
+        - if outstanding_balance > 0
+          li
+            .bold.red Outstanding Balance: #{number_to_currency(outstanding_balance)}.
+
+    table.gray.vmiddle.small
+      thead
+        tr
+          th rowspan=2 Cont. ID
+          th rowspan=2 Your Ref. #
+          th rowspan=2 Container #
+          th rowspan=2 Bill of Lading / Booking No
+          th[colspan="3"] Consignee/Shipper
+          th rowspan=2 Delivery Date
+          th.w350 rowspan=2 Charge Details
+          th rowspan=2 Amount
+          th rowspan=2 Balance
+          th rowspan=2 Payment
+        tr
+          th Name
+          th City
+          th State
+      tfoot
+        tr
+          th colspan=9 Subtotals
+          th.number = number_to_currency(invoice.amount)
+          th.number = number_to_currency(invoice.balance)
+          th
+        = render "invoices/adjustments", invoice: invoice if invoice.needs_adjustments?
+        = render "invoices/credits", invoice: invoice
+        tr
+          th[colspan="9"] Grand Total
+          th.number id=dom_id(invoice, 'invoice_amount') = number_to_currency(invoice.amount + invoice.sum_adjustments + invoice.sum_credits)
+          th.number id=dom_id(invoice, 'invoice_balance') = number_to_currency(outstanding_balance)
+          th
+      tbody
+        - for l in invoice.line_items
+          tr
+            td = link_to( l.container.id, polymorphic_url(l.container) )
+            td = l.container.reference_no
+            td = l.container.container_no
+            td = l.container.is_a?(ImportContainer) ? l.container.ssline_bl_no : l.container.ssline_booking_no
+            - customers = l.container.consignees_or_shippers_info
+            td = customers.map(&:name).join('<hr>').html_safe
+            td = customers.map(&:address_city).join('<hr>').html_safe
+            td = customers.map(&:abbrev).join('<hr>').html_safe
+            td = l.container.delivered_date.to_date rescue 'N/A'
+            td
+              table
+                - for cc in l.container.charges(invoice.class.to_s.gsub('Invoice','').downcase, invoice.company_id)
+                  tr class="#{'readonly' if cc.mark_as_readonly?}"
+                    td.w150.text-left = cc.name
+                    td.w50.number = number_to_currency cc.amount
+                    td.w150 =cc.details
+            td.number = number_to_currency(l.amount)
+            td.number = number_to_currency(l.balance)
+            td
+              - if l.payments
+                ul
+                  - for p in l.payments.uniq
+                    li= link_to( h("#{p.payment_method.name.downcase}: #{p.number}"), polymorphic_url(p))
+              - else
+                  None
+          - if !print_status?&&!l.valid?
+            tr
+              td[colspan="11"] = errors_for(l)
+    .hidden.datatable-config
+      | {
+          "bStateSave": false,
+          "bInfo": false,
+          "paging": false,
+          "aaSorting": [[ 0, "asc" ]]
+        }
+
+    - if current_user.is_admin?
+      span.bold Comments:
+      = simple_format(invoice.comments)

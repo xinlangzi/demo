@@ -1,0 +1,25 @@
+.title-bar
+  h1
+    span Real Time
+    sup.f60.red
+      | (auto-refresh very 5 minutes)
+  ul
+    li
+      a.fit-map Fit Map to all Trucks
+.full-page.full-height
+  .ui-container#track-location-layout
+    ul.pane.ui-layout-west.trigger-marker
+      - @truckers.group_by(&:hub).each do |hub, truckers|
+        li.title = hub.name
+        - truckers.each do |trucker|
+          li data-id="#{trucker.id}"
+            b = trucker.name
+            .time
+    .pane.ui-layout-center
+      #map style="width:100%;height:100%"
+
+javascript:
+  function callback(){
+    new TrackTruck().realtime();
+  }
+  GoogleMap.loadScript('#{GoogleMap.api_key(:frontend)}', 'callback')

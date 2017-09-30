@@ -1,0 +1,4 @@
+App.removeSiblings('#<%=params[:respond_id]%>')
+<%info = @operation.errors.blank? ? '<div class="ok">Updated!</div>' : errors_for(@operation)%>
+$('#<%=params[:respond_id]%>').after('<%=info.html_safe%>')
+

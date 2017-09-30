@@ -1,0 +1,25 @@
+- if current_user.is_admin?
+  - klass = operation.trucker_id.nil?&&!operation.lock?&&!operation.final? ? 'droppable-driver' : ''
+  tr class=klass id=dom_id(operation, 'task') data-id=operation.id data-target='operation'
+    th
+      .w150
+        span = operation.name
+        sup = operation.complete_mileage
+      .apptAt.f90 = operation.appt.try(:ymd)
+    td
+      .w150 = calendar_for_operation(operation)
+      = attachments_for(operation)
+    td
+      .w150
+        = driver_status(operation)
+        = email_status(operation)
+- else
+  tr
+    th
+      .w150
+        span = operation.operation_type.name
+      .apptAt.f90 = operation.view_appt_at
+    td
+      .w150 = calendar_for_operation(operation)
+      = attachments_for(operation)
+

@@ -1,0 +1,12 @@
+<%case params[:type]%>
+<%when /stack_quote/%>
+$('#stack-quotes').replaceWith('<%=j render("receivable_quotes/stack_quotes", quotes: @stack_quotes)%>')
+<%when /customer_quote/%>
+$('#customer-quotes').replaceWith('<%=j render("receivable_quotes/customer_quotes", quotes: @customer_quotes)%>')
+<%else%>
+  <%if params[:inner_dialog]%>
+  $('#inner-dialog').html('<%=j render("receivable_quotes/query")%>')
+  <%else%>
+  App.showDialog({width: 1000, maxHeight: 800, title: "Build Receivable Charges" }).html('<%=j render("receivable_quotes/query")%>')
+  <%end%>
+<%end%>

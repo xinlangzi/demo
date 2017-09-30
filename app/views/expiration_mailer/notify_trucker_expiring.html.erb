@@ -1,0 +1,14 @@
+ATTN: <%=h @trucker.name %>
+=============
+
+This is a courtesy message regarding your <%=h @doc%><%=h "for truck no. #{@truck.number}" if @truck%>.
+Our records show that your <%=h @doc%> is expiring <%=h @time_left%>.
+Renewal is due <%if @expiration_date.to_date == Date.today %>immediately<% else %>by <%=h @expiration_date%><%end%>.
+
+Once completed, please notify us to update our records.
+
+Thank you!
+
+--
+<%=h @owner.name%>
+<%=h @owner.web%>

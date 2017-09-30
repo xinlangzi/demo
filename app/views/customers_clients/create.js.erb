@@ -1,0 +1,7 @@
+$('#container_customer_id').val('<%=@company.customer_id%>')
+$(".<%=@mark%>").html('<%=j options_from_collection_for_select(@options[@mark.to_sym][:options].insert(0, Company.new(name: @options[@mark.to_sym][:warning])), :id, :name)%>')
+$(".<%=@mark%>").val('<%=@company.id%>')
+$(".<%=@mark%>").trigger('change')
+$(".<%=@mark%>").removeClass('red')
+App.refreshChosenSelect()
+App.closeDialog()

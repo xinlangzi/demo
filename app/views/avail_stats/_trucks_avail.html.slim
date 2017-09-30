@@ -1,0 +1,20 @@
+- active = Proc.new{|index| index == 0 ? 'active' : '' }
+ul.nav.nav-tabs role="tablist"
+  - Hub.with_default.each_with_index do |hub, index|
+    li class=active.call(index) role="presentation"
+      a aria-controls="profile" data-toggle="tab" href="##{hub.name.downcase}" role="tab" = hub.name
+/! Tab panes
+.tab-content
+  - Hub.with_default.each_with_index do |hub, index|
+    .panel.tab-pane.truck-avail class=active.call(index) id=hub.name.downcase role="tabpanel"
+      .row
+        - AvailStats.summary(hub).each do |date, stats|
+          - avail = AvailStats.adjust_avail(date.to_date, stats.available)
+          .col.col-md-3.col-xs-4
+            .label1
+              label
+                b = date.to_date.strftime("%m/%d")
+                .wday = date.to_date.strftime("%A")
+            div class=(avail == 0 ? 'lblred' : 'lblgreen')
+              label = avail.precision1
+            div class=(avail == 0 ? 'iconred' : 'icongreen')

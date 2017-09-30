@@ -1,0 +1,30 @@
+.title-bar
+  h1 Uncompleted EDI Cycles
+  ul
+    li = link_to "Orders Awaiting Rejection/Acceptance", edi_containers_path
+    li = link_to "Logs", edi_logs_path
+    li = link_to "Uncompleted EDI Cycles", incomplete_edi_logs_path
+
+.content
+  table.gray
+    thead
+      tr
+        th Container
+        th Company
+        th Date Order Created
+        th Logs
+    tbody
+      - @containers.each do |container|
+        tr
+          td = link_to("#{container}", container)
+          td = link_to("#{container.customer}", container.customer)
+          td = container.created_at.to_date
+          td
+            - container.edi_exchanges.order("id asc").each do |exchange|
+              - log = exchange.edi_log
+              - if [990, 997].include?(exchange.message_type)
+                = link_to "#{exchange.message_type} (#{exchange.is_rejection == true ? 'R' : 'A'})", log
+              - else
+                = link_to exchange.message_type, log
+              span &nbsp;&nbsp;&nbsp;
+  = paginate @containers

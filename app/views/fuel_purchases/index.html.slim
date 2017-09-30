@@ -1,0 +1,41 @@
+.title-bar
+  h1 Fuel Purchases
+  ul
+    li = link_to 'Record Fuel Purchase', new_fuel_purchase_path
+    li = link_to "Record Today's Mileage", new_daily_mileage_path
+    li = link_to 'List Daily Mileages', daily_mileages_path
+    li = link_to "Generate Quarterly Report", report_daily_mileages_path
+.content
+  = render 'filter' if current_user.is_admin?
+  table.gray
+    thead
+      tr
+        th
+        th Date
+        th Trucker
+        th Truck No.
+        th Gallons
+        th Price per gallon
+        th Amount
+        th State
+        th.w50 Receipt
+        th.w40
+        th.w40
+    tbody
+      = render @fuel_purchases
+    tfoot
+      tr
+        th.text-right[colspan=8] Fuel Purchased
+        th.text-right[colspan=3]
+          = "#{number_to_currency(@purchase_numbers.length, unit: '')} times"
+
+      tr
+        th.text-right[colspan=8] Fuel Volume
+        th.text-right[colspan=3]
+          = "#{number_to_currency(FuelPurchase.total_gallons(@purchase_numbers), unit: '')} gals."
+      tr
+        th.text-right[colspan=8] Purchase Amount
+        th.text-right[colspan=3]
+          = number_to_currency(FuelPurchase.total_amount(@purchase_numbers))
+
+  = paginate @fuel_purchases

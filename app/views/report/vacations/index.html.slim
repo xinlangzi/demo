@@ -1,0 +1,37 @@
+.title-bar
+  h1 Vacations
+  ul
+    li = link_to 'Back to Reports', '/reports'
+    li = link_to 'Export to Excel', report_vacations_path(q: params[:q].to_h, format: 'csv')
+
+.full-page
+  = render 'report/vacations/forms/filter'
+  table.gray
+    thead
+      tr
+        th Driver
+        th Hire Date
+        th Weekdays
+        th Dispatched Days
+        th Undispatched Days
+        th Vacation Days
+        th % Days Worked
+    tbody
+      - @work_stats.each do |id, info|
+        - trucker = Trucker.find(id)
+        tr
+          td = trucker.name
+          td = trucker.hire_date
+          td = info[:weekdays]
+          td = info[:dispatched]
+          td = info[:undispatched]
+          td = info[:vacations]
+          td = number_to_percentage(info[:worked_ratio]*100, precision: 2)
+  .hidden.datatable-config
+    | {
+        "bStateSave": true,
+        "bInfo": false,
+        "bPaginate": false,
+        "bFilter": false,
+        "aaSorting": [[0, "asc" ]]
+      }

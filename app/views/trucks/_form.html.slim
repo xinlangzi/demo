@@ -1,0 +1,35 @@
+fieldset.form
+	= simple_form_for @truck, html: {class: 'rows'} do |f|
+		= f.error_messages
+		- if current_user.is_admin?
+			= f.input :trucker_id, as: :select, collection: current_hub.truckers.get_names_and_ids, include_blank: true, required: false
+			= f.input :number, as: :string, label: 'Truck No.', input_html: { size: 10}
+		- if current_user.is_admin?
+			= f.input :license_plate_no, label: 'License Plate No.', input_html: {size: 20}
+			= f.input :license_plate_expiration, as: :datepicker, label: 'License Plate Expires On', label_html: {class: 'f80'}
+			.registered_in.ml155.w500
+				ul.select-widget
+					li.title Registered In
+					li Select:
+					li
+						a onclick="App.checkAll('state', true)" All
+					li
+						a onclick="App.checkAll('state', false)" None
+				fieldset.full-width
+					.group-checkboxs
+						= f.association :states, collection: Truck.states, label: false, label_method: :abbrev, as: :check_boxes, input_html: { class: 'state' }
+			= f.input :vin, label: 'VIN', hint: 'Vehicle Identification No.', input_html: {size: 20}
+			= f.input :gvwr, as: :string, label: 'GVWR', hint: 'Gross Vehicle Weight Rating', input_html: {size: 15}
+			= f.input :make, input_html: {size: 15}
+			= f.input :model, input_html: {size: 15}
+			= f.input :year, input_html: {size: 6}
+			= f.input :tire_size, label: 'Tire Size', input_html: {size: 10}
+			= f.input :tai_expiration, as: :datepicker, label: 'Annual Inspection Expires On', label_html: {class: 'f80'}
+			= f.input :bobtail_insurance_expiration, as: :datepicker, label: 'Bobtail Insurance Expires On', label_html: {class: 'f80'}		
+			= f.input :ifta_expiration, as: :datepicker, label: 'IFTA Expires On', label_html: {class: 'f80'}
+			= f.input :ifta_applicable, label: 'IFTA Applicable'
+			= f.input :last_quarterly_maintenance_report, as: :datepicker, label: 'Last Quarterly Maint. Report', label_html: {class: 'f80'}
+		.inline
+			.group
+				= f.submit
+				= f.input :default, as: :boolean, label: 'Set as Default', label_html: {class: 'f85'}

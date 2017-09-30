@@ -1,0 +1,17 @@
+ul.task-check-list{
+  width: 120px;
+  font-size: 10px;
+  text-align: left;
+  li{
+    border: 1px dotted transparent;
+    padding: 0px 2px;
+    label{
+      line-height: 16px;
+      font-size: 12px;
+    }
+    &:hover{
+      background: #FF0;
+      border: 1px dotted darken(#FF0, 40%);
+    }
+  }
+}

@@ -1,0 +1,14 @@
+fieldset
+  legend Free Per Diem Days
+  table.gray.w500.ml50#free_outs
+    thead
+      tr
+        th ✖
+        th Container Size
+        th Container Type
+        th Days
+    = c.fields_for :free_outs, wrapper: false
+    tfoot
+      tr
+        td.text-right colspan=4
+          = c.link_to_add "new record", :free_outs, :data => { :target => "#free_outs" }, class: 'btn'

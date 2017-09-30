@@ -1,0 +1,36 @@
+.box
+  .box-title Truck Information
+  .box-content
+    table.gray.rl
+      tr
+        th width=180 No.
+        td = truck.number
+      tr
+        th License Plate No.
+        td = truck.license_plate_no
+      tr
+        th VIN
+        td = truck.vin
+      tr
+        th GVWR
+        td = truck.gvwr
+      tr
+        th Make
+        td = truck.make
+      tr
+        th Model
+        td = truck.model
+      tr
+        th Year
+        td = truck.year
+      tr
+        th Registered States
+        td = truck.states.map(&:name).join(", ")
+      tr
+        th Truck Title or Proof of Ownership
+        td = attachments_for(truck, Truck::OWNERSHIP_TAG)
+      - [:annual_inspection_expiration, :license_plate_expiration, :ifta_expiration, :bobtail_insurance_expiration, :last_quarterly_maintenance_expiration].each do |name|
+        - if @applicant.hub.send(name)
+          tr
+            th = Trucker::DOC_NAME_MAPS[name]
+            td = attachments_for(truck, name)

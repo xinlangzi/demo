@@ -1,0 +1,55 @@
+table.gray.hcenter
+  caption
+    ul
+      li.title Sample Quotes
+      li.rfloat
+        a
+          = number_to_currency(Fuel.latest_price(@hub))
+          span&nbsp;/ gallon
+      li.rfloat
+        a.blue.bold.italic Triaxle(italics)
+      li.rfloat
+        a.green.bold Customer
+      li.rfloat
+        a.red.bold Trucker
+      li.rfloat
+        a Numbers are color-coded as follows:
+  thead
+    tr
+      th Miles
+      th colspan=2 Base Rate
+      th colspan=2 Fuel
+      th colspan=2 Fuel(%)
+      th colspan=2 Total
+      th Profit
+  tbody
+    - (@sample||[]).each do |rate|
+      tr
+        td.vmiddle.bold rowspan=2
+          = rate[0].to_i
+        td.vmiddle.text-right.red rowspan=2
+          = number_to_currency(rate[1].precision2) if rate[1]
+        td.vmiddle.text-right.green rowspan=2
+          = number_to_currency(rate[8].precision2) if rate[8]
+        td.text-right.red
+          div = number_to_currency(rate[2].precision2) if rate[2]
+        td.text-right.green
+          div = number_to_currency(rate[9].precision2) if rate[9]
+        td.text-right.red
+          div = rate[3].precision2 + '%' if rate[3]
+        td.text-right.green
+          div = rate[10].precision2 + '%' if rate[10]
+        td.text-right.red
+          div = number_to_currency(rate[4].precision2) if rate[4]
+        td.text-right.green
+          div = number_to_currency(rate[11].precision2) if rate[11]
+        td.text-right
+          div = number_to_currency((rate[11] - rate[4]).precision2) if rate[4]&&rate[11]
+      tr
+        td.italic.text-right.red = number_to_currency(rate[5].precision2) if rate[5]
+        td.italic.text-right.green = number_to_currency(rate[12].precision2) if rate[12]
+        td.italic.text-right.red = rate[6].precision2 + '%' if rate[6]
+        td.italic.text-right.green = rate[13].precision2 + '%' if rate[13]
+        td.italic.text-right.red = number_to_currency(rate[7].precision2) if rate[7]
+        td.italic.text-right.green = number_to_currency(rate[14].precision2) if rate[14]
+        td.italic.text-right = number_to_currency((rate[14] - rate[7]).precision2) if rate[7]&&rate[14]

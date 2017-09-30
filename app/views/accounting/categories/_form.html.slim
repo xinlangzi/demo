@@ -1,0 +1,18 @@
+- feature = @category.feature
+#search-box.search-box
+  .search-inner
+    = simple_form_for @category, remote: true, html: {class: 'horiz'} do |f|
+      = f.error_notification
+      = f.input :name, wrapper: :vertical, input_html: { class: 'w150' }
+      - disables = @category.new_record? ? [] : Accounting::Category.parent_options(current_user, feature, @category.id).collect{|c| c[1]}
+      - all_categories = Accounting::Category.parent_options(current_user, feature, nil, false).collect{|x| x[0..1]}
+      = f.input :parent_id, as: :select, collection: all_categories, include_blank: true, disabled: disables, wrapper: :vertical, input_html: { class: 'chosen-select', data: { width: 300 } }
+      = f.association :accounting_group, wrapper: :vertical
+      = f.input :description, as: :string, wrapper: :vertical, input_html: { class: 'w150' }
+      = f.input :for_container, wrapper: 'checkbox'
+      = f.input :acct_only, wrapper: 'checkbox', label: 'Only for Acct.'
+      = f.input :road_side_service, wrapper: 'checkbox'
+      = f.input :feature, as: :hidden
+      = f.submit
+      - unless @category.new_record?
+        = link_to "Cancel", new_accounting_category_path(type: feature), remote: true, method: :get

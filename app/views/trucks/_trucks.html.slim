@@ -1,0 +1,40 @@
+.box
+  .box-title 
+    span Trucks
+    - if current_user.is_admin?
+      = link_to new_truck_path(trucker_id: @company.id) do
+        = fa_icon('plus-circle')
+  .box-content
+    table.gray.f90.vmiddle
+      thead
+          tr
+            th
+            th No.
+            th GVWR
+            th Make
+            th Model
+            th Year
+            th Truck Title or Proof of Ownership
+            - truck_expiring_column_list.except(:truck_no).each do |key, proc|
+              th = Trucker::DOC_NAME_MAPS[key]
+            - if current_user.is_admin?
+              th
+              th
+      tbody
+        - trucks.each do |truck|
+          tr
+            td = checkmark(truck.default)
+            td = link_to truck.number, truck
+            td = truck.gvwr
+            td = truck.make
+            td = truck.model
+            td = truck.year
+            td = attachments_for(truck, Truck::OWNERSHIP_TAG)
+            - truck_expiring_column_list.except(:truck_no).each do |key, proc|
+              td
+                = proc.call(truck)
+                .clear
+                = attachments_for(truck, key.to_s)
+            - if current_user.is_admin?
+              td = link_to '', edit_truck_path(truck), class: 'fa fa-edit'
+              td = link_to '', truck, data: { confirm: "Are you sure you want to delete this truck?" }, method: :delete, class: 'fa fa-trash'

@@ -1,0 +1,10 @@
+#auto-search-box.search-box
+  .search-inner
+    = simple_form_for @search, url: request.fullpath, html: {method: :get, class: 'horiz'} do |f|
+      = f.input :hub_id_eq, collection: accessible_hubs, label: 'Hub', required: false, wrapper: 'vertical', include_blank: "- All Hubs -"
+      = f.input :name_cont, label: 'Name', required: false, wrapper: 'vertical', input_html: { data: { url: request.fullpath, term: 'name' }, class: 'autocomplete unobservable'}
+      = f.input :trucks_number_cont, label: 'Truck No.', required: false, wrapper: 'vertical', input_html: { class: 'w100' }
+      = f.input :dl_no_cont, label: 'Driver License No.', required: false, wrapper: 'vertical', input_html: { class: 'w100' }
+      = f.input :trucks_license_plate_no_cont, label: 'License Plate No.', required: false, wrapper: 'vertical', input_html: { class: 'w100' }
+      = f.input :trucks_vin_cont, label: 'VIN', required: false, wrapper: 'vertical'
+      = f.submit 'Search'

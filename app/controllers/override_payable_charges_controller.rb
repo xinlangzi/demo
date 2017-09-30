@@ -1,0 +1,2 @@
+class OverridePayableChargesController < PayableChargesController
+end

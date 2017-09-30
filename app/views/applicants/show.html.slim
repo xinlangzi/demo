@@ -1,0 +1,34 @@
+.title-bar
+  h1 Online Driver Application
+  ul
+    li = link_to "Back to List", applicants_path
+    li = link_to "Back to Owner Operators", truckers_path
+
+.content
+  .ui-container.default-ui-layout
+    .pane.ui-layout-west data-width=225
+      .title Applicant Information
+      ul.infos
+        li &nbsp;#{fa_icon('map-marker', text: @applicant.hub.try(:name))}
+        li = fa_icon('user-circle-o', text: @applicant.name)
+        li = fa_icon("envelope-o", text: @applicant.email)
+        li = fa_icon("phone", text: @applicant.phone)
+        li = fa_icon("calendar", text: @applicant.date_of_birth)
+        li = fa_icon("drivers-license-o", text: "#{@applicant.cdl_no} / #{@applicant.cdl_state}")
+        li = fa_icon("truck", text: "#{@applicant.year_of_experience} years")
+        li = fa_icon("clock-o", text: @applicant.created_at.us_datetime)
+        li = fa_icon("comment-o", text: @applicant.comment)
+        - unless @applicant.company
+          li
+            = fa_icon("drivers-license-o")
+            = attachments_for(@applicant, Applicant::CDL_TAG)
+          li 
+            = fa_icon("file-pdf-o", text: "PSP")
+            = attachments_for(@applicant, Applicant::PSP_TAG)
+    .pane.ui-layout-center
+      .title Management
+      - if @applicant.deleted?
+        fieldset.border
+          .red This applicant is softly deleted.
+      - else
+        = render 'management'

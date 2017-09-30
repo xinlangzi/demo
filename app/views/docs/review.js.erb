@@ -1,0 +1,8 @@
+<%case params[:nav]%>
+<%when /doc/%>
+  $('#dialog .doc').html('<%=j render("docs/doc", nav: true, )%>')
+<%when /day_log/%>
+  $('#dialog .day-log').html('<%=j render("docs/reviews/day_log")%>')
+<%else%>
+  App.showDialog({ width: '95%', minWidth: 1200, maxHeight: 800, title: 'Review J1s Doc & Daily Log' }).html('<%=j render("docs/reviews/default")%>')
+<%end%>

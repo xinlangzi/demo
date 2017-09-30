@@ -1,0 +1,5 @@
+<%if @operation.errors.empty?%>
+window.location.reload()
+<%else%>
+alert('<%=@operation.errors[:base].join(' ')%>')
+<%end%>

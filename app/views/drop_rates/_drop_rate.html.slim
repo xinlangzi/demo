@@ -1,0 +1,7 @@
+= fields_for "drop_rate[#{rand(10**5)}]", drop_rate do |fields|
+  tr
+    td
+      a.fa.fa-times-circle.remove-row
+    td = fields.text_field :miles, class: 'w60 center', required: true
+    td = fields.text_field :rate, class: 'w60 center', required: true
+    td = fields.check_box :as_percent

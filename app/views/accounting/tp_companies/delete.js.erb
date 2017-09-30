@@ -1,0 +1,5 @@
+<%if @success%>
+window.location = '<%=polymorphic_path("Accounting::Tp#{@tp_type}".constantize.new, :status => 'inactive')%>'
+<%else%>
+alert("You can delete a TP <%=@tp_type%> after all its invoices have been paid in full.")
+<%end%>

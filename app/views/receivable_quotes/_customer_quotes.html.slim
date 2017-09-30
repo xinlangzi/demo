@@ -1,0 +1,65 @@
+- tr_class = Proc.new{|obj| classes = []; classes << 'greenBg' if obj.is_instant?; classes << 'pinkBg' if obj.overrided?; classes.join(' ')}
+.box#customer-quotes
+  .box-title 
+    span Customer Quotes
+    .rfloat
+      table.gray.f90
+        tr
+          td.greenBg.bold Current Day Quote
+          td.pinkBg.bold Overrided Quote
+  .box-content
+    table.gray.vmiddle.f80
+      tr
+        - unless params[:preview]
+          th.w30
+        th ID
+        th.w60 Date/Expir.
+        th Ssline
+        th.w80 Rail Road
+        th.w100 Destination
+        th Miles
+        th Size/Weight
+        th Over Fees
+        th Reefer Fee
+        th Base Rate Fee
+        th Drop Rate Fee
+        th Chassis Fee
+        th Chassis Dray
+        th Fuel Price
+        th Fuel Amount
+        th Other Charges
+        th Live Load
+        th Drop and Pull
+      - quotes.each do |quote|
+        tr class=tr_class.call(quote)
+          - unless params[:preview]
+            td = radio_button_tag :target_id, "sq:#{(quote.overwritten || quote).id}", false, required: true
+          td = quote.id
+          td 
+            .bold = quote.created_at.ymd
+            .italic = quote.expired_date
+          td = quote.ssline.name rescue 'N/A'
+          td = quote.rail_road.name
+          td.f90 = quote.dest_address
+          td = quote.miles.precision2
+          td
+            = "#{quote.csize} #{quote.ctype}"
+            .f80 = quote.cweight
+          - quote = quote.overwritten || quote
+          td
+            div = number_to_currency quote.over1.precision2
+            div = number_to_currency quote.over2.precision2
+          td = number_to_currency quote.reefer_fee.precision2
+          td = number_to_currency quote.base_rate_fee.precision2
+          td = number_to_currency quote.drop_rate_fee.precision2
+          td = number_to_currency quote.chassis_fee.precision2
+          td = number_to_currency quote.chassis_dray.precision2
+          td = number_to_currency quote.gallon_price.precision2
+          td = number_to_currency quote.fuel_amount.precision2
+          td
+            div = "#{quote.free_text1}(#{number_to_currency quote.q_free_text1})" if quote.q_free_text1.to_f > 0
+            div = "#{quote.free_text2}(#{number_to_currency quote.q_free_text2})" if quote.q_free_text2.to_f > 0
+          td.bold.green = number_to_currency quote.total_without_drop_pull
+          td.bold.red = number_to_currency(quote.total)
+    
+    center = paginate quotes, remote: true, params: { type: 'customer_quote'}

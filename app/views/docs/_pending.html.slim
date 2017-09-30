@@ -1,0 +1,32 @@
+fieldset.border
+  ul#pending-docs
+    - if @images.empty?
+      .red No pending docs to review.
+    - @images.each do |image|
+      li data-id=image.uuid class=image.status
+        = image_tag(image.file.url(:thumb), id: dom_id(image, 'thumb')) if image.file_exists?
+        .info
+          span.date = image.created_at.us_date
+          .actions
+            - if image.imagable
+              = link_to approve_doc_path(image), method: :patch, remote: true, data: { confirm: "Are you sure to approve this doc?" } do
+                = fa_icon("thumbs-o-up", title: "To approve this doc")
+            = link_to rotate_pictures_path({ picture: { id: image.id, klass: image.class.to_s, method: "file" } }), remote: true do
+              = fa_icon("rotate-right", title: "Rotate 90° to the Right")
+            = link_to doc_path(image), remote: true, class: 'dialog' do
+              = fa_icon("arrows-alt", ref: 'top')
+            = link_to doc_path(image), method: :delete, remote: true, data: { confirm: "Are you sure to delete this doc?"} do
+              = fa_icon("times-circle-o")
+          .tags id=dom_id(image, 'tags') = image.tag_list
+          
+        .footer
+          - if imagable = image.imagable
+            - case imagable
+            - when Operation
+              .rfloat = imagable.container.container_no
+              = link_to "#{imagable.container_id}: #{imagable.name}", [:preview, image.imagable.container], remote: true, class: 'dialog'
+            - when Container
+              .rfloat = imagable.container_no
+              = link_to "#{imagable.id}: #{image.column_name.titleize}", [:preview, image.imagable], remote: true, class: 'dialog'
+          - else
+            | Unknown Operation

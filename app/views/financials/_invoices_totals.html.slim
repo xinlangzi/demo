@@ -1,0 +1,52 @@
+table.gray
+  thead
+    tr
+      th Company name
+      th.w120 Total Amount
+      th.w120 Outstanding Amount
+      th.w120 Balance
+      th Total # Containers
+      th Outstanding # Containers
+
+  - if invoices_totals.blank?
+    tbody
+      tr
+        td.red[colspan=6] No items found
+  - else
+    tbody
+      - filter_params = {q: { issue_date_gteq: @invoice_filter.from, issue_date_lteq: @invoice_filter.to }}
+      - for invoice in invoices_totals do
+        - outstanding_invoice = outstanding.detect{|os| os.company_id == invoice.company_id}
+        tr
+          td.text-left
+            - filter_params[:q].merge!(company_id_eq: invoice.company_id)
+            = link_to_if invoice.company, (invoice.company.name rescue 'N/A'), polymorphic_path(invoice.class.new, filter_params), target: "_blank"
+          td.number[rel="#{invoice.amount}"] = number_to_currency invoice.amount
+          - outstanding_amount = outstanding_invoice.amount rescue 0
+          td.number[rel="#{outstanding_amount}"] = number_to_currency(outstanding_amount)
+          td.number[rel="#{invoice.balance}"] = number_to_currency invoice.balance
+          td = invoice.containers_count
+          td = outstanding_invoice.containers_count rescue 0
+
+    tfoot
+      tr
+        th Total
+        th = number_to_currency invoices_totals.map(&:amount).map(&:to_f).sum
+        th = number_to_currency outstanding.map(&:amount).map(&:to_f).sum
+        th = number_to_currency invoices_totals.map(&:balance).map(&:to_f).sum
+        th = invoices_totals.inject(0){|sum, i| sum + i.containers_count.to_i }
+        th = outstanding.map(&:containers_count).sum
+- unless invoices_totals.blank?
+  .hidden.datatable-config
+    | {
+        "bPaginate": false,
+        "aaSorting": [[ 1, "desc" ]],
+        "aoColumns": [
+          null,
+          {"sSortDataType": "cell", "sType": "numric"},
+          {"sSortDataType": "cell", "sType": "numric"},
+          {"sSortDataType": "cell", "sType": "numric"},
+          null,
+          null
+        ]
+      }

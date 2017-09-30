@@ -1,0 +1,16 @@
+li.category
+  a Overpayments
+  span.overpaid.ml5.total
+  ul
+    - @reconciliation.overpay_by_companies.each do |company, payments|
+      li.company
+        a
+          span = company.name
+          span.overpaid.ml5.total
+        ul
+          - payments.each do |payment|
+            li.invoice
+              = link_to payment, target: '_blank' do
+                span
+                  i = payment.number
+                  span.overpaid.unit rel=payment.balance = number_to_currency(payment.balance)

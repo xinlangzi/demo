@@ -1,0 +1,2 @@
+class OverrideReceivableChargesController < ReceivableChargesController
+end

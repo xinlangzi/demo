@@ -1,0 +1,6 @@
+= simple_form_for @container_task, html: {class: 'rows'} do |f|
+  = f.error_messages
+  = f.input :name
+  = f.input :ctype, as: :select, collection: ContainerTask::CONTAINER_TYPES, label: 'Container Type', include_blank: false, input_html: {class: 'w200'}, hint_html: { class: 'w600'}
+  = f.input :acct_type, as: :select, collection: ContainerTask::ACCT_TYPES, label: 'Acct. Type', include_blank: true, input_html: {class: 'w200'}, hint_html: { class: 'w600'}
+  = f.submit

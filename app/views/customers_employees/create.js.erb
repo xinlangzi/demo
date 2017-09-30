@@ -1,0 +1,6 @@
+$('#container_customer_id').val('<%=@company.customer_id%>').trigger('change')
+setTimeout(function(){
+  $('#container_customers_employee_id').val('<%=@company.id%>');
+  App.refreshChosenSelect()
+  App.closeDialog();
+}, 1000);

@@ -1,0 +1,27 @@
+- date = params[:date]
+- table_styles = [date]
+- table_styles << 'hidden' if params[:hidden]
+ul
+  - grouped_containers = @containers.group_by(&:type)
+  - ['ImportContainer', 'ExportContainer'].each do |type|
+    - containers = grouped_containers[type]
+    li class="#{type.tableize}"
+      .tab-inner.show-hide
+        span.type = type.tableize.titleize
+        - unless containers.blank?
+          sup.count = "(#{containers.size})"
+        - else
+          span.empty Empty
+      .containers-table class=table_styles.join(' ')
+        = render "containers/calendar/day", containers: containers
+
+  li
+    .tab-inner.show-hide
+      span.type Estimated Pickups
+      - unless @estimateds.blank?
+        sup.count = "(#{@estimateds.size})"
+      - else
+        span.empty Empty
+    .containers-table class=table_styles.join(' ')
+      - @estimateds.group_by(&:type).each do |type, containers|
+        = render "containers/calendar/day", containers: containers, caption: type.tableize.titleize

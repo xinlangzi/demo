@@ -1,0 +1,18 @@
+li.accordion-item#stops
+  a.item-content.item-link.ubtn.ubtn-3d-action.ubtn-rounded.ubtn-jumbo href="#" 
+    .item-inner
+      .item-title Stops
+  .accordion-item-content style="background:#5a8200;"
+    .card
+      .card-content
+        .swiper-container
+          .swiper-wrapper
+            - @containers.each do |container|
+              - operations = container.viewable_operations(current_user)
+              = render 'mobiles/drivers/chassis/pickup', container: container if operations.first.first?
+              - operations.each do |operation|
+                = render 'mobiles/drivers/stop', operation: operation, container: container
+              = render 'mobiles/drivers/chassis/return', container: container if operations.last.final?
+          br
+          br
+          .swiper-pagination

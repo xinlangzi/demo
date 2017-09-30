@@ -1,0 +1,10 @@
+- if @locations.to_a.empty?
+  span.warning Invalid Address
+- else
+  fieldset
+    legend Click to auto fill the standard address
+    ul
+      - @locations.each do |location|
+        - location.address=~GoogleMap::US_ADDRESS
+        li
+          a.gm-address data-address="#{$1}|#{$2}|#{State.find_by_abbrev($3).id}|#{$4}|#{location.lat}|#{location.lng}" = location.address

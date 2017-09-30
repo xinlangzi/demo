@@ -1,0 +1,3 @@
+module EquipmentReleasesHelper
+  include ContainersHelper
+end

@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"
+    meta http-equiv="X-UA-Compatible" content="IE=Edge"
+    meta name="turbolinks-cache-control" content="no-cache"
+    link[rel="shortcut icon" href="/favicon.ico"]
+    = stylesheet_link_tag "application", :media => "all", 'data-turbolinks-track' => true, :debug => false
+    = javascript_include_tag "application", 'data-turbolinks-track' => true, :debug => false
+    title Track Engine
+    = csrf_meta_tags
+  body.engine class="#{Settings.version}"
+    #header
+      .infos
+        .top-right
+          = render 'shared/hub', all: true
+      .head
+        h1 Track Engine
+        .menu
+          ul
+            li = link_to 'Real Time', track_locations_path
+            li.last = link_to 'Track History', locations_path
+    #main
+      = yield
+    #dialog
+    #loading.hidden
+      span.mr5 Loading...
+      span.small_loading
+    = render 'shared/siteseal' if current_user
+    javascript:
+      $('li:contains("#{@tab_name}")').addClass('active')

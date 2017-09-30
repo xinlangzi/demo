@@ -1,0 +1,14 @@
+trucker = @company
+
+iif.vend do
+  row do
+    name trucker.name
+    printas trucker.print_name
+    addr1 trucker.address_street
+    addr2 trucker.address_city
+    addr3 trucker.address_state.name
+    addr4 trucker.zip_code
+    phone1 trucker.phone_mobile
+    companyname trucker.print_name
+  end
+end

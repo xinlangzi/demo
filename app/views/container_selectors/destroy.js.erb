@@ -1,0 +1,3 @@
+$('#<%=dom_id(@container, "selector")%>').remove()
+$('a[rel="container-selectors"] .count').html('<%= session[:container_selectors].size%>')
+$('#tracking-url-input').val('<%=build_trackshipment_url%>')

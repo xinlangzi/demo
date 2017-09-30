@@ -1,0 +1,5 @@
+<%if @redirect_url%>
+window.location = '<%= @redirect_url %>'
+<%else%>
+$('#<%=dom_id(@invoice.company)%> .basic-form').replaceWith('<%=j render("invoices/form/basic_edit_form", invoice: @invoice)%>')
+<%end%>

@@ -1,0 +1,71 @@
+.title-bar
+  h1
+    span Preview Quote for #{@container.class.to_s.titleize} with ID #{@container.id}
+  ul
+    li = link_to 'Cancel', @container
+.content
+  .w850.hcenter
+    = render 'containers/warnings'
+    = simple_nested_form_for [:preview_quote, @container], :html => {:id => 'preview-quote'} do |c|
+      = c.error_messages
+      = fields_for :container, @container do |f|
+        table.gray.order.vmiddle
+          caption
+            ul
+              - prepull = "with Prepull" if @container.with_prepull?
+              - if @container.live_load?
+                - show_trucker_select = true
+                li.title Live Load Container #{prepull}
+              - else
+                li.title Drop & Pull Container #{prepull}
+          tr
+            th.text-left
+              span Step 1: Select Trucker
+              - if @container.live_load?&&!@container.with_prepull?
+                .rfloat#once-trucker
+                  = select_tag :trucker_id, options_from_collection_for_select(current_hub.truckers.active, :id, :name, params[:trucker_id]), { include_blank: true, required: true, class: 'chosen-select w300'}
+
+          = f.fields_for :operations do |o|
+            - operation = o.object
+            - operation_type = operation.operation_type
+            tr.operation-detail id=operation.uid
+              td.operation-info
+                .containerOperationDiv
+                  .operationDetail
+                    .bold = operation_type.name
+                    = render partial: 'shared/print_brief_company', locals: { print_brief_company: operation.company, hide_ophours: false }
+
+                    .operationMile
+                      = operation.distance.miles.to_s + " miles↓" if !operation.final?&&operation.distance
+                  .operationDrop
+                    - if operation.is_drop?
+                      .bold Home Yard:
+                      = render partial: 'shared/print_brief_company', locals: { print_brief_company: operation.yard, hide_ophours: false }
+                      .operationMile
+                        = '↔' + operation.yard_distance.miles.to_s + " miles" if operation.yard_distance
+                  - klass = @container.live_load?&&!@container.with_prepull? ? 'hidden' : ''
+                  .operationDriver.vmiddle class=klass
+                    .trucker-select
+                      = o.select :trucker_id, current_hub.truckers.active.collect{|c| [c.name, c.id]}, {include_blank: true}, { ref: operation.uid, class: 'chosen-select trucker-chooser w200' }
+                .right-control
+                  ul
+                    - if operation_type.use_bobtail
+                      li
+                        a.f90.add-bobtail[data-charge-id="#{PayableCharge.bobtail.id}"] ✚ Bobtail Fee
+                    li
+                      a.f90.add-charge ✚ Accts. Payable
+                = o.hidden_field :uid, class: 'uid'
+          tr
+            th.text-left
+              span Step 2: Click to Preview Quote
+              .rfloat = f.submit 'Preview Quote', class: 'w200'
+          tr
+            td#PayableCharges.payableCharges
+              = render 'container_charges/form/container_charges', type: 'PayableContainerCharges', container: @container, preview: true
+          tr
+            th.text-left
+              span Step 3: Customize and Confirm
+              .rfloat
+                = link_to 'Cancel', @container, class: 'cancel mr5'
+                span.f90.mr5 or
+                = f.submit 'Confirm Quote', class: 'w200', disabled: !@container.no_payable_invoice_for_trucker?

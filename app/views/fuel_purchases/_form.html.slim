@@ -1,0 +1,11 @@
+= simple_form_for @fp, html: { class: 'rows observe-form' } do |f|
+  = f.error_messages
+  = f.input :trucker_id, as: :select, collection: current_hub.truckers.get_names_and_ids, required: true if current_user.is_admin?
+  = f.input :truck_id, as: :select, collection: @fp.related_trucks.map{|t| [t.number, t.id]}, include_blank: false, input_html: { class: 'unobservable' }
+  = f.input :day, as: :datepicker, label: 'Purchased On', input_html: { class: 'unobservable' }
+  = f.input :purchase_state_id, as: :select, collection: State.driving.get_states_and_ids, include_blank: false, input_html: { class: 'unobservable' }
+  = f.input :gallons, as: :string, label: 'Fuel Volume', hint: 'gallons', hint_html: { class: 'inline ml10' }, input_html: { class: 'unobservable' }
+  = f.input :price, as: :string, hint: '$ / gal.', hint_html: { class: 'inline ml10' }, input_html: { class: 'unobservable' }
+  = f.input :odometer, as: :string, input_html: { class: 'unobservable' }
+  = f.submit
+  = link_to 'Add new truck', new_truck_path, class: 'btn' if current_user.is_admin?

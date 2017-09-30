@@ -1,0 +1,29 @@
+- unless containers.blank?
+  - tbody = random_id('cal')
+  - type = containers.first._type
+  table.calendar-day.gray
+    - if defined?(caption)
+      caption
+        ul
+          li.title = caption
+    = render 'containers/calendar/header', type: type
+    tbody id=tbody
+      = render partial: "containers/calendar/row", collection: containers, as: :container, cache: current_user.is_admin?&&!driver_mode?
+  - if current_user.is_admin?
+    - header = CalendarHeader.for_user(current_user)
+    .hidden.datatable-config
+      | {
+          "stateSave": true,
+          "bInfo": false,
+          "bPaginate": false,
+          "aaSorting": [[ 0, "desc" ]],
+          "hiddenColumns": #{header.hidden_columns}
+        }
+  - else
+    .hidden.datatable-config
+      | {
+          "bStateSave": true,
+          "bInfo": false,
+          "bPaginate": false,
+          "aaSorting": [[ 0, "desc" ]]
+        }

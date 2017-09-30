@@ -1,0 +1,46 @@
+invoice = @invoice
+
+iif.trns do
+  row do
+    trnsid invoice.id
+    trnstype 'BILL'
+    date invoice.issue_date
+    accnt 'Accounts Payable'
+    name invoice.company.name
+    amount -(invoice.amount + invoice.sum_adjustments)
+    docnum invoice.id
+    clear 'N'
+  end
+
+  spl do
+    invoice.line_items.each do |line_item|
+      line_item.container.charges(invoice.class.to_s.gsub('Invoice','').downcase, invoice.company_id).each do |cc|
+        row do
+          splid line_item.id
+          trnstype 'BILL'
+          date invoice.issue_date
+          accnt line_item.type
+          invitem cc.name
+          name line_item.container.customer.name
+          amount cc.amount
+          memo "#{line_item.container.reference_no} #{line_item.container.container_no}"
+          qnty 1
+          price cc.amount
+        end
+      end
+    end
+
+    invoice.adjustments.each do |adjustment|
+      row do
+        splid adjustment.id
+        trnstype 'BILL'
+        invitem 'Adjustment'
+        accnt 'Adjustment'
+        amount -adjustment.amount
+        memo adjustment.comment
+        qnty 1
+        price -adjustment.amount
+      end
+    end
+  end
+end

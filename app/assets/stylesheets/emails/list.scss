@@ -1,0 +1,36 @@
+ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+ul.dots{
+  list-style-type: dotted;
+  padding-left: 25px;
+}
+ul.address-label{
+  text-align: left;
+  li{
+    margin: 5px;
+  }
+  label{
+    display: inline;
+    width: auto;
+    color: #000;
+    font-weight: bold;
+    font-size: 12px;
+    font-weight: bold;
+    &.gray-label{
+      font-weight: normal;
+      font-style: italic;
+      text-align: center;
+      display: inline-block;
+      padding: 0px 2px;
+      font-size: 11px;
+      width: 40px;
+      margin-right: 2px;
+      line-height: 13px;
+      background: #999;
+      color: #FFF;
+    }
+  }
+}

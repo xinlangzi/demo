@@ -1,0 +1,32 @@
+- profit = @container.receivable_container_charges.total_amount - @container.payable_container_charges.total_amount
+h2
+  i.fa.fa-circle class="#{@container.pending_task? ? 'red' : 'lgreen'}"
+  span #{@container.class.to_s.titleize} #{@container.id} &nbsp;
+  span.f80
+    span Profit/Loss:&nbsp;
+    span class="#{profit > 0 ? 'green' : 'red'}" = number_to_currency(profit)
+  .rfloat
+    = lock_checkbox(@container, { ajax: true }) unless @container.pending_task?
+    | &nbsp;
+    a.fa.fa-arrow-left.prev-audit-charges data-id=@container.id href="javascript:void(0)"
+    | &nbsp;
+    a.fa.fa-arrow-right.next-audit-charges data-id=@container.id href="javascript:void(0)"
+    | &nbsp;
+.w750.f90
+  .box
+    .box-title 
+      span Audit Records
+      .pull-right = link_to 'Track Changes', [:history, @container], remote: true, method: :get, class: 'show-hide', rel: 'track-changes'
+    .box-content
+      = render 'report/audit_charges/container', container: @container
+      hr
+      .paper-trails.hidden#track-changes
+    .box-title Receivable Charges
+    .box-content
+      = render partial: 'container_charges/container_charges', object: @receivable_container_charges
+    .box-title Payable Charges
+    .box-content
+      = render partial: 'container_charges/container_charges', object: @payable_container_charges
+    .box-title Other Information
+    .box-content
+      = render 'report/audit_charges/info', container: @container

@@ -1,0 +1,9 @@
+= render 'applicants/invitation/steps', step: 3
+- unless @trucker.driver_docusign_published?
+  .form
+    .notice We will review your information then generate a document for you to do e-signature.
+- else
+  iframe#docusign src=@embedded_docusign_url
+  javascript:
+    $('body').scrollTop(100)
+center = link_to 'Go Back to Modify My Information', invitation_applicants_path(commit: 'Previous')

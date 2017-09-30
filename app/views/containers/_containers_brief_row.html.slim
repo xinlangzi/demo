@@ -1,0 +1,69 @@
+tr
+  td
+    = link_to container.id, container
+    - if !container.confirmed && (current_user.is_customer? || current_user.is_admin?)
+      .clear
+      = link_to '', edit_container_path(container), class: 'fa fa-edit invisible', title: 'edit'
+      | &nbsp;
+      = link_to '', container, method: :delete, class: 'fa fa-trash invisible', title: 'delete', data: { confirm: 'Are you sure you want to delete the container?'}
+      | &nbsp;
+    - if !container.confirmed && current_user.is_admin?
+      = link_to '', confirm_container_path(container), method: :put, class: 'fa fa-check-circle invisible', title: 'Move from pre-alerts to confirmed', data: {confirm: "Are you sure you want to move this container from pre-alerts to confirmed?"}
+
+
+  - if current_user.is_admin?
+    - if ctrl_in?('containers')
+      td
+        = fields_for :container, container do |c|
+          = c.text_field :chassis_no, :class=>"w80 f90 auto-save nospace", :id => "chassis_no_#{container.id}", :ref=>"#{container.class.to_s}:#{container.id}:chassis_no"
+      - if container.instance_of?(ImportContainer)
+        td
+          = fields_for :container, container do |c|
+            = c.text_field :pickup_no, :class=>"w80 f90 auto-save", :id => "pickup_no_#{container.id}", :ref=>"#{container.class.to_s}:#{container.id}:pickup_no"
+
+    td #{container.customer.name}
+
+  - if ["PayableInvoicesController", "ReceivableInvoicesController"].include?(controller.class.to_s)
+    td
+      - if container.instance_of?(ImportContainer)
+        = container.terminal_eta
+  - elsif container.instance_of?(ImportContainer)
+    td[id="terminal_eta_#{container.id}"]
+      = calendar_for(container, :terminal_eta)
+  td = sanitize(container.terminals_info.map(&:name).join('<hr>')) rescue 'N/A'
+  td[id="appt_date_#{container.id}"]
+    - if ["PayableInvoicesController", "ReceivableInvoicesController"].include?(controller.class.to_s)
+      = appt_range(container, true)
+    - else
+      = calendar_for(container, :appt_date, { 'embed-ajax-url'=> embed_appt_time_container_path(container) })
+
+  - if ["PayableInvoicesController", "ReceivableInvoicesController"].include?(controller.class.to_s)
+    td
+      - if container.instance_of?(ImportContainer)
+        = container.rail_lfd
+      - else
+        = container.rail_cutoff_date
+  - elsif container.instance_of?(ExportContainer)
+    td[id="rail_cutoff_date_#{container.id}"]
+      = calendar_for(container, :rail_cutoff_date)
+  - else
+    td[id="rail_lfd_#{container.id}"]
+      = calendar_for(container, :rail_lfd)
+
+  - if current_user.is_admin? && container.instance_of?(ExportContainer)
+    - unless ["PayableInvoicesController", "ReceivableInvoicesController"].include?(controller.class.to_s)
+      td[id="early_receiving_date_#{container.id}"]
+        = calendar_for(container, :early_receiving_date, { 'embed-ajax-url'=> embed_appt_time_container_path(container) })
+
+  td = container.container_no
+  td = container.ssline_bl_no ? container.ssline_bl_no : container.ssline_booking_no
+  - customers = container.consignees_or_shippers_info
+  td = sanitize(customers.map(&:name).join('<hr>')) rescue 'N/A'
+  td = sanitize(customers.map(&:address_city).join('<hr>')) rescue 'N/A'
+  td = sanitize(customers.map(&:abbrev).join('<hr>')) rescue 'N/A'
+  - if current_user.is_admin?&&ctrl_in?('containers')
+    td
+      - operation = container.operations.first
+      - if operation
+        = fields_for :operation, operation do |o|
+          = o.text_area :instructions, class: "auto-area auto-save", cols: 15, rows: 1, id: "instructions_#{operation.id}", ref: "#{operation.class.to_s}:#{operation.id}:instructions"

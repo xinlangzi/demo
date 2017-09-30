@@ -1,0 +1,53 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+.list-block.narrow-block
+  = simple_form_for @search, url: search_containers_path, method: :get, html: { class: 'load-page'} do |s|
+    ul
+      li
+        .item-content
+          .item-inner
+            .item-input
+              = s.input_field :id_eq, required: false, placeholder: 'Container ID'
+      li
+        .item-content
+          .item-inner
+            .item-input
+              = s.input_field :container_no_cont, required: false, placeholder: 'Container No.'
+      li
+        .item-content
+          .item-inner
+            = s.submit 'Search', class: 'button button-big active'
+
+.toolbar
+  .toolbar-inner
+    - if params[:q].blank?
+      = link_to_previous_page @containers, content_tag(:i, nil, class: 'icon ion-arrow-left-a') + content_tag(:i, 'Prev'), class: 'link'
+      a.link href="#"
+      = link_to_next_page @containers, content_tag(:i, 'Next') + content_tag(:i, nil, class: 'icon ion-arrow-right-a'), class: 'link'
+.list-block.narrow-block
+  - grouped_containers = @containers.group_by(&:type)
+  - ['ImportContainer', 'ExportContainer'].each do |type|
+    - containers = grouped_containers[type]||[]
+    ul
+      li.accordion-item class="#{containers.size > 0 ? 'accordion-item-expanded' : ''}"
+        a.item-content.item-link href="#"
+          .item-inner
+            .item-title = type.tableize.titleize
+            .item-after
+              span.badge = containers.size
+        .accordion-item-content
+          ul
+            - containers.each do |container|
+              li
+                = link_to container, class: 'item-link' do
+                  .item-content
+                    .item-inner
+                      .item-title.color-blue = container.id

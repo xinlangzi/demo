@@ -1,0 +1,5 @@
+$(".<%=dom_id(@company)%>").closest('.operation-detail').find('.company-chooser').trigger('change')
+$(".<%=@company.class.to_s.downcase%>").html('<%=j options_from_collection_for_select(@company.class.all, :id, :name, @company.id)%>')
+$(".<%=dom_id(@company)%>").effect("highlight", {color: '#FF0'}, 5000)
+App.refreshChosenSelect()
+App.closeDialog()

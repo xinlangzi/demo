@@ -1,0 +1,10 @@
+- driver_quote = DriverQuote.init
+= simple_form_for driver_quote, as: :quote, remote: true, html: { id: driver_quote.key } do |s|
+  = s.input :key, as: :hidden, input_html: { class: 'quote-key' }
+  .row
+    a.icon.ion-ios-minus-outline.remove href='#'
+    .col-md-3
+      = s.input_field :rail_road_id, as: :grouped_select, collection: Port.for_driver_quote, group_method: :rail_roads, label_method: :name, label: false, include_blank: '--- Hubs ---', class: 'rail-road'
+    .col-md-9
+      = s.input_field :destination, placeholder: 'Delivery Location', class: 'text geo-address'
+    .col-md-12.rates

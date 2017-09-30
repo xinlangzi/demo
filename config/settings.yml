@@ -1,0 +1,39 @@
+defaults: &defaults
+  version: 'dev'
+  rate_includes_fs: true
+  base_rate_name: 'Rate Incl. of Fuel Surcharge'
+  invoice_due: 15
+  order_types:
+    'Live Load Import':
+      url: '/import_containers/new'
+      class: 'live-load-import'
+    'Live Load Export':
+      url: '/export_containers/new'
+      class: 'live-load-export'
+    'Drop&Pull Import':
+      url: '/import_containers/new?type=dp'
+      class: 'drop-pull-import'
+    'Drop&Pull Export':
+      url: '/export_containers/new?type=dp'
+      class: 'drop-pull-export'
+  default_operations:
+    '/import_containers/new': [1, 2, 3]
+    '/export_containers/new': [4, 5, 6]
+    '/import_containers/new?type=dp': [1, 8 ,3]
+    '/export_containers/new?type=dp': [4, 9, 6]
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+staging:
+  <<: *defaults
+
+production:
+  <<: *defaults
+  version: ''
+
+capybara:
+  <<: *defaults

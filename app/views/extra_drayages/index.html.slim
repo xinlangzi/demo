@@ -1,0 +1,17 @@
+- rail_roads = RailRoad.all
+- options = ContainerSize.option_with_type
+.title-bar
+  h1 Extra Drayages
+.full-page
+  table.gray
+    tr
+      th SS Line
+      - rail_roads.each do |rail_road|
+        th = rail_road.name
+    - Ssline.all.each do |ssline|
+      tr
+        td = ssline.name
+        - rail_roads.each do |rail_road|
+          td
+            - selected = @styles["#{ssline.id}:#{rail_road.id}"]
+            = select_tag(:styles, options_for_select(options, selected), multiple: true, class: 'styles', id: "styles#{rand(10**6)}", data: {ssline_id: ssline.id, rail_road_id: rail_road.id})

@@ -1,0 +1,43 @@
+.title-bar
+  h1 Trucker Advances
+.content
+  = render 'filter'
+  - if @adjustments.blank?
+    fieldset.border-info None
+  - else
+    - options = AdjustmentCategory.all
+    - auto_save_category = Proc.new{|adjustment| select_tag(:category_id, options_from_collection_for_select(options, :id, :name, adjustment.category_id), { class: 'w200 auto-save', id: dom_id(adjustment, 'category_id'), ref: "Adjustment:#{adjustment.id}:category_id", include_blank: true }) }
+    table.gray.vmiddle
+      thead
+        tr
+          th Trucker
+          th Invoice No.
+          th Date
+          th Amount
+          th.w400 Comment
+          th.w200 Category
+          th Payment No.
+      tbody#tbody_payments
+        - @adjustments.group_by(&:invoice).each do |invoice, adjustments|
+          tr
+            td rowspan=adjustments.size
+              = invoice.company.name
+            td rowspan=adjustments.size = link_to invoice.number, invoice
+            td rowspan=adjustments.size = invoice.issue_date
+            - first = adjustments.pop
+            td.number = number_to_currency first.amount
+            td = first.comment
+            td.text-left = auto_save_category.call(first)
+            td
+              = link_to first.payment.number, first.payment rescue ''
+          - adjustments.each do |adjustment|
+            tr
+              td.number = number_to_currency adjustment.amount
+              td = adjustment.comment
+              td.text-left = auto_save_category.call(adjustment)
+              td = link_to adjustment.payment.number, adjustment.payment rescue ''
+      tfoot
+        th.number colspan=7
+          center
+            h2 Summary Total Amount: #{number_to_currency(@total_amount)}
+    = paginate @adjustments

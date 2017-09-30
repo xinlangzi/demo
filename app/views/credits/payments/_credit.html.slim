@@ -1,0 +1,10 @@
+= fields_for "credits[#{credit.credit_id}]", credit do |d|
+  tr.adjustment data-invoice-id=credit.invoice_id
+    td.pw10.red = d.check_box :selected, class: "check_box"
+    td.pw20.red = Invoice.find(credit.invoice_id).number
+    td.pw60.red = Credit.find(credit.credit_id).catalogable.try(:name)
+    td.pw10.red.bold
+      = number_to_currency(-credit.amount)
+      = d.hidden_field :amount
+      = d.hidden_field :invoice_id
+      = d.hidden_field :credit_id

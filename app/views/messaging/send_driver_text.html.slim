@@ -1,0 +1,27 @@
+.title-bar
+  h1 Send SMS to drivers
+
+.content
+  = form_tag '/messaging/send_driver_text', method: :post, remote: true, id: "send_form" do
+    fieldset.form.pb10
+      div.bold
+        span MSG length:&nbsp;
+        span.green#char_count 0
+        span &nbsp;of 140
+      = text_area_tag "message", "", :size=>"60x5", :onkeyup=>"App.countTextMessage(this);", :onchange=>"App.countTextMessage(this);"
+      .clear
+      br
+      = submit_tag "Send", :id=>"send", disable_with: PLEASE_WAIT
+      a.btn onclick="App.checkAll('trucker', true)" Check All
+      a.btn onclick="App.checkAll('trucker', false)" Uncheck All
+    table.w600.gray
+      tr
+        th Select
+        th Driver Name
+        th
+      - current_hub.truckers.active.valid_mobile_phone.each do |trucker|
+        tr
+          td.w30.center = check_box_tag "truckers[]", trucker.id, false, :id=>"trucker_#{trucker.id}_selected", class: 'trucker'
+          td.w200.text-left
+            label[for="trucker_#{trucker.id}_selected"] = trucker.name
+          td.red[id="sms_status_#{trucker.id}"]

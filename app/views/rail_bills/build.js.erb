@@ -1,0 +1,6 @@
+<%if @rail_bill%>
+$('.error-recap').remove()
+App.showDialog({maxHeight: 750, title: 'Send Rail Bill Email'}).html('<%=j render("rail_bills/new")%>')
+<%else%>
+$('#container-form').replaceWith('<%=j render(partial: "containers/form/container", object: @container)%>')
+<%end%>

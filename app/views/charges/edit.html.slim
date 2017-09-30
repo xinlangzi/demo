@@ -1,0 +1,9 @@
+.title-bar
+  h1 Editing #{@charge.name} #{"for #{@charge.parent.name}" if @charge.parent}
+  ul
+    - if in_payable?
+      li = link_to 'Back', payable_charges_path
+    - else
+      li = link_to 'Back', receivable_charges_path
+.content
+  = render 'form'

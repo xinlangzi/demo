@@ -1,0 +1,33 @@
+/ = content_for :top_navbar do
+/   .navbar
+/     .navbar-inner
+/       .left.sliding
+/         a.link.back href="#" Back
+/       .center.sliding = logo_tag
+/       .right
+/         a.link.icon-only.open-panel href="#"
+/           i.icon.ion-ios-arrow-left
+/           span Menu
+
+/ .list-block.narrow-block
+/   ul
+/     li.accordion-item class='accordion-item-expanded'
+/       a.item-content.item-link href="#"
+/         .item-inner
+/           .item-title Containers without Pod
+/           .item-after
+/             span.badge = @operations.size
+/       .accordion-item-content
+/         .list-block.media-list
+/           ul
+/             - @operations.each do |operation|
+/               - container = operation.container
+/               li
+/                 = link_to container, class: 'item-link item-content' do
+/                   .item-inner
+/                     .item-title-row
+/                       .item-title = operation.company.name
+/                       b.color-blue = container.id
+/                     .item-subtitle
+/                       = operation.company.address
+/                     .item-text Arrived: #{operation.view_operated_at}

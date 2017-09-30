@@ -1,0 +1,46 @@
+- observe_url = polymorphic_path([:update_total, :accounting, "#{@accounts_type}Invoice".constantize.new])
+= simple_nested_form_for invoice, as: :invoice, remote: true, html: { class: 'observe-form', data: { url: observe_url, method: :put } } do |f|
+  = f.error_messages
+  = f.hidden_field :company_id
+  table.gray.lform.vmiddle
+    tr
+      td.w120.bold = f.label :company_id, in_payable? ? 'Bill from' : 'Bill to'
+      td = invoice.company
+    - unless (in_receivable? && invoice.new_record?)
+      tr
+        td.bold = f.label :number, 'Invoice No.'
+        td = f.text_field :number, :disabled => (@accounts_type != 'Payable' ? true : false), class: 'unobservable'
+    tr
+      td = f.label :issue_date, 'Issue Date'
+      td = f.input_field :issue_date, as: :datepicker, required: true, class: 'unobservable', data: { sync: '#invoice_date_received' }
+    - if in_payable?
+      tr
+        td = f.label :date_received, 'Received Date'
+        td = f.input_field :date_received, as: :datepicker, class: 'unobservable'
+    tr
+      td colspan=2 class="#{@accounts_type.downcase}Charges"
+        .charge_title
+          .icon-text
+        	 = link_to new_polymorphic_path([:accounting, "#{@accounts_type}LineItem".constantize.new]), remote: true, class: 'fa fa-plus-circle' do
+        	   span = @accounts_type.downcase == 'receivable' ? 'Accts. Receivable' : 'Accts. Payable'
+        table.gray.normal
+          thead
+            tr
+              th.w120 = "#{invoice.type_info.capitalize} Category"
+              th.w250 Description
+              th.w180 Amount
+              th.w10  Delete
+          tfoot
+            tr
+              th[colspan="2"] Total
+              th#invoice_total_amount.number = number_to_currency invoice.computed_amount
+              th
+          tbody#line_items
+            = f.fields_for :line_items do |li|
+              = render 'accounting/line_items/fields', li: li
+    tr
+      th.text-right[colspan=2]
+        = f.submit save_or_update(f.object), id: 'invoice_submit'
+        = link_to 'Cancel', invoice, class: 'cancel' unless invoice.new_record?
+        #delete_invoice.red[style="display:none"] No line items have been selected. If you proceed, the invoice will be deleted.
+        #invalid_line_item_amount.red[style="display:none"] Line item amount must be greater than 0.

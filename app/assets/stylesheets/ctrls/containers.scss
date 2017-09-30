@@ -1,0 +1,188 @@
+.prepull-alert{
+  background: #F500FF;
+  color: white;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  position: relative;
+  left: -10px;
+  font-size: 9px;
+  width: 80px;
+  padding: 2px;
+}
+#monthly-chart, #daily-chart, #mileages-chart {
+  svg {
+    height: 500px;
+  }
+}
+.fee{
+  width: 50px;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  background: #FFFFC0;
+  border: 1px solid #FFC224;
+  @include border-radius(5px);
+  padding: 0px 2px;
+}
+
+.containerOperationDiv{
+  position: relative;
+  width: 100%;
+  display: table;
+  .operationDetail, .operationDrop{
+    width: 35%;
+    display: table-cell;
+    position: relative;
+    .operationDate{
+      position: absolute;
+      top: 0px;
+      right: 5px;
+      font-size: 12px;
+      width: 160px;
+      text-align: right;
+      .error{
+        font-size: 11px;
+        line-height: 11px;
+      }
+    }
+    .companyShortDetails{
+      width: 200px;
+      font: 13px/0.6 !important;
+    }
+    .operationMile{
+      position: absolute;
+      bottom: 5px;
+      right: 15px;
+      padding: 0px 3px;
+      background: lighten($green, 25%);
+      @include border-radius(5px);
+    }
+  }
+  .operationDriver{
+    width: 30%;
+    display: table-cell;
+    word-wrap: break-word;
+  }
+  .oepration-fee{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+  .link-containers{
+    margin: 5px;
+    text-align: right;
+    a{
+      font-size: 13px;
+    }
+  }
+  .street-turn{
+    margin: 5px 0;
+    text-align: right;
+    position: absolute;
+    bottom: 0px;
+    right: 0;
+    a{
+      font-size: 13px;
+    }
+  }
+}
+.company-info{
+  max-width: 300px;
+}
+
+.choose-order{
+  width: 500px;
+  margin-top: 30px;
+  a{
+    float: left;
+    width: 240px;
+    margin: 5px;
+  }
+  h3{
+    font-size: 18px;
+    text-align: center;
+    margin: 5px 0;
+  }
+  .hub-switcher{
+    width: 200px;
+    margin: auto;
+    text-align: center;
+    background: #27c400;
+    vertical-align: middle;
+    @include border-radius(5px);
+    .fa{
+      color: #FFF;
+      font-size: 24px;
+      margin: 0 10px;
+    }
+    select{
+      -webkit-appearance: menulist-button;
+      background: transparent;
+      color: #FFF;
+      border: none;
+      font-weight: bold;
+      font-size: 20px;
+      height: 48px;
+      width: 160px;
+    }
+  }
+  .live-load-import{
+    @include btn-bg(#d3ca00);
+  }
+  .live-load-export{
+    @include btn-bg(#02a9ff);
+  }
+  .drop-pull-import{
+    @include btn-bg(darken(#d3ca00, 15%));
+  }
+  .drop-pull-export{
+    @include btn-bg(darken(#02a9ff, 15%));
+  }
+}
+
+.inline-tasks{
+  ul{
+    width: auto !important;
+    li{
+      float: left;
+      margin: 0px 10px 0px 2px;
+    }
+  }
+}
+table.processes{
+  @include table-scaffolding;
+  width: 100%;
+  vertical-align: top;
+  margin: 0px;
+  border: 1px solid #FFF;
+  td{
+    vertical-align: top;
+    background: #F9F9F9;
+    padding: 0px !important;
+    border: 1px solid #076E84 !important;
+    .action{
+      background: #7BCBDC;
+      padding: 5px;
+      font-weight: bold;
+      .miles{
+        float: right;
+      }
+    }
+    .details{
+      padding: 5px;
+    }
+    .name{
+      font-size: 11px;
+      width: 180px;
+      word-break: break-all;
+      font-style: italic;
+      margin: 2px 0;
+    }
+    .address{
+      margin: 0px 5px;
+    }
+    .phone{
+      margin: 5px;
+    }
+  }
+}

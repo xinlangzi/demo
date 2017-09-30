@@ -1,0 +1,10 @@
+.title-bar
+  h1 Edit Rail Road #{@road.name}
+  ul
+    li = link_to 'Cancel', :back
+.content
+  = simple_form_for @road, as: :rail_road, html: {class: 'rows'} do |f|
+    fieldset
+      legend Basic Information
+      = render partial: 'form', locals: {f: f}
+    = f.submit 'update'

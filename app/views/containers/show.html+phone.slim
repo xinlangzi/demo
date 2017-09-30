@@ -1,0 +1,148 @@
+= content_for :top_navbar do
+  .navbar
+    .navbar-inner
+      .left.sliding
+        a.link.back href="#" Back
+      .center.sliding = logo_tag
+      .right
+        a.help data-popover=".icons-help" class="open-popover"
+        a.link.icon-only.open-panel href="#"
+          i.icon.ion-ios-arrow-left
+          span Menu
+- if current_user.is_trucker?
+  - unless @container.all_operated?
+    .content-block.top-block
+      a.button.button-big.button-fill.color-gray#pod-submitted class="#{@container.has_pod? ? '' : 'hidden'}" POD Submitted
+      a.button.button-big.button-fill.color-green#new-pod href=new_container_pod_path(@container) class="#{@container.has_pod? ? 'hidden' : ''}" POD
+
+.list-block.narrow-block
+  ul
+    = f7_label_text(@container.type.titleize, @container.id)
+    = f7_label_text("Invoice No.", nil) do
+      - @container.invoices.where(type: 'PayableInvoice').for_user(current_user).each do |invoice|
+        = link_to invoice.number, invoice
+    = f7_label_text("Container No.", @container.container_no)
+    = f7_label_text("SS Line", @container.ssline)
+    = f7_label_text("Reference No.", @container.reference_no)
+    = f7_label_text("Chassis No.", nil) do
+      = fields_for :container, @container do |c|
+        = c.text_field :chassis_no, class: "auto-save nospace", ref: "#{@container.class.to_s}:#{@container.id}:chassis_no", placeholder: 'Enter Chassis No.', disabled: !@container.chassis_no_updatable_by?(current_user)
+        i class=alter_status_icon(@container, :chassis_no)
+    / = f7_label_text("Seal No.", @container.seal_no)
+    = f7_label_text("Seal No.", nil) do
+      = fields_for :container, @container do |c|
+        = c.text_field :seal_no, class: "auto-save nospace", ref: "#{@container.class.to_s}:#{@container.id}:seal_no", placeholder: 'Enter Seal No.'
+    - if @container.is_import?
+      = f7_label_text("Weight(lbs)", @container.weight_decimal_humanized)
+    - else
+      = f7_label_text("Weight(lbs)", nil) do
+        = fields_for :container, @container do |c|
+          = c.text_field :weight_decimal_humanized, class: "auto-save nospace", ref: "#{@container.class.to_s}:#{@container.id}:weight_decimal_humanized", placeholder: 'Enter Weight'
+    = f7_label_text("Commodity", @container.commodity)
+    = f7_label_text("Size/Type", @container.size)
+    = f7_label_text("Appointment", @container.appointment)
+    = f7_label_text("Require Triaxle", (@container.triaxle ? "✔" : ""))
+    - if @container.is_a?(ImportContainer)
+      = f7_label_text("House bl No.", @container.house_bl_no)
+      = f7_label_text("SS Line B/L No.", @container.ssline_bl_no)
+      = f7_label_text("Pickup No.", @container.pickup_no)
+      = f7_label_text("Rail Last Free Day", @container.rail_lfd)
+      = f7_label_text("Per Diem Last Free Day", @container.per_diem_lfd)
+      = f7_label_text("Terminal/Rail ETA", @container.terminal_eta)
+    - else
+      = f7_label_text("Vessel Name", @container.vessel_name)
+      = f7_label_text("Voyage Number", @container.voyage_number)
+      = f7_label_text("SS Line Booking No.", @container.ssline_booking_no)
+      = f7_label_text("House Booking No.", @container.house_booking_no)
+      = f7_label_text("Early Receiving Date", @container.early_receiving_date)
+      = f7_label_text("Empty Release No.", @container.empty_release_no)
+      = f7_label_text("Rail Cutoff Date", @container.rail_cutoff_date)
+
+.card.container-card.container-view
+  .card-header.text-center Operations
+  .card-content
+    .list-block.media-list
+      ul
+        - operations = @container.viewable_operations(current_user)
+        - total = 0
+        = render 'containers/chassis/pickup' if operations.first.first?
+        - operations.each do |operation|
+          - readable = current_user.is_admin? || operation.by_trucker?(current_user)
+          li
+            .item-content
+              .item-inner
+                .item-title-row
+                  .item-title = operation.operation_type.name
+                  .item-after
+                    - unless operation.final?
+                      span.miles #{operation.distance.miles}mi
+                    - if operation.required_docs?
+                      a.ajax-popup href="#" data-url=new_doc_path(image: { imagable_type: 'Operation', imagable_id: operation.id }, layout: 'popup')
+                        i.upload-j1s.ion-images
+                .item-subtitle = operation.company.name rescue 'N/A'
+                .item-title-row
+                  - if operation.company
+                    small
+                      a.external target='_blank' href=google_map_url(operation.company.address) = operation.company.address
+                  / - if operation.required_docs?
+                  /   a.ajax-popup href="#" data-url=new_doc_path(image: { imagable_type: 'Operation', imagable_id: operation.id }, layout: 'popup')
+                  /     i.upload-icon.ion-images
+                .item-title-row
+                  - if operation.company
+                    small.icon.ion-ios-telephone.color-blue
+                      a.external href="tel:#{operation.company.phone}" = operation.company.phone
+                  - if readable
+                    .item-after.green
+                      b = number_to_currency(operation.payable_charge_fee) if operation.payable_charge_fee > 0
+                      - total+= operation.payable_charge_fee
+                - if operation.company
+                  .item-text
+                    i Hrs. of Operation: #{operation.company.ophours}
+                small
+                  b.color-red = operation.instructions
+                - if operation.is_drop?
+                  .item-title-row
+                    .item-title Home Yard
+                    .item-after #{operation.yard_distance.miles}mi
+                  .item-subtitle = operation.yard.name
+                  .item-title-row
+                    a.external target='_blank' href=google_map_url(operation.yard.address) = operation.yard.address
+                  .item-title-row
+                    - if operation.yard.phone.present?
+                      a href="tel:#{operation.yard.phone}" = operation.yard.phone
+                  .item-text
+                    i Hrs. of Operation: #{operation.yard.ophours}
+                  small
+                    b.color-red = operation.instructions
+                - if current_user.is_admin? or current_user.is_trucker?
+                  - time_required = operation.time_required?
+                  ul.inner-links
+                    - if current_user.is_admin? || operation.operatable_by?(current_user)
+                      li.relative
+                        .item-link.list-button
+                          - ymdhm = operation.view_operated_at
+                          - klasses = %w{operation-at}
+                          - klasses << (time_required ? 'date_time' : 'only_date')
+                          = text_field_tag :operated_at, ymdhm, class: klasses, placeholder: 'Operation Date/Time', data: { url: operate_operation_path(operation) }, disabled: !operation.operated_at_updatable_by?(current_user)
+                        i class=alter_status_icon(operation, :operated_at)
+                    - if current_user.is_admin?
+                      - if operation.is_drop?
+                        li
+                          .item-link.list-button
+                          - klasses = %w{appt-at}
+                          - ymdhm = operation.appt.to_datetime.send(time_required ? :ymdhmp : :ymd) rescue nil
+                          - klasses << (time_required ? 'date_time' : 'only_date')
+                          = text_field_tag :appt, ymdhm, class: klasses, placeholder: 'Appt Date/Time', data: { url: appt_operation_path(operation) }
+                      li
+                        .item-link.list-button
+                          - unless operation.final?
+                            - if operation.trucker
+                              = link_to new_text_message_path(operation_id: operation.id, text_message: { phone_number: operation.trucker.phone_mobile, company_id: operation.trucker_id, container_id: operation.container_id, message: operation.sms_info}) do
+                                  span = operation.trucker.name + " (SMS)"
+                            - else
+                              .color-gray No Trucker
+        = render 'containers/chassis/return' if operations.last.final?
+.list-block.narrow-block
+  ul
+    li
+      b.item-link.list-button.color-green Total Amount: #{number_to_currency(total.round(2))}

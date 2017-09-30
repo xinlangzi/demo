@@ -1,0 +1,16 @@
+#search-box.search-box
+  .search-inner
+    = simple_form_for @search, url: pre_alerts_containers_path, html: {id: 'form_search', method: :get, class: 'horiz'} do |s|
+      - if current_user.is_admin? || current_user.is_customer?
+        = s.input :hub_id_eq, label: 'Hub', collection: Hub.with_default, required: false, wrapper: 'vertical', input_html: { class: 'clearable' }, include_blank: "- All Hubs-"
+      - if current_user.is_admin?
+        = s.input :customer_id_eq, as: :select, collection: Customer.active.get_names_and_ids, include_blank: true, label: "Customer", required: false, wrapper: 'vertical', input_html: {class: 'chosen-select w200'}
+      = s.input :id_eq, label: "Container ID", required: false, size: 10, wrapper: "vertical", input_html: {class: 'w100 nospace'}
+      = s.input :container_no_cont, label: "Container No.", required: false, size: 15, wrapper: "vertical", input_html: {class: 'w150 nospace'}
+      = s.input :terminal_id_eq, as: :select, collection: current_hub.terminals.get_names_and_ids, include_blank: true, label: "Terminal", required: false, wrapper: 'vertical', input_html: {class: 'chosen-select w200'}
+      = s.input :reference_no_cont, label: "Reference No.", required: false, size: 15, wrapper: "vertical", input_html: {class: 'w150 nospace'}
+      = s.input :ssline_booking_no_cont, label: "SSLine Booking No.", required: false, size: 15, wrapper: "vertical", input_html: {class: 'w150 nospace'}
+
+      = s.submit "Search"
+      = s.submit "Export", id: "export_me", class: 'hidden'
+      .clear

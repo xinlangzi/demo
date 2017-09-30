@@ -1,0 +1,39 @@
+.title-bar
+  h1 Pending Loads
+  ul
+    li = link_to 'Back to Reports', '/reports'
+    li = link_to 'Export to Excel', pending_loads_report_containers_path(q: params[:q].to_h, format: 'csv')
+.full-page
+  #search-box.search-box
+    .search-inner
+      = simple_form_for @search, url: [:pending_loads, :report, :containers], html: { method: :get, class: 'horiz' }  do |s|
+        = s.input :hub_id_eq, collection: Hub.with_default, label: 'Hub', required: false, wrapper: 'vertical', input_html: { class: 'clearable' }, include_blank: '- All Hubs -'
+        = s.input :id_eq, label: 'Container ID', required: false, wrapper: 'vertical', input_html: { class: 'clearable' }
+        = s.input :container_no_cont, label: 'Container No.', required: false, wrapper: 'vertical', input_html: { class: 'clearable' }
+        = s.submit "Search"
+        a.clear_button.btn Clear
+  table.gray.vmiddle
+    thead
+      tr
+        th Container ID
+        th Date
+        th Container No
+        th Customer
+        th Return Load
+        th Pick Up Date
+        th Early Receiving Date
+        th Drivers
+    tbody
+      - @containers.each do |container|
+        tr
+          td
+            = link_to container.id, container
+            = link_to '', polymorphic_path([:preview, container]), remote: true, class: "dialog fa fa-eye invisible"
+          td = container.created_at.us_date
+          td = container.container_no
+          td = container.customer.name
+          td = container.cname
+          td = container.pick_up_date
+          td = container.early_receiving_date
+          td = container.trucker_names.join(', ')
+  = paginate @containers

@@ -1,0 +1,27 @@
+- if company
+  .companyShortDetails[class="#{dom_id(company)}"]
+    table.w400.borderless
+      tr
+        td.w200
+          .icon-text
+            i.fa.fa-at
+            = company.address_street
+            br
+            span.ml15 = "#{company.address_city}, #{company.state} #{company.zip_code}"
+            span.rfloat = link_to 'Edit', edit_polymorphic_path(company), remote: true, class: 'dialog f90'
+        td
+          - if !company.phone.blank?
+            .icon-text
+              i.fa.fa-phone
+              = company.phone
+              = company.phone_extension.blank? ? "" : " (ext. #{company.phone_extension})"
+          .ml15.f90 = simple_format(company.extra_contact_info)
+      - unless company.valid?
+        tr
+          td colspan=2
+            .f90.red Click edit to correct company information.
+      - if %w(depot yard terminal).include?(company.class.to_s.downcase)
+        tr
+          td[colspan=2]
+            .depot_ophours#depot_ophours
+              = render :partial => 'companies/ophours', :object => company

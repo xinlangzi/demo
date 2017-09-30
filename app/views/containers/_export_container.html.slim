@@ -1,0 +1,27 @@
+tr
+  td.bold Vessel Name
+  td = container.vessel_name
+  td.bold Voyage Number
+  td = container.voyage_number
+
+tr
+  td.bold SS Line Booking No.*
+  td = container.ssline_booking_no
+  td.bold House booking No.
+  td = container.house_booking_no
+
+
+= render 'containers/container2', container: container
+
+tr
+  td.bold Appointment
+  td = appt_range(container, true)
+  td.bold Early Receiving Date
+  td =  container.early_receiving_date
+
+tr
+  td.bold Empty release no.
+  td = container.empty_release_no
+  td.bold Rail cutoff date
+  td = container.rail_cutoff_date
+

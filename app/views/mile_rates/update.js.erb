@@ -1,0 +1,4 @@
+$('#<%= dom_id(@hub)%> .mile_rates').replaceWith('<%=j render("config", hub: @hub, mile_rate: @mile_rate)%>')
+<%if @success%>
+BaseRate.loadChartData(<%=@hub.id%>)
+<%end%>

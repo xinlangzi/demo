@@ -1,0 +1,11 @@
+.title-bar
+  h1 Postal Mailing Addresses
+
+.content
+  ul.tiles
+    li.tile1
+      = link_to report_truckers_path(format: 'csv') do
+        i.fa.fa-envelope-o &nbsp;Owner Operators
+    li.tile2
+      = link_to report_customers_path(format: 'csv') do
+        i.fa.fa-envelope-o &nbsp;Customers

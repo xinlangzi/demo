@@ -1,0 +1,19 @@
+- cache RailRoad.latest_updated do 
+  .box#ar-rate
+    .box-title Customer Quote
+    .box-content
+      = simple_form_for CustomerQuote.new, as: :quote, url: [:quick, CustomerQuote.new], remote: true do |s|
+        = s.input :rail_road_id, as: :grouped_select, collection: Port.for_customer_quote, group_method: :rail_roads, label_method: :name, label: false, include_blank: '--- Rail Road ---', input_html: { class: 'required chosen-select', data: { width: 300 } }
+        = s.input :destination, label: false, placeholder: 'Delivery Location', input_html: { class: 'required ar-geo-address w300 f85' }
+      .quote
+
+  .box#ap-rate
+    .box-title Driver Quote
+    .box-content
+      = simple_form_for DriverQuote.new, as: :quote, url: [:quick, DriverQuote.new], remote: true do |s|
+        .tableless
+          .table-cell
+            = s.input :hub_id, collection: Hub.with_default,label: false, include_blank: '--- Hub ---', input_html: { class: 'required chosen-select', data: { width: 200 } }
+          .table-cell
+            = s.input :miles, label: false, placeholder: 'Mileage', input_html: { class: 'required w100 text-right' }
+      .quote

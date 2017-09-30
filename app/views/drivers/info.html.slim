@@ -1,0 +1,34 @@
+.w500
+  h2 = link_to @trucker.name, @trucker, target: '_blank'
+  - trucks = @trucker.trucks
+  - infos = expiring_column_list.map{|key, proc| proc.call(@trucker) }
+  - colspan = trucks.size*2
+  .box
+    .box-title Expiration Dates
+    .box-content
+      table.gray
+        tr
+          th Hire Date
+          td colspan=colspan = infos.shift
+        tr
+          th Driver License
+          td colspan=trucks.size = infos.shift
+          td colspan=trucks.size = attachments_for(@trucker, "driver_license_expiration")
+        tr
+          th Medical Card
+          td colspan=trucks.size = infos.shift
+          td colspan=trucks.size = attachments_for(@trucker, "medical_card_expiration")
+        - truck_expiring_column_list.each do |key, proc|
+          - display = current_hub.send(key) rescue true
+          - if display
+            tr
+              th = Trucker::DOC_NAME_MAPS[key]
+              - trucks.each do |truck|
+                td = proc.call(truck)
+                td = attachments_for(truck, key.to_s) if [:truck_no].exclude?(key)
+  .box
+    .box-title Daily Logs
+    .box-content
+      #day-log-calendar data-id=@trucker.id
+javascript: 
+  DayLog.calendar()

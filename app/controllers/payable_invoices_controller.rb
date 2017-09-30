@@ -1,0 +1,2 @@
+class PayableInvoicesController < InvoicesController
+end

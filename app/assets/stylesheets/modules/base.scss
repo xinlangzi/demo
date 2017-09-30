@@ -1,0 +1,146 @@
+.lfloat{float:left !important;}
+.rfloat{float: right !important;}
+.clear, .clearfix{clear: both !important;}
+.normal{font-weight: normal !important; font-style: normal !important; text-decoration: none !important;}
+.bold{font-weight: bold !important;}
+.center{text-align: center !important;}
+.text-left, .text-left *{ text-align: left !important; }
+.text-right, .text-right *{ text-align: right !important; }
+.text-center{ text-align: center; }
+.hcenter{margin: auto !important;}
+.h{background: #FF0 !important;}
+.red, .error{color: red !important;}
+.yellow{color: yellow !important;}
+.brown{color: darken($brown, 15%) !important;}
+.green, .ok{color: green !important;}
+.lgreen{ color: #039314 !important;}
+.white{color: #FFF !important;}
+.black{color: #000 !important;}
+.lblue{color: $lblue !important;}
+.gray10{color: $gray10 !important;}
+.gray20{color: $gray20 !important;}
+.gray30{color: $gray30 !important;}
+.hidden{display: none !important;}
+.invisible{visibility: hidden;}
+.visible{visibility: visible;}
+.deco-none{text-decoration: none !important;}
+.auto-width{width: auto !important;}
+.auto-height{height: auto !important;}
+.number {text-align: right !important;width: 90px;}
+.inline{display: inline !important;}
+.inline-block{display: inline-block !important;}
+.block{display: block !important;}
+.relative{position: relative !important;}
+.absolute{position: absolute !important;}
+.underline{text-decoration: underline !important;}
+.italic{font-style: italic;}
+.transparent{background: transparent !important;}
+.vmiddle{vertical-align: middle !important;}
+.vbottom{vertical-align: bottom !important;}
+.borderless{border: none !important;}
+.unresize{overflow:auto; resize:none !important;}
+.full-width{ width: 100% !important;}
+
+.w0{width: 0px !important;}
+.w10{width: 10px !important;}
+.w20{width: 20px !important;}
+.w30{width: 30px !important;}
+.w40{width: 40px !important;}
+.w50{width: 50px !important;}
+.w60{width: 60px !important;}
+.w70{width: 70px !important;}
+.w75{width: 75px !important;}
+.w80{width: 80px !important;}
+.w90{width: 90px !important;}
+.w100{width: 100px !important;}
+.w110{width: 110px !important;}
+.w115{width: 115px !important;}
+.w120{width: 120px !important;}
+.w130{width: 130px !important;}
+.w140{width: 140px !important;}
+.w150{width: 150px !important;}
+.w160{width: 160px !important;}
+.w180{width: 180px !important;}
+.w200{width: 200px !important;}
+.w220{width: 220px !important;}
+.w250{width: 250px !important;}
+.w300{width: 300px !important;}
+.w350{width: 350px !important;}
+.w400{width: 400px !important;}
+.w450{width: 450px !important;}
+.w480{width: 480px !important;}
+.w500{width: 500px !important;}
+.w550{width: 550px !important;}
+.w600{width: 600px !important;}
+.w650{width: 650px !important;}
+.w700{width: 700px !important;}
+.w750{width: 750px !important;}
+.w800{width: 800px !important;}
+.w850{width: 850px !important;}
+.w900{width: 900px !important;}
+.w1200{width: 1200px !important;}
+.h100{height: 100px !important; overflow-y: auto;}
+.h300{height: 300px !important; overflow-y: auto;}
+.h500{height: 500px !important; overflow-y: auto;}
+.h600{height: 600px !important; overflow-y: auto;}
+
+@for $i from 1 through 20{
+  .pw#{$i*5}{
+    width: $i*5% !important;
+  }
+}
+
+@for $i from 1 through 10{
+  .ml#{$i}{
+    margin-left: $i+px !important;
+  }
+  .mr#{$i}{
+    margin-right: $i+px !important;
+  }
+  .mt#{$i}{
+    margin-top: $i+px !important;
+  }
+  .mb#{$i}{
+    margin-bottom: $i+px !important;
+  }
+}
+
+@for $i from 2 through 80{
+  .ml#{$i*5}{
+    margin-left: $i*5+px !important;
+  }
+  .mr#{$i*5}{
+    margin-right: $i*5+px !important;
+  }
+  .mt#{$i*5}{
+    margin-top: $i*5+px !important;
+  }
+  .mb#{$i*5}{
+    margin-bottom: $i*5+px !important;
+  }
+}
+
+
+@for $i from 1 through 10{
+  .pl#{$i}{
+    padding-left: $i+px !important;
+  }
+  .pr#{$i}{
+    padding-right: $i+px !important;
+  }
+  .pt#{$i}{
+    padding-top: $i+px !important;
+  }
+  .pb#{$i}{
+    padding-bottom: $i+px !important;
+  }
+  .padding#{$i}{
+    padding: $i+px !important;
+  }
+}
+
+@for $f from 12 through 40{
+  .f#{$f*5}{
+    font-size: $f*5% !important;
+  }
+}

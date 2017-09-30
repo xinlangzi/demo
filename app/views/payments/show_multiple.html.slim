@@ -1,0 +1,11 @@
+.title-bar
+  h1 Accounts #{@accounts_type}
+.content
+  - if @payments.empty?
+    .border-info There are no payments.
+  - else
+    - @payments.each do |payment|
+      - if payment.respond_to?(:third_party?)
+        = render "accounting/payments/payment", payment: payment
+      - else
+        = render "payments/payment", payment: payment

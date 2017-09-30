@@ -1,0 +1,22 @@
+.title-bar
+  h1 Check Templates
+  ul
+    li = link_to 'New Check Template', new_check_template_path
+
+.content
+  table.gray
+    tr
+      th Name
+      th Admin
+      th Default
+      th
+      th
+      th
+    - @check_templates.each do |ct|
+      tr
+      td = ct.name
+      td = ct.admin.name
+      td = checkmark(ct.as_default)
+      td = link_to '', ct, class: 'fa fa-info-circle'
+      td = link_to '', [:edit, ct], class: 'fa fa-edit'
+      td = link_to_unless ct.as_default?, '', ct, data: { confirm: 'Are you sure?' }, method: :delete, class: 'fa fa-trash'

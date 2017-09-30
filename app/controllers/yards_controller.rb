@@ -1,0 +1,2 @@
+class YardsController < CompaniesController
+end

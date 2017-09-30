@@ -1,0 +1,30 @@
+table.gray
+  thead
+    tr
+      th User
+      th Platform
+      th Device
+      th Version Name
+      th Last Logged
+      th Last Located
+      th Authed
+      th
+  tbody
+    - @statuses.each do |s|
+      tr
+        td = s.user
+        td = s.platform
+        td = s.device_id
+        td = s.version_name
+        td data-order=s.logged_at.to_i = s.logged_at.try(:us_datetime)
+        td data-order=s.located_at.to_i = s.located_at.try(:us_datetime)
+        td = checkmark(s.authed)
+        td = link_to '', mobiles_status_path(s), method: :delete, data: { confirm: "Are you sure to delete?" }, class: 'fa fa-trash'
+.hidden.datatable-config
+  | {
+      "bStateSave": true,
+      "bInfo": false,
+      "bFilter": false,
+      "bPaginate": false,
+      "aaSorting": [[ 0, "desc" ]]
+    }

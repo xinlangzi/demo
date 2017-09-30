@@ -1,0 +1,18 @@
+- if in_receivable?&&@search.company_id_eq&&@search.outstanding_true
+  - customer = Company.find(@search.company_id_eq)
+  - invoice_statement = InvoiceStatement.init(customer)
+  span.bold Statement:
+  | &nbsp;[&nbsp;
+  a.underline.show-hide Email
+  .plate.hidden#email-statement
+    = simple_form_for invoice_statement, url: email_statement_receivable_invoices_path(q: @q.to_h), html: { method: :post } do |f|
+      = f.input :customer_id, as: :hidden
+      = f.input :subject, wrapper: :vertical, input_html: { class: 'w500' }, hint: sanitize("Click #{link_to('here', new_system_setting_path)} to configure default subject and body for statement")
+
+      = f.input :to, wrapper: :vertical, input_html: { class: 'w500' }, hint: sanitize("Click #{link_to('here', [:edit, customer])} to update collection email for customer #{customer.name}")
+      = f.input :body, as: :text, wrapper: :vertical, input_html: { class: 'w600', rows: 8 }
+      = f.submit "Email Statement", disable_with: PLEASE_WAIT
+      a.cancel.show-hide rel='email-statement' Cancel
+  | &nbsp;&nbsp;
+  = link_to 'Print', print_statement_receivable_invoices_path(q: @q.to_h)
+  | &nbsp;]&nbsp;&nbsp;

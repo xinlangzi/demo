@@ -1,0 +1,84 @@
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white,  50%)) {
+  // For Google Chrome
+  ::-webkit-scrollbar {
+      width:  $size;
+      height: $size;
+  }
+
+  ::-webkit-scrollbar-thumb {
+      background: $foreground-color;
+  }
+
+  ::-webkit-scrollbar-track {
+      background: $background-color;
+  }
+
+  // For Internet Explorer
+  body {
+    scrollbar-face-color: $foreground-color;
+    scrollbar-track-color: $background-color;
+  }
+}
+
+@mixin image($image_url, $width, $height) {
+  font-size: 0px;
+  margin-left:auto;
+  margin-right:auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: $width;
+  height: $height;
+  display: block;
+  background-image: asset-data-url( $image_url + ".png");
+}
+
+@mixin left-icon($name, $top: 2px, $right: 0px, $bottom: 2px, $left: 15px){
+  background: asset-data-url($name + ".png") no-repeat left center;
+  padding: $top $right $bottom $left;
+}
+@mixin gif-icon($name, $top: 2px, $right: 0px, $bottom: 2px, $left: 15px){
+  background: asset-data-url($name + ".gif") no-repeat left center;
+  padding: $top $right $bottom $left;
+}
+
+@mixin color-btn($bg, $color: #FFF){
+  width: auto;
+  font-size: 14px;
+  padding: 0.5em 1.5em;
+  display: inline-block;
+  cursor: pointer;
+  border: 0;
+  @include border-radius(2px);
+  background-color: $bg;
+  text-shadow: darken($bg, 10%) 0 -1px 0;
+  margin: 0px 2px 0px 0px;
+  color: $color !important;
+  padding: 0px 5px !important;
+  height: 24px !important;
+  line-height: 24px !important;
+  text-decoration: none !important;
+  font-weight: normal !important;
+  text-align: center !important;
+  &:hover{
+    background:darken($bg, 8%);
+    transition: all 0.3s ease;
+  }
+}
+
+@mixin btn-bg($bg) {
+  background: $bg;
+  border: 1px solid darken($bg, 5%);
+  @include border-radius(5px);
+  color: #FFF;
+  padding: 10px;
+  font-size: 1.5em;
+  text-decoration:none;
+  text-align: center;
+  &:hover {
+    background:darken($bg, 8%);
+    transition: all 0.3s ease;
+  }
+  &:active {
+    background:darken($bg, 25%);
+  }
+}

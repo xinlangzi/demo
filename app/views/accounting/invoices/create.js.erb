@@ -1,0 +1,5 @@
+<%if @success %>
+window.location = '<%=polymorphic_path(@invoice)%>'
+<%else%>
+$('#new_tp_invoice').html('<%=j render("accounting/invoices/form", invoice: @invoice)%>')
+<%end%>
