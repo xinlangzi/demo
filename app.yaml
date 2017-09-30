@@ -1,0 +1,15 @@
+entrypoint: bundle exec rackup --port $PORT
+env: flex
+runtime: ruby
+
+skip_files:
+- logs/
+
+health_check:
+  enable_health_check: False
+
+env_variables:
+  SECRET_KEY_BASE: a9099e9dddc3f0616cbb44f5e591936429b0b8da51a351da6ad7d3fc485135b924e8ed056e9c1eb6c1b12d4d7d0f7b65d311b8b3247d29f45e41434cb51b653a
+
+beta_settings:
+  cloud_sql_instances: truckerzoom-181407:us-central1:truckerzoom

@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Hubs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Fuel zone</th>
+      <th>Driver license expiration</th>
+      <th>Medical card expiration</th>
+      <th>Annual inspection expiration</th>
+      <th>License plate expiration</th>
+      <th>Ifta expiration</th>
+      <th>Bobtail insurance expiration</th>
+      <th>Last quarterly maintenance expiration</th>
+      <th>Demo</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @hubs.each do |hub| %>
+      <tr>
+        <td><%= hub.name %></td>
+        <td><%= hub.fuel_zone %></td>
+        <td><%= hub.driver_license_expiration %></td>
+        <td><%= hub.medical_card_expiration %></td>
+        <td><%= hub.annual_inspection_expiration %></td>
+        <td><%= hub.license_plate_expiration %></td>
+        <td><%= hub.ifta_expiration %></td>
+        <td><%= hub.bobtail_insurance_expiration %></td>
+        <td><%= hub.last_quarterly_maintenance_expiration %></td>
+        <td><%= hub.demo %></td>
+        <td><%= link_to 'Show', hub %></td>
+        <td><%= link_to 'Edit', edit_hub_path(hub) %></td>
+        <td><%= link_to 'Destroy', hub, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Hub', new_hub_path %>

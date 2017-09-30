@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @hub.name %>
+</p>
+
+<p>
+  <strong>Fuel zone:</strong>
+  <%= @hub.fuel_zone %>
+</p>
+
+<p>
+  <strong>Driver license expiration:</strong>
+  <%= @hub.driver_license_expiration %>
+</p>
+
+<p>
+  <strong>Medical card expiration:</strong>
+  <%= @hub.medical_card_expiration %>
+</p>
+
+<p>
+  <strong>Annual inspection expiration:</strong>
+  <%= @hub.annual_inspection_expiration %>
+</p>
+
+<p>
+  <strong>License plate expiration:</strong>
+  <%= @hub.license_plate_expiration %>
+</p>
+
+<p>
+  <strong>Ifta expiration:</strong>
+  <%= @hub.ifta_expiration %>
+</p>
+
+<p>
+  <strong>Bobtail insurance expiration:</strong>
+  <%= @hub.bobtail_insurance_expiration %>
+</p>
+
+<p>
+  <strong>Last quarterly maintenance expiration:</strong>
+  <%= @hub.last_quarterly_maintenance_expiration %>
+</p>
+
+<p>
+  <strong>Demo:</strong>
+  <%= @hub.demo %>
+</p>
+
+<%= link_to 'Edit', edit_hub_path(@hub) %> |
+<%= link_to 'Back', hubs_path %>

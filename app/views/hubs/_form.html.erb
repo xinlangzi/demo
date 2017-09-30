@@ -1,0 +1,67 @@
+<%= form_with(model: hub, local: true) do |form| %>
+  <% if hub.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(hub.errors.count, "error") %> prohibited this hub from being saved:</h2>
+
+      <ul>
+      <% hub.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :hub_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fuel_zone %>
+    <%= form.text_field :fuel_zone, id: :hub_fuel_zone %>
+  </div>
+
+  <div class="field">
+    <%= form.label :driver_license_expiration %>
+    <%= form.check_box :driver_license_expiration, id: :hub_driver_license_expiration %>
+  </div>
+
+  <div class="field">
+    <%= form.label :medical_card_expiration %>
+    <%= form.check_box :medical_card_expiration, id: :hub_medical_card_expiration %>
+  </div>
+
+  <div class="field">
+    <%= form.label :annual_inspection_expiration %>
+    <%= form.check_box :annual_inspection_expiration, id: :hub_annual_inspection_expiration %>
+  </div>
+
+  <div class="field">
+    <%= form.label :license_plate_expiration %>
+    <%= form.check_box :license_plate_expiration, id: :hub_license_plate_expiration %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ifta_expiration %>
+    <%= form.check_box :ifta_expiration, id: :hub_ifta_expiration %>
+  </div>
+
+  <div class="field">
+    <%= form.label :bobtail_insurance_expiration %>
+    <%= form.check_box :bobtail_insurance_expiration, id: :hub_bobtail_insurance_expiration %>
+  </div>
+
+  <div class="field">
+    <%= form.label :last_quarterly_maintenance_expiration %>
+    <%= form.check_box :last_quarterly_maintenance_expiration, id: :hub_last_quarterly_maintenance_expiration %>
+  </div>
+
+  <div class="field">
+    <%= form.label :demo %>
+    <%= form.check_box :demo, id: :hub_demo %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
